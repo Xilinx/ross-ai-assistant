@@ -1,0 +1,6 @@
+# Vivado-generated project & build artifacts
+noc_decode_error/
+*.jou
+*.log
+.Xil/
+vivado*.str
