@@ -1,0 +1,15 @@
+{
+  "name": "amd-ross-agentic-ai-assistant",
+  "owner": {
+    "name": "Advanced Micro Devices, Inc.",
+    "url": "https://www.amd.com"
+  },
+  "description": "AMD Ross Agentic AI Assistant: Agent Skills for Developing Products with AMD Embedded Technologies",
+  "plugins": [
+    {
+      "name": "amd-ross-agentic-ai-assistant",
+      "description": "Agent Skills for Developing Products with AMD Embedded Technologies",
+      "source": "."
+    }
+  ]
+}

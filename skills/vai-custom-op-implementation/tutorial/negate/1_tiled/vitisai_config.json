@@ -1,0 +1,35 @@
+{
+  "passes": [
+    {
+      "name": "vaiml_partition",
+      "plugin": "vaip-pass_vaiml_partition",
+      "vaiml_config": {
+        "device": "ve2",
+        "keep_outputs": true,
+        "optimize_level": 2,
+        "enable_f32_to_bf16_conversion": true,
+        "logging_level": "info",
+        "fe_args": "small-tensor-threshold-unwrapping=0",
+        "experiment_features": [
+          "KeepOrphanNodes"
+        ],
+        "aiecompiler_args": "--compile-for-x86sim=true --x86sim-as-shared-library=true",
+        "runner_type": "x86sim",
+        "custom_ops": {
+          "mydomain.mynegate": {
+            "op_config": "custom_op_negate/custom_negate.yaml"
+          }
+        }
+      }
+    }
+  ],
+  "target": "VAIML",
+  "targets": [
+    {
+      "name": "VAIML",
+      "pass": [
+        "vaiml_partition"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<
+   ir_version: 10,
+   opset_import: ["" : 13]
+>
+test (float[4224] a, float[4224] b) => (float[4224] product) {
+   product = Mul (a, b)
+}

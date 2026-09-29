@@ -1,0 +1,6 @@
+
+---
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+tiling: "customop_affinegrid2d_tiling.py"
+kernel: "customop_affinegrid2d.cpp"
+stack_size: 4096

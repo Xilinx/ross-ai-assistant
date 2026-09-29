@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 662 505" width="993" height="758">
+  <defs>
+    <marker id="ah-ifm" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#2979FF" opacity="0.75"/></marker>
+    <marker id="ah-ofm" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#00C853" opacity="0.75"/></marker>
+  </defs>
+  <rect width="662" height="505" fill="white"/>
+
+  <text x="331" y="22" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#424242">1-D conv: IFM broadcast on column 0 + per-core OFM tiles</text>
+  <text x="331" y="40" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10" fill="#616161">k=3: IFM windows are T+k-1 wide (purple = k-1 overlap); thick frame = one broadcast stream into column 0</text>
+
+  <!-- Core grid 4x4 -->
+  <text x="78" y="188" text-anchor="end" font-family="Inter,Helvetica,Arial,sans-serif" font-size="11" fill="#616161">Core Tiles</text>
+
+  <g id="cores">
+    <rect x="100" y="263" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="150" y="285" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(0,0)</text>
+    <rect x="100" y="197" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="150" y="219" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(1,0)</text>
+    <rect x="100" y="131" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="150" y="153" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(2,0)</text>
+    <rect x="100" y="65" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="150" y="87" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(3,0)</text>
+
+    <rect x="230" y="263" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="280" y="285" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(0,1)</text>
+    <rect x="230" y="197" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="280" y="219" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(1,1)</text>
+    <rect x="230" y="131" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="280" y="153" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(2,1)</text>
+    <rect x="230" y="65" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="280" y="87" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(3,1)</text>
+
+    <rect x="360" y="263" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="410" y="285" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(0,2)</text>
+    <rect x="360" y="197" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="410" y="219" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(1,2)</text>
+    <rect x="360" y="131" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="410" y="153" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(2,2)</text>
+    <rect x="360" y="65" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="410" y="87" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(3,2)</text>
+
+    <rect x="490" y="263" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="540" y="285" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(0,3)</text>
+    <rect x="490" y="197" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="540" y="219" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(1,3)</text>
+    <rect x="490" y="131" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="540" y="153" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(2,3)</text>
+    <rect x="490" y="65" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+    <text x="540" y="87" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9.5" fill="#1565C0">CT(3,3)</text>
+  </g>
+
+  <g id="ifm-broadcast" opacity="0.92">
+    <path d="M 88 430 L 88 87" stroke="#2979FF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 84 430 L 84 87" stroke="#BBDEFB" stroke-width="1.5" fill="none" opacity="0.85"/>
+    <path d="M 92 430 L 92 87" stroke="#BBDEFB" stroke-width="1.5" fill="none" opacity="0.85"/>
+    <line x1="88" y1="285" x2="100" y2="285" stroke="#2979FF" stroke-width="2.4" marker-end="url(#ah-ifm)"/>
+    <line x1="88" y1="219" x2="100" y2="219" stroke="#2979FF" stroke-width="2.4" marker-end="url(#ah-ifm)"/>
+    <line x1="88" y1="153" x2="100" y2="153" stroke="#2979FF" stroke-width="2.4" marker-end="url(#ah-ifm)"/>
+    <line x1="88" y1="87" x2="100" y2="87" stroke="#2979FF" stroke-width="2.4" marker-end="url(#ah-ifm)"/>
+  </g>
+
+  <text x="78" y="408" text-anchor="end" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10.5" fill="#616161">OFM</text>
+  <text x="78" y="448" text-anchor="end" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10.5" fill="#616161">IFM</text>
+
+  <g id="ofm-lane">
+    <rect x="100" y="388" width="120" height="26" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="2"/>
+    <rect x="220" y="388" width="120" height="26" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="2"/>
+    <rect x="340" y="388" width="120" height="26" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="2"/>
+    <rect x="460" y="388" width="120" height="26" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="2"/>
+    <text x="160" y="404" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#1B5E20">tile i</text>
+    <text x="280" y="404" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#1B5E20">i+1</text>
+    <text x="400" y="404" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#1B5E20">i+2</text>
+    <text x="520" y="404" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#1B5E20">i+3</text>
+  </g>
+
+  <g id="ifm-strip">
+    <rect x="100" y="432" width="120" height="30" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="2"/>
+    <rect x="220" y="432" width="120" height="30" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="2"/>
+    <rect x="340" y="432" width="120" height="30" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="2"/>
+    <rect x="460" y="432" width="120" height="30" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="2"/>
+    <rect x="220" y="432" width="24" height="30" fill="#AA00FF" opacity="0.14" stroke="none"/>
+    <rect x="340" y="432" width="24" height="30" fill="#AA00FF" opacity="0.14" stroke="none"/>
+    <rect x="460" y="432" width="24" height="30" fill="#AA00FF" opacity="0.14" stroke="none"/>
+    <text x="160" y="449" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="7.5" fill="#0D47A1">in[T*i..]</text>
+    <text x="280" y="449" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="7.5" fill="#0D47A1">(+T)</text>
+    <text x="400" y="449" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="7.5" fill="#0D47A1">(+T)</text>
+    <text x="520" y="449" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="7.5" fill="#0D47A1">(+T)</text>
+    <text x="340" y="422" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="8.5" font-weight="600" fill="#1565C0">IFM broadcast (one logical stream)</text>
+    <rect x="96.5" y="428.5" width="487" height="37" fill="none" stroke="#2979FF" stroke-width="4.5" rx="6" stroke-linejoin="round" pointer-events="none"/>
+  </g>
+
+  <line x1="220" y1="382" x2="220" y2="478" stroke="#90A4AE" stroke-width="1" stroke-dasharray="4,3" opacity="0.75"/>
+  <line x1="244" y1="432" x2="244" y2="478" stroke="#AA00FF" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.85"/>
+  <text x="232" y="492" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="8.5" fill="#6A1B9A">k-1 overlap</text>
+
+  <!-- Schematic only: green paths separate outputs; OFM is logically per core. Tile i: straight vertical. -->
+  <g id="ofm-arrows" opacity="0.95">
+    <path d="M 160 307 L 160 388" stroke="#00C853" stroke-width="2" fill="none" marker-end="url(#ah-ofm)"/>
+    <path d="M 200 219 L 280 219 L 280 388" stroke="#00C853" stroke-width="2" fill="none" marker-end="url(#ah-ofm)"/>
+    <path d="M 200 153 L 400 153 L 400 388" stroke="#00C853" stroke-width="2" fill="none" marker-end="url(#ah-ofm)"/>
+    <path d="M 200 87 L 520 87 L 520 388" stroke="#00C853" stroke-width="2" fill="none" marker-end="url(#ah-ofm)"/>
+  </g>
+</svg>

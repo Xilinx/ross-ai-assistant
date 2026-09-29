@@ -1,0 +1,7 @@
+<
+    ir_version: 7,
+    opset_import: ["" : 20]
+>
+affinegrid_dynamic(float[16, 2, 3] theta, int64[4] size) => (float[16, 100, 100, 2] grid) {
+    grid = AffineGrid <align_corners: int = 1>(theta, size)
+}

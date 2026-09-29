@@ -1,0 +1,17 @@
+{
+  "passes": [
+    {
+      "name": "vaiml_partition",
+      "plugin": "vaip-pass_vaiml_partition",
+      "vaiml_config": {
+        "keep_outputs": true,
+        "optimize_level": 2,
+        "enable_f32_to_bf16_conversion": true,
+        "device": "ve2",
+        "group_args": "mixed_precision"
+      }
+    }
+  ],
+  "target": "VAIML",
+  "targets": [ { "name": "VAIML", "pass": ["vaiml_partition"] } ]
+}

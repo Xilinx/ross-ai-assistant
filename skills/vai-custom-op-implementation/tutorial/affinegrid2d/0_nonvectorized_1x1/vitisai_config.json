@@ -1,0 +1,41 @@
+{
+    "passes": [
+        {
+            "name": "vaiml_partition",
+            "plugin": "vaip-pass_vaiml_partition",
+            "vaiml_config": {
+                "device": "ve2",
+                "keep_outputs": true,
+                "optimize_level": 3,
+                "use_onnx_model_types": true,
+                "no_failsafe": true,
+                "enable_f32_to_bf16_conversion": true,
+                "enable_f16_to_bf16_conversion": true,
+                "debug_level": 9,
+                "logging_level": "info",
+                "fe_args": "small-tensor-threshold-unwrapping=0",
+                "experiment_features": [
+                    "KeepOrphanNodes"
+                ],
+                "max_num_partitions": 100,
+                "threshold_gops_percent": 0,
+                "aiecompiler_args": "--compile-for-x86sim=true --x86sim-as-shared-library=true --Xelfgen=-j2",
+                "runner_type": "x86sim",
+                "custom_ops": {
+                    "mydomain.myAffineGrid2D": {
+                        "op_config": "customop_affinegrid2d/customop_affinegrid2d.yaml"
+                    }
+                }
+            }
+        }
+    ],
+    "target": "VAIML",
+    "targets": [
+        {
+            "name": "VAIML",
+            "pass": [
+                "vaiml_partition"
+            ]
+        }
+    ]
+}

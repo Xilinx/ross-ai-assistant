@@ -1,0 +1,9 @@
+<
+   ir_version: 10,
+   opset_import: ["" : 22],
+   producer_name: "my_model"
+>
+mygraph (float[4,2,31360] x) => (float[1,2,31360] res) {
+   [const_output] axes = Constant <value: tensor = int64[1] {0}> ()
+   [ReduceMax] res = ReduceMax <keepdims: int = 1> (x, axes)
+}

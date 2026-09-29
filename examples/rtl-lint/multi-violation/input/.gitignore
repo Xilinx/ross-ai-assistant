@@ -1,0 +1,11 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+# Vivado-generated artifacts
+*.jou
+*.log
+.Xil/
+vivado*.str
+.vivado-ai/
+lint_report.rpt
+vivado_agentic_ai_reports/

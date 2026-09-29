@@ -1,0 +1,73 @@
+{
+  "global_config": {
+    "input_tensors": {
+      "spec": "XInt8Spec"
+    },
+    "weight": {
+      "spec": "XInt8Spec"
+    },
+    "bias": null
+  },
+  "exclude": {
+    "node_names": [
+      "/conv1/Conv",
+      "/layer1/layer1.0/conv1/Conv",
+      "/layer1/layer1.0/relu/Relu",
+      "/layer1/layer1.0/conv2/Conv",
+      "/layer1/layer1.0/relu_1/Relu",
+      "/layer1/layer1.0/conv3/Conv",
+      "/layer1/layer1.0/downsample/downsample.0/Conv",
+      "/layer1/layer1.0/Add",
+      "/layer1/layer1.0/relu_2/Relu",
+      "/layer1/layer1.1/conv1/Conv",
+      "/layer1/layer1.1/relu/Relu",
+      "/layer1/layer1.1/conv2/Conv",
+      "/layer1/layer1.1/relu_1/Relu",
+      "/layer1/layer1.1/conv3/Conv",
+      "/layer1/layer1.1/Add",
+      "/layer1/layer1.1/relu_2/Relu",
+      "/layer1/layer1.2/conv1/Conv",
+      "/layer1/layer1.2/relu/Relu",
+      "/layer1/layer1.2/conv2/Conv",
+      "/layer1/layer1.2/relu_1/Relu",
+      "/layer1/layer1.2/conv3/Conv",
+      "/layer1/layer1.2/Add",
+      "/layer1/layer1.2/relu_2/Relu",
+      "/layer2/layer2.0/conv1/Conv",
+      "/layer2/layer2.0/relu/Relu",
+      "/layer2/layer2.0/conv2/Conv",
+      "/layer2/layer2.0/relu_1/Relu",
+      "/layer2/layer2.0/conv3/Conv",
+      "/layer2/layer2.0/downsample/downsample.0/Conv",
+      "/layer2/layer2.0/Add",
+      "/layer2/layer2.0/relu_2/Relu",
+      "/layer2/layer2.1/conv1/Conv",
+      "/layer2/layer2.1/relu/Relu",
+      "/layer2/layer2.1/conv2/Conv",
+      "/layer2/layer2.1/relu_1/Relu",
+      "/layer2/layer2.1/conv3/Conv",
+      "/layer2/layer2.1/Add",
+      "/layer2/layer2.1/relu_2/Relu",
+      "/layer2/layer2.2/conv1/Conv",
+      "/layer2/layer2.2/relu/Relu",
+      "/layer2/layer2.2/conv2/Conv",
+      "/layer2/layer2.2/relu_1/Relu",
+      "/layer2/layer2.2/conv3/Conv",
+      "/layer2/layer2.2/Add",
+      "/layer2/layer2.2/relu_2/Relu",
+      "/layer2/layer2.3/conv1/Conv",
+      "/layer2/layer2.3/relu/Relu",
+      "/layer2/layer2.3/conv2/Conv",
+      "/layer2/layer2.3/relu_1/Relu",
+      "/layer2/layer2.3/conv3/Conv",
+      "/layer2/layer2.3/Add",
+      "/layer2/layer2.3/relu_2/Relu"
+    ]
+  },
+  "extra_options": {
+    "IgnoreWarnings": false,
+    "UseRandomData": false,
+    "MatMulToGemm": true,
+    "DedicatedQDQPair": true
+  }
+}

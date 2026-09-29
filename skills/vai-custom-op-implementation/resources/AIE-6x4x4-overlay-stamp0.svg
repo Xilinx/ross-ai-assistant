@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 645 727" width="968" height="1091">
+<defs>
+<marker id="ah-ifm" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#2979FF" opacity="0.7"/></marker>
+<marker id="ah-wts" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#FF6D00" opacity="0.7"/></marker>
+<marker id="ah-ofm" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#00C853" opacity="0.7"/></marker>
+<marker id="ah-halo" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#AA00FF" opacity="0.7"/></marker>
+<marker id="ah-unknown" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#90A4AE" opacity="0.7"/></marker>
+</defs>
+<rect width="645" height="727" fill="white"/>
+<text x="88" y="190.0" text-anchor="end" font-family="Inter,Helvetica,Arial,sans-serif" font-size="11" fill="#616161">Core Tiles</text>
+<text x="88" y="445.0" text-anchor="end" font-family="Inter,Helvetica,Arial,sans-serif" font-size="11" fill="#616161">Mem Tiles</text>
+<text x="88" y="579.0" text-anchor="end" font-family="Inter,Helvetica,Arial,sans-serif" font-size="11" fill="#616161">Shim Tiles</text>
+<text x="88" y="627.0" text-anchor="end" font-family="Inter,Helvetica,Arial,sans-serif" font-size="11" fill="#616161">DDR</text>
+<rect x="100" y="607" width="490" height="32" fill="#ECEFF1" stroke="#78909C" stroke-width="1" rx="4" stroke-dasharray="4,2"/>
+<text x="345.0" y="624.0" text-anchor="middle" dominant-baseline="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="11" fill="#546E7A">External DDR Memory</text>
+<rect x="100" y="263" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="150.0" y="285.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(0,0)</text>
+<rect x="100" y="197" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="150.0" y="219.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(1,0)</text>
+<rect x="100" y="131" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="150.0" y="153.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(2,0)</text>
+<rect x="100" y="65" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="150.0" y="87.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(3,0)</text>
+<rect x="100" y="419" width="100" height="44" fill="#FFF3E0" stroke="#E65100" stroke-width="1.2" rx="3"/>
+<text x="150.0" y="435.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#E65100">MT(0)</text>
+<text x="150.0" y="449.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#BF360C">6in/6out</text>
+<rect x="100" y="553" width="100" height="44" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="3"/>
+<text x="150.0" y="569.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#2E7D32">ST(0)</text>
+<text x="150.0" y="583.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#1B5E20">2in/2out</text>
+<rect x="230" y="263" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="280.0" y="285.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(0,1)</text>
+<rect x="230" y="197" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="280.0" y="219.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(1,1)</text>
+<rect x="230" y="131" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="280.0" y="153.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(2,1)</text>
+<rect x="230" y="65" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="280.0" y="87.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(3,1)</text>
+<rect x="230" y="419" width="100" height="44" fill="#FFF3E0" stroke="#E65100" stroke-width="1.2" rx="3"/>
+<text x="280.0" y="435.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#E65100">MT(1)</text>
+<text x="280.0" y="449.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#BF360C">6in/6out</text>
+<rect x="230" y="553" width="100" height="44" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="3"/>
+<text x="280.0" y="569.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#2E7D32">ST(1)</text>
+<text x="280.0" y="583.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#1B5E20">2in/2out</text>
+<rect x="360" y="263" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="410.0" y="285.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(0,2)</text>
+<rect x="360" y="197" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="410.0" y="219.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(1,2)</text>
+<rect x="360" y="131" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="410.0" y="153.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(2,2)</text>
+<rect x="360" y="65" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="410.0" y="87.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(3,2)</text>
+<rect x="360" y="419" width="100" height="44" fill="#FFF3E0" stroke="#E65100" stroke-width="1.2" rx="3"/>
+<text x="410.0" y="435.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#E65100">MT(2)</text>
+<text x="410.0" y="449.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#BF360C">6in/6out</text>
+<rect x="360" y="553" width="100" height="44" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="3"/>
+<text x="410.0" y="569.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#2E7D32">ST(2)</text>
+<text x="410.0" y="583.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#1B5E20">2in/2out</text>
+<rect x="490" y="263" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="540.0" y="285.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(0,3)</text>
+<rect x="490" y="197" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="540.0" y="219.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(1,3)</text>
+<rect x="490" y="131" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="540.0" y="153.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(2,3)</text>
+<rect x="490" y="65" width="100" height="44" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="540.0" y="87.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">CT(3,3)</text>
+<rect x="490" y="419" width="100" height="44" fill="#FFF3E0" stroke="#E65100" stroke-width="1.2" rx="3"/>
+<text x="540.0" y="435.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#E65100">MT(3)</text>
+<text x="540.0" y="449.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#BF360C">6in/6out</text>
+<rect x="490" y="553" width="100" height="44" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="3"/>
+<text x="540.0" y="569.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#2E7D32">ST(3)</text>
+<text x="540.0" y="583.0" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="8" fill="#1B5E20">2in/2out</text>
+<line x1="150.0" y1="597" x2="150.0" y2="607" stroke="#B0BEC5" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="280.0" y1="597" x2="280.0" y2="607" stroke="#B0BEC5" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="410.0" y1="597" x2="410.0" y2="607" stroke="#B0BEC5" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="540.0" y1="597" x2="540.0" y2="607" stroke="#B0BEC5" stroke-width="1" stroke-dasharray="3,3"/>
+<path d="M245.0,419.0 L245.0,381.7 L90.0,381.7 L90.0,65.0" stroke="#2979FF" stroke-width="1.6" fill="none" opacity="0.45"/>
+<line x1="90.0" y1="65.0" x2="90.0" y2="307.0" stroke="#2979FF" stroke-width="1.6" opacity="0.45"/>
+<line x1="90.0" y1="285.0" x2="100.0" y2="285.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="90.0" y1="219.0" x2="100.0" y2="219.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="90.0" y1="153.0" x2="100.0" y2="153.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="90.0" y1="87.0" x2="100.0" y2="87.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<text x="93.0" y="377.7" font-family="monospace" font-size="7.5" fill="#2979FF" opacity="0.7" font-weight="bold">0</text>
+<path d="M259.0,419.0 L259.0,388.7 L220.0,388.7 L220.0,65.0" stroke="#2979FF" stroke-width="1.6" fill="none" opacity="0.45"/>
+<line x1="220.0" y1="65.0" x2="220.0" y2="307.0" stroke="#2979FF" stroke-width="1.6" opacity="0.45"/>
+<line x1="220.0" y1="285.0" x2="230.0" y2="285.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="220.0" y1="219.0" x2="230.0" y2="219.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="220.0" y1="153.0" x2="230.0" y2="153.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="220.0" y1="87.0" x2="230.0" y2="87.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<text x="223.0" y="384.7" font-family="monospace" font-size="7.5" fill="#2979FF" opacity="0.7" font-weight="bold">1</text>
+<path d="M273.0,419.0 L273.0,395.7 L350.0,395.7 L350.0,65.0" stroke="#2979FF" stroke-width="1.6" fill="none" opacity="0.45"/>
+<line x1="350.0" y1="65.0" x2="350.0" y2="307.0" stroke="#2979FF" stroke-width="1.6" opacity="0.45"/>
+<line x1="350.0" y1="285.0" x2="360.0" y2="285.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="350.0" y1="219.0" x2="360.0" y2="219.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="350.0" y1="153.0" x2="360.0" y2="153.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="350.0" y1="87.0" x2="360.0" y2="87.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<text x="353.0" y="391.7" font-family="monospace" font-size="7.5" fill="#2979FF" opacity="0.7" font-weight="bold">2</text>
+<path d="M287.0,419.0 L287.0,402.7 L480.0,402.7 L480.0,65.0" stroke="#2979FF" stroke-width="1.6" fill="none" opacity="0.45"/>
+<line x1="480.0" y1="65.0" x2="480.0" y2="307.0" stroke="#2979FF" stroke-width="1.6" opacity="0.45"/>
+<line x1="480.0" y1="285.0" x2="490.0" y2="285.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="480.0" y1="219.0" x2="490.0" y2="219.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="480.0" y1="153.0" x2="490.0" y2="153.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<line x1="480.0" y1="87.0" x2="490.0" y2="87.0" stroke="#2979FF" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<text x="483.0" y="398.7" font-family="monospace" font-size="7.5" fill="#2979FF" opacity="0.7" font-weight="bold">3</text>
+<line x1="210.0" y1="65.0" x2="210.0" y2="307.0" stroke="#00C853" stroke-width="1.6" opacity="0.45"/>
+<line x1="200.0" y1="285.0" x2="210.0" y2="285.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="200.0" y1="219.0" x2="210.0" y2="219.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="200.0" y1="153.0" x2="210.0" y2="153.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="200.0" y1="87.0" x2="210.0" y2="87.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<path d="M210.0,307.0 L210.0,315.0 L280.0,315.0 L280.0,419.0" stroke="#00C853" stroke-width="1.6" fill="none" opacity="0.45" marker-end="url(#ah-ofm)"/>
+<text x="213.0" y="311.0" font-family="monospace" font-size="7.5" fill="#00C853" opacity="0.7" font-weight="bold">4</text>
+<line x1="340.0" y1="65.0" x2="340.0" y2="307.0" stroke="#00C853" stroke-width="1.6" opacity="0.45"/>
+<line x1="330.0" y1="285.0" x2="340.0" y2="285.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="330.0" y1="219.0" x2="340.0" y2="219.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="330.0" y1="153.0" x2="340.0" y2="153.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="330.0" y1="87.0" x2="340.0" y2="87.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<path d="M340.0,307.0 L340.0,322.0 L294.0,322.0 L294.0,419.0" stroke="#00C853" stroke-width="1.6" fill="none" opacity="0.45" marker-end="url(#ah-ofm)"/>
+<text x="343.0" y="318.0" font-family="monospace" font-size="7.5" fill="#00C853" opacity="0.7" font-weight="bold">5</text>
+<line x1="470.0" y1="65.0" x2="470.0" y2="307.0" stroke="#00C853" stroke-width="1.6" opacity="0.45"/>
+<line x1="460.0" y1="285.0" x2="470.0" y2="285.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="460.0" y1="219.0" x2="470.0" y2="219.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="460.0" y1="153.0" x2="470.0" y2="153.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="460.0" y1="87.0" x2="470.0" y2="87.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<path d="M470.0,307.0 L470.0,329.0 L308.0,329.0 L308.0,419.0" stroke="#00C853" stroke-width="1.6" fill="none" opacity="0.45" marker-end="url(#ah-ofm)"/>
+<text x="473.0" y="325.0" font-family="monospace" font-size="7.5" fill="#00C853" opacity="0.7" font-weight="bold">6</text>
+<line x1="600.0" y1="65.0" x2="600.0" y2="307.0" stroke="#00C853" stroke-width="1.6" opacity="0.45"/>
+<line x1="590.0" y1="285.0" x2="600.0" y2="285.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="590.0" y1="219.0" x2="600.0" y2="219.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="590.0" y1="153.0" x2="600.0" y2="153.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<line x1="590.0" y1="87.0" x2="600.0" y2="87.0" stroke="#00C853" stroke-width="1.2" opacity="0.45"/>
+<path d="M600.0,307.0 L600.0,336.0 L322.0,336.0 L322.0,419.0" stroke="#00C853" stroke-width="1.6" fill="none" opacity="0.45" marker-end="url(#ah-ofm)"/>
+<text x="603.0" y="332.0" font-family="monospace" font-size="7.5" fill="#00C853" opacity="0.7" font-weight="bold">7</text>
+<path d="M575.0,419.0 L575.0,344.3 L611.0,344.3 L611.0,252.0" stroke="#FF6D00" stroke-width="1.6" fill="none" opacity="0.45"/>
+<line x1="140.0" y1="252.0" x2="611.0" y2="252.0" stroke="#FF6D00" stroke-width="1.6" opacity="0.45"/>
+<line x1="160.0" y1="252.0" x2="160.0" y2="263.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="290.0" y1="252.0" x2="290.0" y2="263.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="420.0" y1="252.0" x2="420.0" y2="263.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="550.0" y1="252.0" x2="550.0" y2="263.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="614.0" y="248.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">8</text>
+<path d="M561.0,419.0 L561.0,351.3 L616.0,351.3 L616.0,186.0" stroke="#FF6D00" stroke-width="1.6" fill="none" opacity="0.45"/>
+<line x1="140.0" y1="186.0" x2="616.0" y2="186.0" stroke="#FF6D00" stroke-width="1.6" opacity="0.45"/>
+<line x1="160.0" y1="186.0" x2="160.0" y2="197.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="290.0" y1="186.0" x2="290.0" y2="197.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="420.0" y1="186.0" x2="420.0" y2="197.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="550.0" y1="186.0" x2="550.0" y2="197.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="619.0" y="182.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">9</text>
+<path d="M547.0,419.0 L547.0,358.3 L621.0,358.3 L621.0,120.0" stroke="#FF6D00" stroke-width="1.6" fill="none" opacity="0.45"/>
+<line x1="140.0" y1="120.0" x2="621.0" y2="120.0" stroke="#FF6D00" stroke-width="1.6" opacity="0.45"/>
+<line x1="160.0" y1="120.0" x2="160.0" y2="131.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="290.0" y1="120.0" x2="290.0" y2="131.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="420.0" y1="120.0" x2="420.0" y2="131.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="550.0" y1="120.0" x2="550.0" y2="131.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="624.0" y="116.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">10</text>
+<path d="M533.0,419.0 L533.0,365.3 L626.0,365.3 L626.0,53.0" stroke="#FF6D00" stroke-width="1.6" fill="none" opacity="0.45"/>
+<line x1="140.0" y1="53.0" x2="626.0" y2="53.0" stroke="#FF6D00" stroke-width="1.6" opacity="0.45"/>
+<line x1="160.0" y1="53.0" x2="160.0" y2="65.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="290.0" y1="53.0" x2="290.0" y2="65.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="420.0" y1="53.0" x2="420.0" y2="65.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<line x1="550.0" y1="53.0" x2="550.0" y2="65.0" stroke="#FF6D00" stroke-width="1.2" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="629.0" y="49.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">11</text>
+<path d="M120.0,553.0 L120.0,463.0" stroke="#2979FF" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<text x="123.0" y="475.0" font-family="monospace" font-size="7.5" fill="#2979FF" opacity="0.7" font-weight="bold">12</text>
+<path d="M137.0,553.0 L137.0,463.0" stroke="#2979FF" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<text x="137.0" y="475.0" font-family="monospace" font-size="7.5" fill="#2979FF" opacity="0.7" font-weight="bold">13</text>
+<path d="M380.0,553.0 L380.0,463.0" stroke="#2979FF" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<text x="383.0" y="475.0" font-family="monospace" font-size="7.5" fill="#2979FF" opacity="0.7" font-weight="bold">14</text>
+<path d="M397.0,553.0 L397.0,463.0" stroke="#2979FF" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-ifm)"/>
+<text x="397.0" y="475.0" font-family="monospace" font-size="7.5" fill="#2979FF" opacity="0.7" font-weight="bold">15</text>
+<path d="M180.0,463.0 L180.0,553.0" stroke="#00C853" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-ofm)"/>
+<text x="183.0" y="565.0" font-family="monospace" font-size="7.5" fill="#00C853" opacity="0.7" font-weight="bold">16</text>
+<path d="M163.0,463.0 L163.0,553.0" stroke="#00C853" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-ofm)"/>
+<text x="163.0" y="565.0" font-family="monospace" font-size="7.5" fill="#00C853" opacity="0.7" font-weight="bold">17</text>
+<path d="M440.0,463.0 L440.0,553.0" stroke="#00C853" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-ofm)"/>
+<text x="443.0" y="565.0" font-family="monospace" font-size="7.5" fill="#00C853" opacity="0.7" font-weight="bold">18</text>
+<path d="M423.0,463.0 L423.0,553.0" stroke="#00C853" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-ofm)"/>
+<text x="423.0" y="565.0" font-family="monospace" font-size="7.5" fill="#00C853" opacity="0.7" font-weight="bold">19</text>
+<path d="M250.0,553.0 L250.0,497.0 L408.0,497.0 L408.0,463.0" stroke="#FF6D00" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="411.0" y="475.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">20</text>
+<path d="M270.0,553.0 L270.0,503.0 L422.0,503.0 L422.0,463.0" stroke="#FF6D00" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="425.0" y="475.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">21</text>
+<path d="M630.0,509.0 L630.0,509.0 L510.0,509.0 L510.0,463.0" stroke="#FF6D00" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="513.0" y="475.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">132</text>
+<text x="632.0" y="504.0" font-family="monospace" font-size="7" fill="#FF6D00" opacity="0.8">ST(7)</text>
+<path d="M630.0,515.0 L630.0,515.0 L524.0,515.0 L524.0,463.0" stroke="#FF6D00" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="527.0" y="475.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">133</text>
+<text x="632.0" y="510.0" font-family="monospace" font-size="7" fill="#FF6D00" opacity="0.8">ST(11)</text>
+<path d="M630.0,521.0 L630.0,521.0 L538.0,521.0 L538.0,463.0" stroke="#FF6D00" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="541.0" y="475.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">134</text>
+<text x="632.0" y="516.0" font-family="monospace" font-size="7" fill="#FF6D00" opacity="0.8">ST(19)</text>
+<path d="M630.0,527.0 L630.0,527.0 L552.0,527.0 L552.0,463.0" stroke="#FF6D00" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#ah-wts)"/>
+<text x="555.0" y="475.0" font-family="monospace" font-size="7.5" fill="#FF6D00" opacity="0.7" font-weight="bold">135</text>
+<text x="632.0" y="522.0" font-family="monospace" font-size="7" fill="#FF6D00" opacity="0.8">ST(23)</text>
+<text x="100" y="659" font-family="Inter,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#424242">Legend</text>
+<line x1="100" y1="679" x2="124" y2="679" stroke="#2979FF" stroke-width="2.5"/>
+<text x="130" y="683" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10" fill="#424242">IFM (inputs)</text>
+<line x1="235" y1="679" x2="259" y2="679" stroke="#FF6D00" stroke-width="2.5"/>
+<text x="265" y="683" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10" fill="#424242">WTS (weights)</text>
+<line x1="370" y1="679" x2="394" y2="679" stroke="#00C853" stroke-width="2.5"/>
+<text x="400" y="683" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10" fill="#424242">OFM (outputs)</text>
+<rect x="100" y="695" width="16" height="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="1" rx="2"/>
+<text x="122" y="703" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10" fill="#424242">Core Tile</text>
+<rect x="200" y="695" width="16" height="12" fill="#FFF3E0" stroke="#E65100" stroke-width="1" rx="2"/>
+<text x="222" y="703" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10" fill="#424242">Mem Tile</text>
+<rect x="300" y="695" width="16" height="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" rx="2"/>
+<text x="322" y="703" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10" fill="#424242">Shim Tile</text>
+</svg>

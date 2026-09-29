@@ -1,0 +1,23 @@
+// Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+// PDLL pattern that turns a stock ONNX SpaceToDepth into the
+// `mydomain.myspacetodepth` custom op.
+//
+// This is the alternative to hand-editing the model: instead of rewriting
+// `SpaceToDepth` into `mydomain.myspacetodepth` in the .onnx file before
+// compiling, the `match_on: original_model` key in custom_spacetodepth.yaml
+// makes the compiler apply this pattern to the original, unmodified model.
+//
+// `isTopLevel` and `createCustomOp` come from the compiler-provided include
+// below, resolved out of `<install-dir>/data/Transform/pdll`.
+#include "shared/custom_ops.pdll"
+
+Pattern match_spacetodepth with benefit(0) {
+    // Constrain the match to blocksize=2, which is what this kernel and tiling
+    // implement. A SpaceToDepth with any other blocksize is left untouched and
+    // falls back to the regular VAIML lowering.
+    let s2d = op<onnx.SpaceToDepth>(input: Value<inType: Type>) {blocksize = attr<"2 : si64">} -> (outType: Type);
+    isTopLevel(s2d);
+    // The op name must match the key used in the `custom_ops` section of the
+    // vitisai config, i.e. `mydomain.myspacetodepth`.
+    replace s2d with createCustomOp(s2d, (input), "mydomain.myspacetodepth");
+}

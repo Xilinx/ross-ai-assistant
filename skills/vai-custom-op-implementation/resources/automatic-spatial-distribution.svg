@@ -1,0 +1,2074 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="793.51524"
+   height="845.06323"
+   viewBox="0 0 661.2627 704.21936"
+   overflow="hidden"
+   version="1.1"
+   id="svg170"
+   sodipodi:docname="automatic-spatial-distribution.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs170" />
+  <sodipodi:namedview
+     id="namedview170"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.81041667"
+     inkscape:cx="95.62982"
+     inkscape:cy="281.95373"
+     inkscape:window-width="2560"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-2"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg170" />
+  <rect
+     id="background"
+     x="0"
+     y="0"
+     width="661.2627"
+     height="704.21936"
+     fill="#ffffff" />
+  <g
+     id="l2-row"
+     transform="translate(-105.15806,-179.98193)">
+    <g
+       id="l2-buffer">
+      <g
+         id="cube-106-216">
+        <path
+           d="m 106.5,215.5 9.842,-11 H 289.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path1" />
+        <path
+           d="m 116.5,204.5 9.842,-11 H 299.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path2" />
+        <path
+           d="m 127.5,193.5 10.736,-12 H 309.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path3" />
+        <path
+           d="M 0,10 10.6744,0 H 184 l -10.674,10 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,279.5,204.5)"
+           id="path4" />
+        <path
+           d="M 0,10 10.6744,0 H 183 l -10.674,10 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,289.5,193.5)"
+           id="path5" />
+        <path
+           d="M 0,10 10.6744,0 H 184 l -10.674,10 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,299.5,181.5)"
+           id="path6" />
+        <rect
+           x="106.5"
+           y="215.5"
+           width="173"
+           height="173"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect6" />
+      </g>
+      <text
+         fill="#424242"
+         font-family="monospace"
+         font-weight="400"
+         font-size="12.75px"
+         text-anchor="middle"
+         transform="translate(193,421)"
+         id="text6"><tspan
+           sodipodi:role="line"
+           id="tspan-l2-title">L2 buffer</tspan><tspan
+           x="0"
+           dy="14"
+           sodipodi:role="line"
+           id="tspan-l2-dims">32x8x3</tspan></text>
+    </g>
+    <g
+       id="spatial-arrow">
+      <path
+         d="M 288,297 H 448"
+         fill="none"
+         stroke="#2979ff"
+         stroke-width="1.2"
+         stroke-miterlimit="8"
+         stroke-linecap="round"
+         id="spatial-arrow-shaft" />
+      <path
+         d="M 448,297 440,292 440,302 Z"
+         fill="#2979ff"
+         stroke="#2979ff"
+         stroke-width="1.2"
+         stroke-miterlimit="8"
+         fill-rule="evenodd"
+         id="spatial-arrow-head" />
+    </g>
+    <g
+       id="l2-buffer-split">
+      <g
+         id="cube-462-346">
+        <rect
+           x="461.5"
+           y="345.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect7" />
+      </g>
+      <g
+         id="cube-504-346">
+        <rect
+           x="504.5"
+           y="345.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect8" />
+      </g>
+      <g
+         id="cube-548-346">
+        <rect
+           x="547.5"
+           y="345.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect9" />
+      </g>
+      <g
+         id="cube-590-346">
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,634.5,334.5)"
+           id="path9" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,644.5,323.5)"
+           id="path10" />
+        <rect
+           x="590.5"
+           y="345.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect10" />
+      </g>
+      <g
+         id="cube-462-302">
+        <rect
+           x="461.5"
+           y="302.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect11" />
+      </g>
+      <g
+         id="cube-504-302">
+        <rect
+           x="504.5"
+           y="302.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect12" />
+      </g>
+      <g
+         id="cube-548-302">
+        <rect
+           x="547.5"
+           y="302.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect13" />
+      </g>
+      <g
+         id="cube-590-302">
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,654.5,312.5)"
+           id="path13" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,634.5,291.5)"
+           id="path14" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,644.5,279.5)"
+           id="path15" />
+        <rect
+           x="590.5"
+           y="302.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect15" />
+      </g>
+      <g
+         id="cube-462-258">
+        <rect
+           x="461.5"
+           y="258.5"
+           width="43"
+           height="44"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect16" />
+      </g>
+      <g
+         id="cube-504-258">
+        <rect
+           x="504.5"
+           y="258.5"
+           width="43"
+           height="44"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect17" />
+      </g>
+      <g
+         id="cube-548-258">
+        <rect
+           x="547.5"
+           y="258.5"
+           width="43"
+           height="44"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect18" />
+      </g>
+      <g
+         id="cube-590-258">
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,654.5,268.5)"
+           id="path18" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,634.5,248.5)"
+           id="path19" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,644.5,237.5)"
+           id="path20" />
+        <rect
+           x="590.5"
+           y="258.5"
+           width="43"
+           height="44"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect20" />
+      </g>
+      <g
+         id="cube-462-216">
+        <path
+           d="m 461.5,215.5 9.842,-11 H 514.5 l -9.842,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path21" />
+        <path
+           d="m 471.5,204.5 9.842,-11 H 524.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path22" />
+        <path
+           d="m 481.5,193.5 10.736,-12 H 534.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path23" />
+        <rect
+           x="461.5"
+           y="215.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect23" />
+      </g>
+      <g
+         id="cube-504-216">
+        <path
+           d="m 505.5,215.5 9.842,-11 H 558.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path24" />
+        <path
+           d="m 515.5,204.5 9.842,-11 H 568.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path25" />
+        <path
+           d="m 525.5,193.5 10.736,-12 H 578.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path26" />
+        <rect
+           x="504.5"
+           y="215.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect26" />
+      </g>
+      <g
+         id="cube-548-216">
+        <path
+           d="m 547.5,215.5 9.842,-11 H 600.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path27" />
+        <path
+           d="m 557.5,204.5 9.842,-11 H 610.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path28" />
+        <path
+           d="m 567.5,193.5 10.736,-12 H 620.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path29" />
+        <rect
+           x="547.5"
+           y="215.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect29" />
+      </g>
+      <g
+         id="cube-590-216">
+        <path
+           d="m 591.5,215.5 9.842,-11 H 644.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path30" />
+        <path
+           d="m 601.5,204.5 9.842,-11 H 654.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path31" />
+        <path
+           d="m 611.5,193.5 10.736,-12 H 664.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path32" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,654.5,225.5)"
+           id="path33" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,634.5,205.5)"
+           id="path34" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,644.5,193.5)"
+           id="path35" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,654.5,182.5)"
+           id="path36" />
+        <rect
+           x="590.5"
+           y="215.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect36" />
+      </g>
+      <text
+         fill="#424242"
+         font-family="monospace"
+         font-weight="400"
+         font-size="12.75px"
+         text-anchor="middle"
+         transform="translate(547.5,421)"
+         id="text36"><tspan
+           sodipodi:role="line"
+           id="tspan-split-title">L2 buffer (split)</tspan><tspan
+           x="0"
+           dy="14"
+           sodipodi:role="line"
+           id="tspan-split-dims">(4x4) x (32 / 4) x (8 / 4) x 3</tspan></text>
+    </g>
+  </g>
+  <g
+     id="core-l1-row"
+     transform="translate(-99.050401,-54.709858)">
+    <g
+       id="l1-buffers"
+       transform="translate(-703)">
+      <g
+         id="cube-810-634">
+        <path
+           d="m 810.5,632.5 9.842,-11 H 863.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path41" />
+        <path
+           d="m 820.5,621.5 10.736,-12 H 873.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path42" />
+        <path
+           d="m 830.5,609.5 9.842,-11 H 883.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path43" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,852.5,622.5)"
+           id="path44" />
+        <rect
+           x="809.5"
+           y="633.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect44" />
+        <path
+           d="m 883.5,600.5 -10,10.6745 V 653.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path48" />
+        <path
+           d="m 873.5,611.5 -11,11.742 V 664.5 l 11,-11.742 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path50" />
+      </g>
+      <g
+         id="cube-870-634">
+        <path
+           d="m 871.5,632.5 9.842,-11 H 924.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path45" />
+        <path
+           d="m 881.5,621.5 10.736,-12 H 934.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path46" />
+        <path
+           d="m 891.5,609.5 9.842,-11 H 944.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path47" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,913.5,622.5)"
+           id="path49" />
+        <rect
+           x="870.5"
+           y="633.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect50" />
+        <path
+           d="m 934.5,611.5 -10,10.6745 V 664.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path54" />
+        <path
+           d="m 944.5,600.5 -10,10.6745 V 653.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path55" />
+      </g>
+      <g
+         id="cube-932-634">
+        <path
+           d="m 933.5,632.5 9.842,-11 H 986.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path51" />
+        <path
+           d="m 943.5,621.5 10.736,-12 H 996.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path52" />
+        <path
+           d="m 953.5,609.5 9.842,-11 h 43.158 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path53" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,975.5,622.5)"
+           id="path56" />
+        <rect
+           x="932.5"
+           y="633.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect56" />
+        <path
+           d="m 1006.5,600.5 -10,10.6745 V 653.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path60" />
+        <path
+           d="m 996.5,611.5 -11,11.742 V 664.5 l 11,-11.742 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path63" />
+      </g>
+      <g
+         id="cube-994-634">
+        <path
+           d="m 993.5,632.5 9.84,-11 h 43.16 l -9.84,11 z"
+           stroke="#2e7d32"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e8f5e9"
+           fill-rule="evenodd"
+           id="path57" />
+        <path
+           d="m 1003.5,621.5 10.74,-12 h 42.26 l -10.74,12 z"
+           stroke="#2e7d32"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e8f5e9"
+           fill-rule="evenodd"
+           id="path58" />
+        <path
+           d="m 1013.5,609.5 9.84,-11 h 43.16 l -9.84,11 z"
+           stroke="#2e7d32"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e8f5e9"
+           fill-rule="evenodd"
+           id="path59" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#2e7d32"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e8f5e9"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1035.5,622.5)"
+           id="path61" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#2e7d32"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e8f5e9"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1045.5,611.5)"
+           id="path62" />
+        <path
+           d="M 0,11 11.742,0 H 53 L 41.258,11 Z"
+           stroke="#2e7d32"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e8f5e9"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1055.5,600.5)"
+           id="path64" />
+        <rect
+           x="993.5"
+           y="633.5"
+           width="42.999901"
+           height="43"
+           stroke="#2e7d32"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e8f5e9"
+           id="rect64" />
+      </g>
+      <g
+         id="cube-810-572">
+        <path
+           d="m 811.5,571.5 9.842,-11 H 864.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path65" />
+        <path
+           d="m 821.5,560.5 10.736,-12 H 874.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path66" />
+        <path
+           d="m 831.5,548.5 9.842,-11 H 884.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path67" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,853.5,561.5)"
+           id="path68" />
+        <rect
+           x="809.5"
+           y="571.5"
+           width="43"
+           height="44"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect68" />
+        <path
+           d="m 873.5,550.5 -10,10.6745 V 603.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path72" />
+        <path
+           d="m 884.5,539.5 -10,10.6745 V 592.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path73" />
+      </g>
+      <g
+         id="cube-870-572">
+        <path
+           d="m 871.5,571.5 9.842,-11 H 924.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path69" />
+        <path
+           d="m 881.5,560.5 10.736,-12 H 934.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path70" />
+        <path
+           d="m 891.5,548.5 9.842,-11 H 944.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path71" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,913.5,561.5)"
+           id="path74" />
+        <rect
+           x="870.5"
+           y="571.5"
+           width="43"
+           height="44"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect74" />
+        <path
+           d="m 934.5,550.5 -10,10.6745 V 603.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path78" />
+        <path
+           d="m 944.5,539.5 -10,10.6745 V 592.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path79" />
+      </g>
+      <g
+         id="cube-932-572">
+        <path
+           d="m 933.5,571.5 9.842,-11 H 986.5 l -9.841,11 z"
+           stroke="#00838f"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e0f7fa"
+           fill-rule="evenodd"
+           id="path75" />
+        <path
+           d="m 943.5,560.5 10.736,-12 H 996.5 l -10.736,12 z"
+           stroke="#00838f"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e0f7fa"
+           fill-rule="evenodd"
+           id="path76" />
+        <path
+           d="m 953.5,548.5 9.842,-11 h 43.158 l -9.841,11 z"
+           stroke="#00838f"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e0f7fa"
+           fill-rule="evenodd"
+           id="path77" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#00838f"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e0f7fa"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,975.5,561.5)"
+           id="path80" />
+        <rect
+           x="932.5"
+           y="571.5"
+           width="43"
+           height="44"
+           stroke="#00838f"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e0f7fa"
+           id="rect80" />
+        <path
+           d="m 1006.5,539.5 -10,10.6745 V 592.5 l 10,-10.6745 z"
+           stroke="#00838f"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e0f7fa"
+           fill-rule="evenodd"
+           id="path84" />
+        <path
+           d="m 996.5,550.5 -11,11.742 V 603.5 l 11,-11.742 z"
+           stroke="#00838f"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e0f7fa"
+           fill-rule="evenodd"
+           id="path87" />
+      </g>
+      <g
+         id="cube-994-572">
+        <path
+           d="m 993.5,571.5 9.84,-11 h 43.16 l -9.84,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path81" />
+        <path
+           d="m 1003.5,560.5 10.74,-12 h 42.26 l -10.74,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path82" />
+        <path
+           d="m 1013.5,548.5 9.84,-11 h 43.16 l -9.84,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path83" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1035.5,561.5)"
+           id="path85" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1045.5,550.5)"
+           id="path86" />
+        <path
+           d="M 0,11 11.742,0 H 53 L 41.258,11 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1055.5,539.5)"
+           id="path88" />
+        <rect
+           x="993.5"
+           y="571.5"
+           width="42.999901"
+           height="44"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect88" />
+      </g>
+      <g
+         id="cube-810-510">
+        <path
+           d="m 811.5,510.5 9.842,-11 H 864.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path89" />
+        <path
+           d="m 821.5,499.5 10.736,-12 H 874.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path90" />
+        <path
+           d="m 831.5,487.5 9.842,-11 H 884.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path91" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,853.5,500.5)"
+           id="path92" />
+        <rect
+           x="809.5"
+           y="510.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect92" />
+        <path
+           d="m 873.5,489.5 -10,10.6745 V 543.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path96" />
+        <path
+           d="m 884.5,478.5 -10,10.6745 V 531.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path97" />
+      </g>
+      <g
+         id="cube-870-510">
+        <path
+           d="m 871.5,510.5 9.842,-11 H 924.5 l -9.841,11 z"
+           stroke="#e65100"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#fff3e0"
+           fill-rule="evenodd"
+           id="path93" />
+        <path
+           d="m 881.5,499.5 10.736,-12 H 934.5 l -10.736,12 z"
+           stroke="#e65100"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#fff3e0"
+           fill-rule="evenodd"
+           id="path94" />
+        <path
+           d="m 891.5,487.5 9.842,-11 H 944.5 l -9.841,11 z"
+           stroke="#e65100"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#fff3e0"
+           fill-rule="evenodd"
+           id="path95" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#e65100"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#fff3e0"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,913.5,500.5)"
+           id="path98" />
+        <rect
+           x="870.5"
+           y="510.5"
+           width="43"
+           height="43"
+           stroke="#e65100"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#fff3e0"
+           id="rect98" />
+        <path
+           d="m 934.5,489.5 -10,10.6745 V 543.5 l 10,-10.6745 z"
+           stroke="#e65100"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#fff3e0"
+           fill-rule="evenodd"
+           id="path102" />
+        <path
+           d="m 944.5,478.5 -10,10.6745 V 531.5 l 10,-10.6745 z"
+           stroke="#e65100"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#fff3e0"
+           fill-rule="evenodd"
+           id="path103" />
+      </g>
+      <g
+         id="cube-932-510">
+        <path
+           d="m 933.5,510.5 9.842,-11 H 986.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path99" />
+        <path
+           d="m 943.5,499.5 10.736,-12 H 996.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path100" />
+        <path
+           d="m 953.5,487.5 9.842,-11 h 43.158 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path101" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,975.5,500.5)"
+           id="path104" />
+        <rect
+           x="932.5"
+           y="510.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect104" />
+        <path
+           d="m 1006.5,478.5 -10,10.6745 V 531.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path108" />
+        <path
+           d="m 996.5,489.5 -11,11.7419 V 543.5 l 11,-11.7419 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path111" />
+      </g>
+      <g
+         id="cube-994-510">
+        <path
+           d="m 993.5,510.5 9.84,-11 h 43.16 l -9.84,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path105" />
+        <path
+           d="m 1003.5,499.5 10.74,-12 h 42.26 l -10.74,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path106" />
+        <path
+           d="m 1013.5,487.5 9.84,-11 h 43.16 l -9.84,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path107" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1035.5,500.5)"
+           id="path109" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1045.5,489.5)"
+           id="path110" />
+        <path
+           d="M 0,11 11.742,0 H 53 L 41.258,11 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1055.5,478.5)"
+           id="path112" />
+        <rect
+           x="993.5"
+           y="510.5"
+           width="42.999901"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect112" />
+      </g>
+      <g
+         id="cube-810-450">
+        <path
+           d="m 811.5,448.5 9.842,-11 H 864.5 l -9.841,11 z"
+           stroke="#5e35b1"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#ede7f6"
+           fill-rule="evenodd"
+           id="path113" />
+        <path
+           d="m 821.5,437.5 9.842,-11 H 874.5 l -9.841,11 z"
+           stroke="#5e35b1"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#ede7f6"
+           fill-rule="evenodd"
+           id="path114" />
+        <path
+           d="m 831.5,426.5 10.736,-12 H 884.5 l -10.736,12 z"
+           stroke="#5e35b1"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#ede7f6"
+           fill-rule="evenodd"
+           id="path115" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#5e35b1"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#ede7f6"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,853.5,439.5)"
+           id="path116" />
+        <rect
+           x="809.5"
+           y="449.5"
+           width="43"
+           height="43"
+           stroke="#5e35b1"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#ede7f6"
+           id="rect116" />
+        <path
+           d="m 873.5,427.5 -10,10.6745 V 481.5 l 10,-10.6745 z"
+           stroke="#5e35b1"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#ede7f6"
+           fill-rule="evenodd"
+           id="path120" />
+      </g>
+      <path
+         d="m 884.5,416.5 -10,10.6745 V 470.5 l 10,-10.6745 z"
+         stroke="#5e35b1"
+         stroke-width="1.2"
+         stroke-miterlimit="8"
+         fill="#ede7f6"
+         fill-rule="evenodd"
+         id="path121" />
+      <g
+         id="cube-870-450">
+        <path
+           d="m 871.5,448.5 9.842,-11 H 924.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path117" />
+        <path
+           d="m 881.5,437.5 9.842,-11 H 934.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path118" />
+        <path
+           d="m 891.5,426.5 10.736,-12 H 944.5 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path119" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,913.5,439.5)"
+           id="path122" />
+        <rect
+           x="870.5"
+           y="449.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect122" />
+        <path
+           d="m 934.5,427.5 -10,10.6745 V 481.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path126" />
+        <path
+           d="m 944.5,416.5 -10,10.6745 V 470.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path127" />
+      </g>
+      <g
+         id="cube-932-450">
+        <path
+           d="m 933.5,448.5 9.842,-11 H 986.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path123" />
+        <path
+           d="m 943.5,437.5 9.842,-11 H 996.5 l -9.841,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path124" />
+        <path
+           d="m 953.5,426.5 10.736,-12 h 42.264 l -10.736,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path125" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,975.5,439.5)"
+           id="path128" />
+        <rect
+           x="932.5"
+           y="449.5"
+           width="43"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect128" />
+        <path
+           d="m 1006.5,416.5 -10,10.6745 V 470.5 l 10,-10.6745 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path132" />
+        <path
+           d="m 996.5,427.5 -11,11.7419 V 481.5 l 11,-11.7419 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path135" />
+      </g>
+      <g
+         id="cube-994-450">
+        <path
+           d="m 993.5,448.5 9.84,-11 h 43.16 l -9.84,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path129" />
+        <path
+           d="m 1003.5,437.5 9.84,-11 h 43.16 l -9.84,11 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path130" />
+        <path
+           d="m 1013.5,426.5 10.74,-12 h 42.26 l -10.74,12 z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           id="path131" />
+        <path
+           d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1035.5,439.5)"
+           id="path133" />
+        <path
+           d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1045.5,427.5)"
+           id="path134" />
+        <path
+           d="M 0,11 11.7419,0 H 54 L 42.2581,11 Z"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           fill-rule="evenodd"
+           transform="matrix(0,1,1,0,1055.5,416.5)"
+           id="path136" />
+        <rect
+           x="993.5"
+           y="449.5"
+           width="42.999901"
+           height="43"
+           stroke="#1565c0"
+           stroke-width="1.2"
+           stroke-miterlimit="8"
+           fill="#e3f2fd"
+           id="rect136" />
+      </g>
+    </g>
+    <g
+       id="l1-labels"
+       transform="translate(-3.49009,42.753603)">
+      <text
+         fill="#424242"
+         font-family="monospace"
+         font-weight="400"
+         font-size="12.75px"
+         text-anchor="middle"
+         transform="translate(223.49,654.5)"
+         id="text136"><tspan
+           sodipodi:role="line"
+           id="tspan-l1-title">L1 buffers</tspan><tspan
+           x="0"
+           dy="14"
+           sodipodi:role="line"
+           id="tspan-l1-dims">(each 8x2x3)</tspan></text>
+    </g>
+    <g
+       id="core-to-l2-split">
+      <g
+         id="core-cubes"
+         transform="translate(-384,234)">
+        <g
+           id="cube-846-346">
+          <rect
+             x="845.5"
+             y="345.5"
+             width="43"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect137" />
+        </g>
+        <g
+           id="cube-888-346">
+          <rect
+             x="888.5"
+             y="345.5"
+             width="44"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect138" />
+        </g>
+        <g
+           id="cube-932-346">
+          <rect
+             x="932.5"
+             y="345.5"
+             width="43"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect139" />
+        </g>
+        <g
+           id="cube-976-346">
+          <path
+             d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+             stroke="#2e7d32"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e8f5e9"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1018.5,334.5)"
+             id="path139" />
+          <path
+             d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+             stroke="#2e7d32"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e8f5e9"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1028.5,323.5)"
+             id="path140" />
+          <rect
+             x="975.5"
+             y="345.5"
+             width="43"
+             height="43"
+             stroke="#2e7d32"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e8f5e9"
+             id="rect140" />
+        </g>
+        <g
+           id="cube-846-302">
+          <rect
+             x="845.5"
+             y="302.5"
+             width="43"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect141" />
+        </g>
+        <g
+           id="cube-888-302">
+          <rect
+             x="888.5"
+             y="302.5"
+             width="44"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect142" />
+        </g>
+        <g
+           id="cube-932-302">
+          <rect
+             x="932.5"
+             y="302.5"
+             width="43"
+             height="43"
+             stroke="#00838f"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e0f7fa"
+             id="rect143" />
+        </g>
+        <g
+           id="cube-976-302">
+          <path
+             d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1018.5,291.5)"
+             id="path143" />
+          <path
+             d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1028.5,279.5)"
+             id="path144" />
+          <path
+             d="M 0,11 11.742,0 H 53 L 41.258,11 Z"
+             stroke="#2e7d32"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e8f5e9"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1038.5,312.5)"
+             id="path145" />
+          <rect
+             x="975.5"
+             y="302.5"
+             width="43"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect145" />
+        </g>
+        <g
+           id="cube-846-258">
+          <rect
+             x="845.5"
+             y="258.5"
+             width="43"
+             height="44"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect146" />
+        </g>
+        <g
+           id="cube-888-258">
+          <rect
+             x="888.5"
+             y="258.5"
+             width="44"
+             height="44"
+             stroke="#e65100"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#fff3e0"
+             id="rect147" />
+        </g>
+        <g
+           id="cube-932-258">
+          <rect
+             x="932.5"
+             y="258.5"
+             width="43"
+             height="44"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect148" />
+        </g>
+        <g
+           id="cube-976-258">
+          <path
+             d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1018.5,248.5)"
+             id="path148" />
+          <path
+             d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1028.5,237.5)"
+             id="path149" />
+          <path
+             d="M 0,11 11.7419,0 H 54 L 42.2581,11 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1038.5,268.5)"
+             id="path150" />
+          <rect
+             x="975.5"
+             y="258.5"
+             width="43"
+             height="44"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect150" />
+        </g>
+        <g
+           id="cube-846-216">
+          <path
+             d="m 845.5,215.5 9.842,-11 H 898.5 l -9.841,11 z"
+             stroke="#5e35b1"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#ede7f6"
+             fill-rule="evenodd"
+             id="path151" />
+          <path
+             d="m 855.5,204.5 9.842,-11 H 908.5 l -9.841,11 z"
+             stroke="#5e35b1"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#ede7f6"
+             fill-rule="evenodd"
+             id="path152" />
+          <path
+             d="m 865.5,193.5 10.736,-12 H 918.5 l -10.736,12 z"
+             stroke="#5e35b1"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#ede7f6"
+             fill-rule="evenodd"
+             id="path153" />
+          <rect
+             x="845.5"
+             y="215.5"
+             width="43"
+             height="43"
+             stroke="#5e35b1"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#ede7f6"
+             id="rect153" />
+        </g>
+        <g
+           id="cube-888-216">
+          <path
+             d="m 889.5,215.5 9.842,-11 H 942.5 l -9.841,11 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path154" />
+          <path
+             d="m 899.5,204.5 9.842,-11 H 952.5 l -9.841,11 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path155" />
+          <path
+             d="m 909.5,193.5 10.736,-12 H 962.5 l -10.736,12 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path156" />
+          <rect
+             x="888.5"
+             y="215.5"
+             width="44"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect156" />
+        </g>
+        <g
+           id="cube-932-216">
+          <path
+             d="m 932.5,215.5 9.842,-11 H 985.5 l -9.841,11 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path157" />
+          <path
+             d="m 941.5,204.5 9.842,-11 H 995.5 l -9.841,11 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path158" />
+          <path
+             d="m 952.5,193.5 10.736,-12 h 42.264 l -10.736,12 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path159" />
+          <rect
+             x="932.5"
+             y="215.5"
+             width="43"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect159" />
+        </g>
+        <g
+           id="cube-976-216">
+          <path
+             d="m 975.5,215.5 9.842,-11 h 43.158 l -9.84,11 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path160" />
+          <path
+             d="m 985.5,204.5 9.842,-11 h 43.158 l -9.84,11 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path161" />
+          <path
+             d="m 995.5,193.5 10.74,-12 h 42.26 l -10.74,12 z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             id="path162" />
+          <path
+             d="M 0,10 10.6745,0 H 53 L 42.3255,10 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1018.5,205.5)"
+             id="path163" />
+          <path
+             d="M 0,10 10.6745,0 H 54 L 43.3255,10 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1028.5,193.5)"
+             id="path164" />
+          <path
+             d="M 0,11 11.7419,0 H 54 L 42.2581,11 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1038.5,225.5)"
+             id="path165" />
+          <path
+             d="M 0,11 11.7419,0 H 54 L 42.2581,11 Z"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             fill-rule="evenodd"
+             transform="matrix(0,1,1,0,1038.5,182.5)"
+             id="path166" />
+          <rect
+             x="975.5"
+             y="215.5"
+             width="43"
+             height="43"
+             stroke="#1565c0"
+             stroke-width="1.2"
+             stroke-miterlimit="8"
+             fill="#e3f2fd"
+             id="rect166" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g170"
+       transform="translate(0,42.584267)">
+      <text
+         fill="#424242"
+         font-family="monospace"
+         font-weight="400"
+         font-size="12.75px"
+         text-anchor="middle"
+         transform="translate(548,654.5)"
+         id="text166"><tspan
+           sodipodi:role="line"
+           id="tspan-core-title">Core (col, row) output</tspan><tspan
+           x="0"
+           dy="14"
+           sodipodi:role="line"
+           id="tspan-core-copied">copied to</tspan><tspan
+           x="0"
+           dy="14"
+           sodipodi:role="line"
+           id="tspan-core-target">L2 split (col, row)</tspan></text>
+    </g>
+  </g>
+  <g
+     id="purple-copy-arrow"
+     transform="translate(-99.050401,-54.709858)">
+    <path
+       d="m 149.00428,426.5 q 176.5,-55 338.88,-3.302"
+       fill="none"
+       stroke="#5e35b1"
+       stroke-width="1.2"
+       stroke-miterlimit="8"
+       stroke-linecap="round"
+       id="path168" />
+    <path
+       d="m 485.84428,429.894 16.16,-2.394 -12.08,-10.998 z"
+       fill="#5e35b1"
+       stroke="#5e35b1"
+       stroke-width="1.2"
+       stroke-miterlimit="8"
+       fill-rule="evenodd"
+       id="path169" />
+  </g>
+  <g
+     id="annotations"
+     transform="translate(-105.15806,-134.98193)">
+    <text
+       fill="#424242"
+       font-family="monospace"
+       font-weight="400"
+       font-size="12.75px"
+       text-anchor="middle"
+       transform="translate(382.5,214)"
+       id="text169">SpatialDistribute</text>
+  </g>
+</svg>

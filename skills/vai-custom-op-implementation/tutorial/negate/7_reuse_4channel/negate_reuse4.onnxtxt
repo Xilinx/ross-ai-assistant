@@ -1,0 +1,7 @@
+<
+    ir_version: 7,
+    opset_import: ["" : 13, "mydomain" : 1]
+>
+test(float[1024] A) => (float[1024] out) {
+    out = mydomain.negate_reuse4<data_type = "float32", shape = [1024]>(A)
+}

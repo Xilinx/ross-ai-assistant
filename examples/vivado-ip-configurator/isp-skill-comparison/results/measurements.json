@@ -1,0 +1,3199 @@
+{
+  "recorded_date": "2026-09-29",
+  "client": "Codex CLI 0.157.1",
+  "provider": "AMD gateway",
+  "vivado_version": "2026.1",
+  "part": "xc2ve3558-sfva1440-2MP-e-S",
+  "skill_repository_revision": "02582310275cccf2ba103aa792f0d5c8de3cdf76",
+  "task": "Configure a hardened ISP on the xc2ve3558-sfva1440-2MP-e-S with all three tiles enabled and multi-pass disabled. Each tile needs four independent RAW12 inputs to its first ISP and one input to its second ISP\u2014RAW12 on tile 1, 16-bit on tiles 0 and 2. All inputs use four pixels per clock. Expose the corresponding streaming ports, leave other settings at defaults, verify the configuration and ports, and save the design.",
+  "task_sha256": "2916d3e2eece2d85bba8da30b3f6e4efa573081ec16dd7b51252f19dfc1e741a",
+  "scope": "One completed attempt per model/condition. Observed configuration and interface checks, not hardware validation. Sol grading adapters were corrected post-run; Luna used the frozen corrected contract.",
+  "runs": [
+    {
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "medium",
+      "condition": "with_skill",
+      "passed": false,
+      "checks_passed": 95,
+      "checks_total": 113,
+      "input_interfaces_present": 15,
+      "required_input_interfaces": 15,
+      "model_seconds": 241.4385178960074,
+      "setup_through_initial_grading_seconds": 250.6179684469971,
+      "tcl_batches": 13,
+      "nonzero_tcl_results": 2,
+      "native_error_lines": 6,
+      "documentation_searches": 5,
+      "ip_vlnv": "xilinx.com:ip:visp_ss:2.0",
+      "cli_reported_usage": {
+        "input_tokens": 1662423,
+        "cached_input_tokens": 1580728,
+        "cache_write_input_tokens": 81599,
+        "output_tokens": 10505,
+        "reasoning_output_tokens": 3529
+      },
+      "checks": [
+        {
+          "name": "hardened ISP identity",
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA0_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA1_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA2_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA3_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 16,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 64,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_COMMON_IBA3_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA0_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA1_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA2_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_IBA4_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_COMMON_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA0_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA1_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA2_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA3_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 16,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 64,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_COMMON_IBA3_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "saved block design",
+          "actual": true,
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "source_record_sha256": "6429db51afd87f22c02d1fabc325e28651c387f4d499d5bb5ce8a9db00c4285c",
+      "source_transcript_sha256": "bf6d53b9da30be6447b87a9836c381db986f67a15e71f5925ec7868fb2720dba"
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "medium",
+      "condition": "without_skill",
+      "passed": false,
+      "checks_passed": 67,
+      "checks_total": 113,
+      "input_interfaces_present": 6,
+      "required_input_interfaces": 15,
+      "model_seconds": 214.42203798500123,
+      "setup_through_initial_grading_seconds": 223.6217616199865,
+      "tcl_batches": 26,
+      "nonzero_tcl_results": 6,
+      "native_error_lines": 22,
+      "documentation_searches": 2,
+      "ip_vlnv": "xilinx.com:ip:visp_ss:2.0",
+      "cli_reported_usage": {
+        "input_tokens": 1626525,
+        "cached_input_tokens": 1562459,
+        "cache_write_input_tokens": 63958,
+        "output_tokens": 7547,
+        "reasoning_output_tokens": 2174
+      },
+      "checks": [
+        {
+          "name": "hardened ISP identity",
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_CONFIG",
+          "actual": "0",
+          "expected": 1,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA0_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA1_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA2_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA3_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 16,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 64,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_COMMON_IBA3_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE0_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_CONFIG",
+          "actual": "0",
+          "expected": 1,
+          "passed": false
+        },
+        {
+          "name": "C_TILE1_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA0_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA1_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA2_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE1_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE1_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_COMMON_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_CONFIG",
+          "actual": "0",
+          "expected": 1,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA0_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 data width",
+          "actual": 64,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA1_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA2_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA3_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 data width",
+          "actual": null,
+          "expected": 48,
+          "passed": false
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 data direction",
+          "actual": null,
+          "expected": "I",
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 16,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 64,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_COMMON_IBA3_DATA_FORMAT",
+          "actual": "16",
+          "expected": 12,
+          "passed": false
+        },
+        {
+          "name": "C_TILE2_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "saved block design",
+          "actual": true,
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "source_record_sha256": "2183aad03328029070f4d63e27aa5a0119b2dd81af934688622843e21079ebd6",
+      "source_transcript_sha256": "46a71ce2bf9d9dc6de29de328893216bf7b81dd5a803cb78116ba7f09eae344b"
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "medium",
+      "condition": "with_skill",
+      "passed": true,
+      "checks_passed": 113,
+      "checks_total": 113,
+      "input_interfaces_present": 15,
+      "required_input_interfaces": 15,
+      "model_seconds": 370.27672871500545,
+      "setup_through_initial_grading_seconds": 378.7848806000111,
+      "tcl_batches": 25,
+      "nonzero_tcl_results": 4,
+      "native_error_lines": 2,
+      "documentation_searches": 3,
+      "ip_vlnv": "xilinx.com:ip:visp_ss:2.0",
+      "cli_reported_usage": {
+        "input_tokens": 2562284,
+        "cached_input_tokens": 2472473,
+        "cache_write_input_tokens": 89691,
+        "output_tokens": 14855,
+        "reasoning_output_tokens": 5957
+      },
+      "checks": [
+        {
+          "name": "hardened ISP identity",
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA0_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA1_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA2_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 16,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 64,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_COMMON_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA0_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA1_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA2_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_IBA4_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_COMMON_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA0_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA1_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA2_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 16,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 64,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_COMMON_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "saved block design",
+          "actual": true,
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "source_record_sha256": "1533ccb968baf4c90c29aef7cb9b46e43d42b4cec5c8dd321514dd018057686a",
+      "source_transcript_sha256": "3eaf5886579dd4f865fd851915b62c257a2aa180716355d34ecfa936f68612ec"
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "medium",
+      "condition": "without_skill",
+      "passed": true,
+      "checks_passed": 113,
+      "checks_total": 113,
+      "input_interfaces_present": 15,
+      "required_input_interfaces": 15,
+      "model_seconds": 200.56077923899284,
+      "setup_through_initial_grading_seconds": 208.91914374000044,
+      "tcl_batches": 13,
+      "nonzero_tcl_results": 3,
+      "native_error_lines": 10,
+      "documentation_searches": 3,
+      "ip_vlnv": "xilinx.com:ip:visp:2.0",
+      "cli_reported_usage": {
+        "input_tokens": 1017116,
+        "cached_input_tokens": 967587,
+        "cache_write_input_tokens": 49445,
+        "output_tokens": 7933,
+        "reasoning_output_tokens": 2448
+      },
+      "checks": [
+        {
+          "name": "hardened ISP identity",
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA0_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA1_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA2_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 16,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 64,
+          "passed": true
+        },
+        {
+          "name": "TILE0_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_COMMON_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE0_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA0_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA1_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA2_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_IBA4_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE1_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_COMMON_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE1_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ENABLE",
+          "actual": "true",
+          "expected": "true",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_CONFIG",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_LIVE_INPUTS",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_ENABLE_MP",
+          "actual": "false",
+          "expected": "false",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_LIVE_INPUTS",
+          "actual": "1",
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA0_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA0_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN0 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA1_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA1_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN1 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA2_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA2_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN2 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP0_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 data width",
+          "actual": 48,
+          "expected": 48,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN3 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_IBA4_DATA_FORMAT",
+          "actual": "16",
+          "expected": 16,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_ISP1_IBA4_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 slave AXIS",
+          "actual": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "expected": [
+            "Slave",
+            "xilinx.com:interface:axis_rtl:1.0"
+          ],
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 data width",
+          "actual": 64,
+          "expected": 64,
+          "passed": true
+        },
+        {
+          "name": "TILE2_ISP_MIPI_VIDIN4 data direction",
+          "actual": "I",
+          "expected": "I",
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_COMMON_IBA3_DATA_FORMAT",
+          "actual": "12",
+          "expected": 12,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_COMMON_IBA3_PPC",
+          "actual": "4",
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT01_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT02_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT11_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "C_TILE2_VIDOUT12_TDATA_WIDTH",
+          "actual": "120",
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "name": "saved block design",
+          "actual": true,
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "source_record_sha256": "8b063d5477e17d343cafd29ae17221bf188913ffaf4817ccc9010beec0834e5d",
+      "source_transcript_sha256": "c26b082d3d823d3deba6d103bd42824a90aaae207111193991ce9e5ca953eeb8"
+    }
+  ],
+  "luna_cost_estimate": {
+    "basis": "Local skill_eval/pricing.yaml gpt-5.6-luna row; NOT verified AMD gateway invoice pricing. Assumes cache reads/writes included in input total, output includes reasoning. Excludes preflight, setup, local compute, MCP service costs.",
+    "rates_per_million_usd": {
+      "ordinary_input": 0.2,
+      "cache_read": 0.02,
+      "cache_write": 0.25,
+      "output": 1.2
+    },
+    "runs": {
+      "luna_with_skill": {
+        "total_input": 1662423,
+        "cached_input": 1580728,
+        "non_cached_input": 81695,
+        "cache_write_input": 81599,
+        "other_input": 96,
+        "output": 10505,
+        "estimated_usd": 0.06463951
+      },
+      "luna_without_skill": {
+        "total_input": 1626525,
+        "cached_input": 1562459,
+        "non_cached_input": 64066,
+        "cache_write_input": 63958,
+        "other_input": 108,
+        "output": 7547,
+        "estimated_usd": 0.05631668
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "amd-ross-agentic-ai-assistant",
+  "version": "2026.9.1",
+  "description": "Agent Skills for Developing Products with AMD Embedded Technologies",
+  "author": {
+    "name": "Advanced Micro Devices, Inc.",
+    "url": "https://www.amd.com"
+  },
+  "homepage": "https://github.com/Xilinx/ross-ai-assistant",
+  "repository": "https://github.com/Xilinx/ross-ai-assistant",
+  "license": "MIT",
+  "keywords": [
+    "amd",
+    "xilinx",
+    "fpga",
+    "eda",
+    "vivado",
+    "vitis",
+    "vitis-hls",
+    "hls",
+    "versal",
+    "xsdb",
+    "chipscope",
+    "hardware-debug",
+    "ila",
+    "vio",
+    "timing-closure",
+    "synthesis",
+    "bitstream",
+    "rtl",
+    "tcl"
+  ]
+}

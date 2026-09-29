@@ -1,0 +1,7 @@
+<
+    ir_version: 7,
+    opset_import: ["" : 13, "mydomain" : 1]
+>
+gemm_bias(float[64,1024] A, float[128,72] W_aug) => (float[128,1024] C) {
+    C = mydomain.mygemm_bias<data_type = "float32", shape = [128,1024]>(A, W_aug)
+}
