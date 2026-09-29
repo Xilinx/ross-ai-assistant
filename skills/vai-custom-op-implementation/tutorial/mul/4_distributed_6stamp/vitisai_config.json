@@ -1,0 +1,39 @@
+{
+  "passes": [
+    {
+      "name": "vaiml_partition",
+      "plugin": "vaip-pass_vaiml_partition",
+      "vaiml_config": {
+        "device": "ve2",
+        "overlay": "aie2_6x4x4.yaml",
+        "enable_vaiml_aie_mem_handoff": false,
+        "use_aieir_be": false,
+        "keep_outputs": true,
+        "optimize_level": 2,
+        "enable_f32_to_bf16_conversion": true,
+        "logging_level": "info",
+        "fe_args": "small-tensor-threshold-unwrapping=0",
+        "experiment_features": [
+          "KeepOrphanNodes"
+        ],
+        "aiecompiler_args": "--compile-for-x86sim=true --x86sim-as-shared-library=true",
+        "runner_type": "x86sim",
+        "custom_ops": {
+          "mydomain.mymul": {
+            "op_config": "custom_op_mul/custom_mul.yaml"
+          }
+        }
+      }
+    }
+  ],
+  "target": "VAIML",
+  "targets": [
+    {
+      "name": "VAIML",
+      "pass": [
+        "vaiml_partition"
+      ]
+    }
+  ],
+  "cache_dir": "cache1"
+}

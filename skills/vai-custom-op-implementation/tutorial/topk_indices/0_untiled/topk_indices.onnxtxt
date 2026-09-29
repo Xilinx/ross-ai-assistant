@@ -1,0 +1,7 @@
+<
+    ir_version: 10,
+    opset_import: ["" : 21, "cse" : 1]
+>
+topk_indices_test(float[4800] values) => (float[1024] top_indices) {
+    top_indices = cse.topk_indices<data_type = "float32", shape = [1024], k = 1024>(values)
+}

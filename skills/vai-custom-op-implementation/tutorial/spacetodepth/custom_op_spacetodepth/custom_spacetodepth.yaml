@@ -1,0 +1,22 @@
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+---
+tiling: "custom_spacetodepth_tiling.py"
+kernel: "custom_spacetodepth.cpp"
+# Match a stock onnx.SpaceToDepth in the original model (before ONNX shape
+# inference) and rewrite it into this custom op, so the input model needs no
+# hand-editing. Use `input_shape_inferred` instead if the pattern needs
+# statically-ranked types.
+match_on:
+  original_model: "custom_spacetodepth_match.pdll"
+stack_size: 4096
+auto_pad: true
+signature:
+  name: spacetodepth_kernel
+  inputs:
+    - async: false
+      onnx_tensor_layout: "NCHW"
+      ddr_tensor_layout: "NCHW"
+  outputs:
+    - async: false
+      onnx_tensor_layout: "NCHW"
+      ddr_tensor_layout: "HC/8WN8"

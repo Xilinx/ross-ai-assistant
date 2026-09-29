@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="609.2 0 190.8 190.803" width="24" height="24" aria-label="AMD">
+  <style>
+    /* Loaded as a plugin logo or a README image this SVG is its own document,
+       so currentColor has nothing to inherit and resolves to black, which
+       vanishes on a dark panel. These defaults only apply in that case: a host
+       that injects its own colour, as VS Code does for icons, still wins. */
+    :root { color: #000; }
+    @media (prefers-color-scheme: dark) { :root { color: #fff; } }
+  </style>
+  <path fill="currentColor" d="M662.769 51.981 610.797 0H800V189.21L748.028 137.235V51.981L662.769 51.981ZM662.708 62.397 609.2 115.903V190.802H684.089L737.594 137.296H662.708L662.708 62.397Z"/>
+</svg>

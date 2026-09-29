@@ -1,0 +1,10 @@
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+---
+tiling: "custom_negate_reuse4_tiling.py"
+kernel: "custom_negate_reuse4.cpp"
+signature:
+  name: negate_reuse4_kernel
+  inputs:
+    - async: false   # 0: A  float[1024]
+  outputs:
+    - async: false   # 0: out  float[1024]

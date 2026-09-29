@@ -1,0 +1,29 @@
+{
+    "passes": [
+        {
+            "name": "init",
+            "plugin": "vaip-pass_init"
+        },
+        {
+            "name": "vaiml_partition",
+            "plugin": "vaip-pass_vaiml_partition",
+            "vaiml_config": {
+                "keep_outputs": true,
+                "device": "ve2",
+                "optimize_level": 4,
+                "logging_level": "info",
+                "tp_size": 6,
+                "enable_f32_to_bf16_conversion": true,
+                "fe_experiment": "small-tensor-threshold-unwrapping=0",
+                "experiment_features": ["KeepOrphanNodes"]
+            }
+        }
+    ],
+    "target": "VAIML",
+    "targets": [
+        {
+            "name": "VAIML",
+            "pass": ["init", "vaiml_partition"]
+        }
+    ]
+}

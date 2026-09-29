@@ -1,0 +1,17 @@
+{
+  "global_config": {
+    "input_tensors": {
+      "spec": "XInt8Spec"
+    },
+    "weight": {
+      "spec": "XInt8Spec"
+    },
+    "bias": null
+  },
+  "extra_options": {
+    "IgnoreWarnings": false,
+    "UseRandomData": false,
+    "MatMulToGemm": true,
+    "DedicatedQDQPair": true
+  }
+}

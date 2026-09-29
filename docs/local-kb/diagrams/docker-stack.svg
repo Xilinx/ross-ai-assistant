@@ -1,0 +1,46 @@
+<!-- Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved. SPDX-License-Identifier: MIT -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 540" width="680" height="540" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5b6b7a"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="680" height="540" fill="#ffffff"/>
+  <rect x="20" y="20" width="640" height="500" rx="12" fill="#f5f6f7" stroke="#8a97a3" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="340" y="48" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5560">Docker Compose Stack</text>
+
+  <!-- MCP Server -->
+  <rect x="140" y="68" width="400" height="62" rx="8" fill="#fdf1e0" stroke="#8a5a12" stroke-width="1.5"/>
+  <text x="340" y="93" text-anchor="middle" font-size="15" font-weight="700" fill="#5c3b0a">MCP Server</text>
+  <text x="340" y="118" text-anchor="middle" font-size="12" fill="#5c3b0a">vivado_doc_search · /mcp/doc-search</text>
+
+  <!-- Arrow: MCP → Weaviate -->
+  <line x1="340" y1="130" x2="340" y2="182" stroke="#5b6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="340" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="#33424f">search request</text>
+
+  <!-- Weaviate -->
+  <rect x="140" y="190" width="400" height="80" rx="8" fill="#e3f0e6" stroke="#1e5c33" stroke-width="1.5"/>
+  <text x="340" y="217" text-anchor="middle" font-size="15" font-weight="700" fill="#173d24">Weaviate</text>
+  <text x="340" y="239" text-anchor="middle" font-size="12" fill="#3a6b47">Vector DB + query orchestrator</text>
+  <text x="340" y="259" text-anchor="middle" font-size="12" fill="#3a6b47">Hybrid keyword + vector search</text>
+
+  <!-- Arrows: Weaviate ↔ llama.cpp (left side of Weaviate going down) -->
+  <line x1="280" y1="270" x2="280" y2="340" stroke="#5b6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="262" y="310" text-anchor="end" font-size="11" font-style="italic" fill="#33424f">query text</text>
+
+  <line x1="400" y1="340" x2="400" y2="270" stroke="#5b6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="418" y="310" text-anchor="start" font-size="11" font-style="italic" fill="#33424f">query vector</text>
+
+  <!-- llama.cpp -->
+  <rect x="140" y="348" width="400" height="62" rx="8" fill="#efe9fb" stroke="#4b2e83" stroke-width="1.5"/>
+  <text x="340" y="375" text-anchor="middle" font-size="15" font-weight="700" fill="#2e1a5c">llama.cpp Embedding Service</text>
+  <text x="340" y="399" text-anchor="middle" font-size="12" fill="#5b4a85">EmbeddingGemma-300M or Qwen3-Embedding-0.6B · /v1/embeddings</text>
+
+  <!-- First-start note -->
+  <rect x="60" y="440" width="560" height="64" rx="8" fill="#eaf2fb" stroke="#1a4480" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="340" y="463" text-anchor="middle" font-size="13" font-weight="700" fill="#0b2545">First-start initialization (one-time)</text>
+  <text x="340" y="481" text-anchor="middle" font-size="11.5" fill="#0b2545">llama.cpp loads the embedding model.</text>
+  <text x="340" y="496" text-anchor="middle" font-size="11.5" fill="#0b2545">Snapshot importer job loads the documentation corpus into Weaviate, then exits.</text>
+</svg>

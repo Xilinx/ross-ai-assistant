@@ -1,0 +1,27 @@
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+# Runtime requirements for the vai-flag-configuration skill's helper scripts.
+#
+# NOT named requirements.txt on purpose: a downstream delivery pipeline filters
+# out files with that exact basename, so under the conventional name this list
+# would silently not be delivered with the skill.
+#
+# Deliberately minimal: this file ships with the skill, so it lists what is
+# needed to RUN it, not what is needed to develop it. Test/development extras
+# live in requirements-dev.txt, which is not shipped.
+#
+# NOTE: actually *compiling* and *profiling* a model (Phase 2/3 of the skill)
+# additionally requires a Vitis AI environment that provides
+# `flexml`, `onnxruntime` with the VitisAIExecutionProvider, and `dlanalyzer`.
+# Those are NOT pip-installable here -- they come from the official Vitis AI
+# Docker image or an equivalent product install (pass `--t <activate>` when using
+# a product virtualenv, or run inside the container with no `--t`). Such an
+# environment normally already provides `onnx` too.
+
+onnx>=1.16         # model_ops.py: op-type census + shape inference
+
+# Intentionally NOT required here:
+#   pyyaml -- only needed to read frontend-option YAMLs from a compiler source
+#             tree. A delivered skill reads the shipped fe-args.html public
+#             catalog instead, so flag_catalog.py imports yaml lazily.
+#   pytest -- only needed to run this repository's unit tests, which are not
+#             part of the delivered skill.

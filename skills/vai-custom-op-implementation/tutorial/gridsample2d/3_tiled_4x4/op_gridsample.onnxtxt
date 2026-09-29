@@ -1,0 +1,13 @@
+
+<
+    ir_version: 7,
+    opset_import: ["" : 20]
+>
+gridsample_dynamic(float[16,4,64,80] X,
+                   float[16,100,100,2] grid) =>
+                   (float[16,4,100,100] Y) {
+     Y = GridSample
+        <align_corners: int = 1,
+         mode: string = "linear",
+         padding_mode: string = "zeros">(X, grid)
+}

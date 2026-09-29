@@ -1,0 +1,10 @@
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+---
+# Config for the concat4 (mydomain.concat4) custom op.
+# 4 inputs A,B,C,D that share the same [ROWS_OUT, INNER] shape -> 1 output that
+# concatenates their innermost dimensions by alternating one element of each:
+# out[r, 4*c + v] = input_v[r, c].
+tiling: "custom_concat4_tiling.py"
+kernel: "custom_concat4.cpp"
+signature:
+  name: concat4_kernel

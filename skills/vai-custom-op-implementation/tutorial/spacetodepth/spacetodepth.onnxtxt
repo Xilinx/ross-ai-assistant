@@ -1,0 +1,7 @@
+<
+    ir_version: 7,
+    opset_import: ["" : 13]
+>
+test(int8[1, 3, 320, 320] input) => (int8[1, 12, 160, 160] output) {
+    output = SpaceToDepth<blocksize = 2>(input)
+}

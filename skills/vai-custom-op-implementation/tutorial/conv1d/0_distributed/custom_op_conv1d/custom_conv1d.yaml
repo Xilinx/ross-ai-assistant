@@ -1,0 +1,5 @@
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+---
+tiling: "custom_conv1d_tiling.py"
+kernel: "custom_conv1d.cpp"
+auto_pad: true

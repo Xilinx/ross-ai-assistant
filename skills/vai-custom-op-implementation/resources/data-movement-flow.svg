@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 310" width="1836" height="527">
+<defs>
+<marker id="flow-ah-ifm" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#2979FF" opacity="0.85"/></marker>
+<marker id="flow-ah-wts" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#FF6D00" opacity="0.85"/></marker>
+<marker id="flow-ah-ofm" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,2 L0,4 Z" fill="#00C853" opacity="0.85"/></marker>
+<marker id="flow-ah-ctrl" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L5,2 L0,4 Z" fill="#78909C" opacity="0.8"/></marker>
+</defs>
+<rect width="1080" height="310" fill="white"/>
+
+<!-- L3 DDR (inputs) -->
+<rect x="24" y="36" width="88" height="138" fill="#ECEFF1" stroke="#78909C" stroke-width="1" rx="4" stroke-dasharray="4,2"/>
+<text x="68" y="52" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9" fill="#546E7A">DDR</text>
+<rect x="34" y="55" width="68" height="34" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="68" y="72" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#1565C0">L3 IFM</text>
+<rect x="34" y="135" width="68" height="34" fill="#FFF3E0" stroke="#E65100" stroke-width="1.2" rx="3"/>
+<text x="68" y="152" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#E65100">L3 WTS</text>
+
+<!-- IFM L3 to L2: setter, TensorExpr labels, DMAs -->
+<text x="178" y="14" text-anchor="middle" font-family="monospace" font-size="7" fill="#1565C0">set_ifm_ddr_to_mem</text>
+<path d="M 130 32 L 130 28 L 178 24 L 226 28 L 226 32" fill="none" stroke="#2979FF" stroke-width="1"/>
+<text x="138" y="36" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="138" dy="0">read-side</tspan><tspan x="138" dy="9">TensorExpr</tspan></text>
+<line x1="138" y1="48" x2="138" y2="54" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<text x="218" y="36" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="218" dy="0">write-side</tspan><tspan x="218" dy="9">TensorExpr</tspan></text>
+<line x1="218" y1="48" x2="218" y2="54" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<rect x="128" y="54" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+<text x="150" y="64" text-anchor="middle" font-family="monospace" font-size="8" fill="#424242"><tspan x="150" dy="0">DMA</tspan><tspan x="150" dy="9" font-size="7">3D</tspan></text>
+<rect x="184" y="54" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+<text x="206" y="64" text-anchor="middle" font-family="monospace" font-size="8" fill="#424242"><tspan x="206" dy="0">DMA</tspan><tspan x="206" dy="9" font-size="7">4D</tspan></text>
+
+<!-- WTS L3 to L2: setter, TensorExpr labels, DMAs -->
+<text x="178" y="102" text-anchor="middle" font-family="monospace" font-size="7" fill="#E65100">set_wts_ddr_to_mem</text>
+<path d="M 130 120 L 130 116 L 178 112 L 226 116 L 226 120" fill="none" stroke="#FF6D00" stroke-width="1"/>
+<text x="138" y="124" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="138" dy="0">read-side</tspan><tspan x="138" dy="9">TensorExpr</tspan></text>
+<line x1="138" y1="136" x2="138" y2="142" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<text x="218" y="124" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="218" dy="0">write-side</tspan><tspan x="218" dy="9">TensorExpr</tspan></text>
+<line x1="218" y1="136" x2="218" y2="142" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<rect x="128" y="142" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+<text x="150" y="152" text-anchor="middle" font-family="monospace" font-size="8" fill="#424242"><tspan x="150" dy="0">DMA</tspan><tspan x="150" dy="9" font-size="7">3D</tspan></text>
+<rect x="184" y="142" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+<text x="206" y="152" text-anchor="middle" font-family="monospace" font-size="8" fill="#424242"><tspan x="206" dy="0">DMA</tspan><tspan x="206" dy="9" font-size="7">4D</tspan></text>
+
+<!-- L2 buffers -->
+<rect x="248" y="55" width="68" height="34" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="282" y="72" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9" fill="#1565C0">L2 IFM</text>
+<rect x="248" y="135" width="68" height="34" fill="#FFF3E0" stroke="#E65100" stroke-width="1.2" rx="3"/>
+<text x="282" y="152" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9" fill="#E65100">L2 WTS</text>
+
+<!-- IFM L2 to L1: setter + 4x column stack (set_ifm_mem_to_core) -->
+<text x="378" y="14" text-anchor="middle" font-family="monospace" font-size="7" fill="#1565C0">set_ifm_mem_to_core</text>
+<g id="ifm-l2-l1-stack">
+<!-- back layer 3 (columns 3, furthest right) -->
+<g opacity="0.32">
+<rect x="346" y="42" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1" rx="3"/>
+<rect x="402" y="42" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+</g>
+<!-- back layer 2 (column 2) -->
+<g opacity="0.48">
+<rect x="340" y="46" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1" rx="3"/>
+<rect x="396" y="46" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+</g>
+<!-- back layer 1 (column 1) -->
+<g opacity="0.64">
+<rect x="334" y="50" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1" rx="3"/>
+<rect x="390" y="50" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+</g>
+<!-- front layer (column 0) -->
+<path d="M 330 32 L 330 28 L 378 24 L 426 28 L 426 32" fill="none" stroke="#2979FF" stroke-width="1"/>
+<text x="338" y="36" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="338" dy="0">read-side</tspan><tspan x="338" dy="9">TensorExpr</tspan></text>
+<line x1="338" y1="48" x2="338" y2="54" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<text x="418" y="36" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="418" dy="0">write-side</tspan><tspan x="418" dy="9">TensorExpr</tspan></text>
+<line x1="418" y1="48" x2="418" y2="54" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<rect x="328" y="54" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1.2" rx="3"/>
+<text x="350" y="64" text-anchor="middle" font-family="monospace" font-size="8" fill="#4527A0"><tspan x="350" dy="0">DMA</tspan><tspan x="350" dy="9" font-size="7">4D</tspan></text>
+<rect x="384" y="54" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+<text x="406" y="64" text-anchor="middle" font-family="monospace" font-size="8" fill="#424242"><tspan x="406" dy="0">DMA</tspan><tspan x="406" dy="9" font-size="7">3D</tspan></text>
+<text x="388" y="92" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="8" fill="#546E7A">4 columns</text>
+</g>
+
+<!-- WTS L2 to L1: setter + 4x row stack (set_wts_mem_to_core) -->
+<text x="378" y="102" text-anchor="middle" font-family="monospace" font-size="7" fill="#E65100">set_wts_mem_to_core</text>
+<g id="wts-l2-l1-stack">
+<!-- back layer 3 (rows 3, furthest right) -->
+<g opacity="0.32">
+<rect x="346" y="130" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1" rx="3"/>
+<rect x="402" y="130" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+</g>
+<!-- back layer 2 (row 2) -->
+<g opacity="0.48">
+<rect x="340" y="134" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1" rx="3"/>
+<rect x="396" y="134" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+</g>
+<!-- back layer 1 (row 1) -->
+<g opacity="0.64">
+<rect x="334" y="138" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1" rx="3"/>
+<rect x="390" y="138" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+</g>
+<!-- front layer (row 0) -->
+<path d="M 330 120 L 330 116 L 378 112 L 426 116 L 426 120" fill="none" stroke="#FF6D00" stroke-width="1"/>
+<text x="338" y="124" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="338" dy="0">read-side</tspan><tspan x="338" dy="9">TensorExpr</tspan></text>
+<line x1="338" y1="136" x2="338" y2="142" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<text x="418" y="124" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="418" dy="0">write-side</tspan><tspan x="418" dy="9">TensorExpr</tspan></text>
+<line x1="418" y1="136" x2="418" y2="142" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<rect x="328" y="142" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1.2" rx="3"/>
+<text x="350" y="152" text-anchor="middle" font-family="monospace" font-size="8" fill="#4527A0"><tspan x="350" dy="0">DMA</tspan><tspan x="350" dy="9" font-size="7">4D</tspan></text>
+<rect x="384" y="142" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+<text x="406" y="152" text-anchor="middle" font-family="monospace" font-size="8" fill="#424242"><tspan x="406" dy="0">DMA</tspan><tspan x="406" dy="9" font-size="7">3D</tspan></text>
+<text x="388" y="180" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="8" fill="#546E7A">4 rows</text>
+</g>
+
+<!-- Kernel + L1 IFM/WTS/OFM -->
+<rect x="448" y="38" width="152" height="148" fill="none" stroke="#1565C0" stroke-width="1.4" rx="5" stroke-dasharray="6,3"/>
+<text x="524" y="52" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="10" font-weight="600" fill="#1565C0">kernel</text>
+<rect x="458" y="55" width="56" height="34" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.2" rx="3"/>
+<text x="486" y="72" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9" fill="#1565C0">L1 IFM</text>
+<rect x="458" y="135" width="56" height="34" fill="#FFF3E0" stroke="#E65100" stroke-width="1.2" rx="3"/>
+<text x="486" y="152" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9" fill="#E65100">L1 WTS</text>
+<rect x="524" y="95" width="64" height="34" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="3"/>
+<text x="556" y="112" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9" fill="#2E7D32">L1 OFM</text>
+<text x="524" y="176" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="7" fill="#546E7A">core tile</text>
+
+<!-- OFM L1 to L2: setter + 16x core stack (set_ofm_core_to_mem) -->
+<text x="708" y="62" text-anchor="middle" font-family="monospace" font-size="7" fill="#2E7D32">set_ofm_core_to_mem</text>
+<g id="ofm-l1-l2-stack">
+<!-- back layers 15..1 (narrow DMAs, same depth as IFM/WTS 4-stack) -->
+<g opacity="0.28"><rect x="688" y="90" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="744" y="90" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.32"><rect x="686.8" y="90.8" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="742.8" y="90.8" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.36"><rect x="685.6" y="91.6" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="741.6" y="91.6" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.40"><rect x="684.4" y="92.4" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="740.4" y="92.4" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.43"><rect x="683.2" y="93.2" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="739.2" y="93.2" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.47"><rect x="682" y="94" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="738" y="94" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.51"><rect x="680.8" y="94.8" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="736.8" y="94.8" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.55"><rect x="679.6" y="95.6" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="735.6" y="95.6" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.59"><rect x="678.4" y="96.4" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="734.4" y="96.4" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.63"><rect x="677.2" y="97.2" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="733.2" y="97.2" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.67"><rect x="676" y="98" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="732" y="98" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.71"><rect x="674.8" y="98.8" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="730.8" y="98.8" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.74"><rect x="673.6" y="99.6" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="729.6" y="99.6" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.78"><rect x="672.4" y="100.4" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="728.4" y="100.4" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<g opacity="0.82"><rect x="671.2" y="101.2" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/><rect x="727.2" y="101.2" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/></g>
+<!-- front layer (core 0) -->
+<path d="M 660 80 L 660 76 L 708 72 L 756 76 L 756 80" fill="none" stroke="#00C853" stroke-width="1"/>
+<text x="668" y="84" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="668" dy="0">read-side</tspan><tspan x="668" dy="9">TensorExpr</tspan></text>
+<line x1="668" y1="96" x2="668" y2="102" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<text x="748" y="84" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="748" dy="0">write-side</tspan><tspan x="748" dy="9">TensorExpr</tspan></text>
+<line x1="748" y1="96" x2="748" y2="102" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<rect x="670" y="102" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1.2" rx="2"/>
+<text x="680" y="111" text-anchor="middle" font-family="monospace" font-size="7" fill="#424242"><tspan x="680" dy="0">DMA</tspan><tspan x="680" dy="8" font-size="6">3D</tspan></text>
+<rect x="726" y="102" width="20" height="28" fill="#FAFAFA" stroke="#757575" stroke-width="1.2" rx="2"/>
+<text x="736" y="111" text-anchor="middle" font-family="monospace" font-size="7" fill="#424242"><tspan x="736" dy="0">DMA</tspan><tspan x="736" dy="8" font-size="6">4D</tspan></text>
+<text x="717" y="138" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="8" fill="#546E7A">4x4</text>
+</g>
+
+<!-- L2 OFM -->
+<rect x="778" y="95" width="68" height="34" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="3"/>
+<text x="812" y="112" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="9" fill="#2E7D32">L2 OFM</text>
+
+<!-- OFM L2 to L3: setter, TensorExpr labels, DMAs -->
+<text x="908" y="62" text-anchor="middle" font-family="monospace" font-size="7" fill="#2E7D32">set_ofm_mem_to_ddr</text>
+<path d="M 860 80 L 860 76 L 908 72 L 956 76 L 956 80" fill="none" stroke="#00C853" stroke-width="1"/>
+<text x="868" y="84" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="868" dy="0">read-side</tspan><tspan x="868" dy="9">TensorExpr</tspan></text>
+<line x1="868" y1="96" x2="868" y2="102" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<text x="948" y="84" text-anchor="middle" font-family="monospace" font-size="8" fill="#6A1B9A"><tspan x="948" dy="0">write-side</tspan><tspan x="948" dy="9">TensorExpr</tspan></text>
+<line x1="948" y1="96" x2="948" y2="102" stroke="#78909C" stroke-width="1" stroke-dasharray="2,2" marker-end="url(#flow-ah-ctrl)"/>
+<rect x="858" y="102" width="44" height="30" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1.2" rx="3"/>
+<text x="880" y="112" text-anchor="middle" font-family="monospace" font-size="8" fill="#4527A0"><tspan x="880" dy="0">DMA</tspan><tspan x="880" dy="9" font-size="7">4D</tspan></text>
+<rect x="914" y="102" width="44" height="30" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="3"/>
+<text x="936" y="112" text-anchor="middle" font-family="monospace" font-size="8" fill="#424242"><tspan x="936" dy="0">DMA</tspan><tspan x="936" dy="9" font-size="7">3D</tspan></text>
+
+<!-- L3 DDR (output) -->
+<rect x="978" y="78" width="88" height="68" fill="#ECEFF1" stroke="#78909C" stroke-width="1" rx="4" stroke-dasharray="4,2"/>
+<text x="1022" y="94" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9" fill="#546E7A">DDR</text>
+<rect x="988" y="95" width="68" height="34" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.2" rx="3"/>
+<text x="1022" y="112" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="10" fill="#2E7D32">L3 OFM</text>
+
+<!-- IFM data-flow (y=72) -->
+<line x1="102" y1="72" x2="128" y2="72" stroke="#2979FF" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ifm)"/>
+<line x1="172" y1="72" x2="184" y2="72" stroke="#2979FF" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ifm)"/>
+<line x1="228" y1="72" x2="248" y2="72" stroke="#2979FF" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ifm)"/>
+<line x1="316" y1="72" x2="328" y2="72" stroke="#2979FF" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ifm)"/>
+<line x1="372" y1="72" x2="384" y2="72" stroke="#2979FF" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ifm)"/>
+<line x1="428" y1="72" x2="458" y2="72" stroke="#2979FF" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ifm)"/>
+
+<!-- WTS data-flow (y=152) -->
+<line x1="102" y1="152" x2="128" y2="152" stroke="#FF6D00" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-wts)"/>
+<line x1="172" y1="152" x2="184" y2="152" stroke="#FF6D00" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-wts)"/>
+<line x1="228" y1="152" x2="248" y2="152" stroke="#FF6D00" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-wts)"/>
+<line x1="316" y1="152" x2="328" y2="152" stroke="#FF6D00" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-wts)"/>
+<line x1="372" y1="152" x2="384" y2="152" stroke="#FF6D00" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-wts)"/>
+<line x1="428" y1="152" x2="458" y2="152" stroke="#FF6D00" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-wts)"/>
+
+<!-- OFM data-flow (y=112) -->
+<line x1="588" y1="112" x2="670" y2="112" stroke="#00C853" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ofm)"/>
+<line x1="690" y1="112" x2="726" y2="112" stroke="#00C853" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ofm)"/>
+<line x1="746" y1="112" x2="778" y2="112" stroke="#00C853" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ofm)"/>
+<line x1="846" y1="112" x2="858" y2="112" stroke="#00C853" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ofm)"/>
+<line x1="902" y1="112" x2="914" y2="112" stroke="#00C853" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ofm)"/>
+<line x1="958" y1="112" x2="988" y2="112" stroke="#00C853" stroke-width="1.4" opacity="0.75" marker-end="url(#flow-ah-ofm)"/>
+
+<!-- Legend -->
+<text x="24" y="284" font-family="Inter,Helvetica,Arial,sans-serif" font-size="11" font-weight="600" fill="#424242">Legend</text>
+<line x1="88" y1="280" x2="108" y2="280" stroke="#2979FF" stroke-width="2.2"/>
+<text x="114" y="284" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9" fill="#424242">IFM</text>
+<line x1="148" y1="280" x2="168" y2="280" stroke="#FF6D00" stroke-width="2.2"/>
+<text x="174" y="284" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9" fill="#424242">WTS</text>
+<line x1="208" y1="280" x2="228" y2="280" stroke="#00C853" stroke-width="2.2"/>
+<text x="234" y="284" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9" fill="#424242">OFM</text>
+<line x1="268" y1="280" x2="288" y2="280" stroke="#6A1B9A" stroke-width="1.2" stroke-dasharray="2,2"/>
+<text x="294" y="284" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9" fill="#424242">TensorExpr (read / write)</text>
+<rect x="430" y="272" width="14" height="12" fill="#FAFAFA" stroke="#757575" stroke-width="1" rx="2"/>
+<text x="450" y="284" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9" fill="#424242">DMA (maximum number of dimensions supported)</text>
+<rect x="680" y="272" width="14" height="12" fill="#EDE7F6" stroke="#5E35B1" stroke-width="1.2" rx="2"/>
+<text x="700" y="284" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9" fill="#424242">DMA with zero-padding</text>
+</svg>

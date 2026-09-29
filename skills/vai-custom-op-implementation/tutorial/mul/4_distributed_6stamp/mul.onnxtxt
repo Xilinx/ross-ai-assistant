@@ -1,0 +1,7 @@
+<
+    ir_version: 7,
+    opset_import: ["" : 13, "mydomain" : 1]
+>
+test(float[4224] a, float[4224] b) => (float[4224] product) {
+    product = mydomain.mymul<data_type = "float32", shape = [4224]>(a, b)
+}

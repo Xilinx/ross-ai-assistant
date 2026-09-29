@@ -1,0 +1,11 @@
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+---
+# Config for the interleave (mydomain.interleave) custom op.
+# 4 equal-numel inputs A,B,C,D of VARIABLE dimensionality -> 1 output. All four
+# L3->L2 transfers land in a single shared L2 buffer (one row each); a single
+# column-broadcast L2->L1 read then hands each column a quarter of that buffer,
+# interleaving the four inputs. See the tiling for the data movement.
+tiling: "custom_interleave_tiling.py"
+kernel: "custom_interleave.cpp"
+signature:
+  name: interleave_kernel

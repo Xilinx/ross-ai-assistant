@@ -1,0 +1,7 @@
+<
+   ir_version: 7,
+   opset_import: ["" : 13, "mydomain" : 1]
+>
+custom_op_graph (float[4,2,31360] x) => (float[1,2,31360] res) {
+   res = mydomain.myreducemax <axes: int = 0, data_type: string = "float32", keepdims: int = 1, shape: ints = [1, 2, 31360]> (x)
+}

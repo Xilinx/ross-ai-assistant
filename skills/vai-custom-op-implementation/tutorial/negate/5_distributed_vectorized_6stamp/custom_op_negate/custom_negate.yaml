@@ -1,0 +1,4 @@
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+---
+tiling: "custom_negate_tiling.py"
+kernel: "custom_negate.cpp"

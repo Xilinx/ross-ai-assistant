@@ -1,0 +1,6 @@
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+---
+tiling: "custom_addmul_tiling.py"
+kernel: "custom_addmul_add.cpp"
+signature:
+  name: add_kernel
