@@ -3,6 +3,92 @@ Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
 SPDX-License-Identifier: MIT
 -->
 
+# Recent changes (2026-10-13)
+
+## Fix: a preserved BD/IP must never leave a reconstruction Tcl behind
+
+**Expected behavior:** a BD or standalone IP that is preserved to the remote
+cache gets no reconstruction Tcl (`Sources/BD/<bd>.tcl`, the `design.tcl`-style
+file, or `Sources/IP/<ip>.tcl`). In a partial/mixed selection, only the
+non-preserved items get Tcl. `Sources/` is still created in every case.
+
+**Symptom:** after exporting with a BD preserved, `Sources/BD/<bd>.tcl` was
+still present in `RevisionControl/`, while the preserved IPs correctly had no
+`Sources/IP/<ip>.tcl`.
+
+**Cause found:** `export_all_sources` never cleans the export dir. A
+`<bd>.tcl` / `<ip>.tcl` written by an earlier non-preserving export into the
+same `RevisionControl/` survived into the later preserving run. The preserve
+branches themselves already skipped `write_bd_tcl` / `write_ip_tcl` correctly.
+
+**Change:** `helper-procedures/helper_scripts.tcl`, in `export_all_sources`.
+When an IP or BD is successfully preserved, any existing
+`Sources/IP/<ip>.tcl` / `Sources/BD/<bd>.tcl` for it is deleted.
+`SKILL.md` was also corrected: it said there is "no Tcl fallback", but a BD/IP
+selected for preservation that has no `.gen` yet, or whose source lives outside
+the project, is not preserved. It warns and is exported as a normal
+non-preserved item, so it does get its Tcl.
+
+**Not changed (known limits):**
+- An item not named in the selection is exported normally and gets its Tcl.
+  Selecting only IPs does not preserve the BD.
+- Tcl for a BD/IP that was later deleted from the project is not removed;
+  the cleanup only touches items preserved in the current run.
+
+**Verified (Vivado 2026.2, xc7a35tcpg236-1), scratch projects, each with and
+without a stale non-preserving export already in the folder:**
+
+| Design | Preserved | `Sources/BD/` | `Sources/IP/` |
+|---|---|---|---|
+| 1 BD + 2 IPs | all | empty | empty |
+| 1 BD + 2 IPs | BD only | empty | both IP Tcls |
+| 1 BD + 2 IPs | IPs only | BD Tcl | empty |
+| 1 BD + 3 IPs | BD + 2 IPs | empty | the 1 non-preserved IP |
+| 3 BDs + 3 IPs | 2 BDs + 2 IPs | the 1 non-preserved BD | the 1 non-preserved IP |
+| 3 BDs + 3 IPs | 1 BD + 1 IP | the 2 non-preserved BDs | the 2 non-preserved IPs |
+
+In the mixed case, generated `build.tcl` restores preserved items from the
+cache and sources Tcl only for non-preserved ones. A rebuild of these mixed
+exports and the 9-project regression with this change are tracked separately.
+
+# Recent changes (2026-10-07)
+
+## Fix: preserved standalone IPs were never written to the remote cache
+
+**Reported by:** a tester who preserved some IPs and a whole BD and found
+output products for the BD but not for the IPs.
+
+**Symptom:** with a standalone IP selected for preservation and already
+generated, `export_all_sources` printed only
+`WARNING: could not locate .xci source for IP <name> -- falling back to standard export`
+and wrote no `<cache>/<proj>/ip/<name>/{srcs,gen}` entry. Preserved BDs were
+unaffected, so the cache ended up with BD outputs only. On rebuild the IP was
+regenerated from Tcl instead of restored.
+
+**Root cause:** the export located an IP's `.xci` with
+`get_files -of_objects [get_ips $ip] -filter {FILE_TYPE == "IP"}`. Once an IP
+has been generated, `-of_objects` returns its generated output files (`.vho`,
+`synth/*.vhd`, `.xdc`, ...) rather than the `.xci`, so the filter removed
+everything and the lookup came back empty. Preservation therefore failed
+exactly when there was a `.gen` worth preserving. The earlier remote-cache
+smoke test only covered a BD, so this IP path was never exercised live.
+
+**Change:** `helper-procedures/helper_scripts.tcl`, in `export_all_sources`
+(preserved-IP branch). The `.xci` path now comes from the IP's `IP_FILE`
+property, which is the `.xci` itself, falling back to
+`get_files <name>.xci` if that is empty. No other code used the broken query.
+
+**Verified (Vivado 2026.2, xc7k70tfbg676-2):** a design with 3 standalone
+IPs and 1 BD, preserving one IP plus the BD. After the fix the cache holds
+`ip/<name>/{srcs,gen}` and `bd/<name>/{srcs,gen}`. A rebuild logs
+`Restored preserved outputs for IP: <name> (from remote cache)` and the BD
+reports its generated targets as up to date. IPs not selected are regenerated
+on demand, as designed.
+
+**Scope notes:** preservation of IPs that live inside a BD is still
+whole-BD only (unchanged). A multi-project regression run on this change is
+tracked separately.
+
 # Recent changes (2026-09-29)
 
 Methodology feedback from GP (design review) on the preserve-outputs feature

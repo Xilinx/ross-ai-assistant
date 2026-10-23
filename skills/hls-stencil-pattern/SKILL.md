@@ -152,14 +152,6 @@ If the user asks you to **fix** code so that stencil pattern optimization can be
    // fixed code here
    ```
    ````
-4. Then end your response with this JSON object as the very last thing:
-   ```
-   {"verdict": "FIXED_STENCIL_APPLICABLE", "explanation": "<brief reason>"}
-   ```
-   or if you cannot fix it:
-   ```
-   {"verdict": "COULD_NOT_FIX", "explanation": "<reason>"}
-   ```
 
 ---
 
@@ -168,3 +160,4 @@ If the user asks you to **fix** code so that stencil pattern optimization can be
 - **Do not** add extra rules or heuristics beyond rules 1–4.
 - **Do not** answer questions unrelated to stencil pattern optimization.
 - Always apply loop unrolling transformations (due to `pipeline` or `unroll` pragmas) before evaluating pragma location rules.
+

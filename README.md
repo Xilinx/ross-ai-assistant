@@ -117,7 +117,7 @@ These skills require the [Vivado MCP Server](docs/reference/vivado-mcp-tools.md)
 | [vivado-rtl-lint](skills/vivado-rtl-lint/)                    | Run Vivado's RTL linter and report design issues with prioritized, code-level fixes | [multi-violation](examples/rtl-lint/multi-violation/)                |
 | [vivado-timing-methodology-checks](skills/vivado-timing-methodology-checks/) | Run timing methodology checks and analyze violations            | [multi-violation](examples/timing-methodology-checks/multi-violation/) |
 | [vivado-revision-control](skills/vivado-revision-control/)    | Manage Vivado project files under revision control                             | [export-ipi-project](examples/vivado-revision-control/export-ipi-project/) |
-| [vivado-ip-configurator](skills/vivado-ip-configurator/) | Configure one Vivado IP cell from a natural-language description | — |
+| [vivado-ip-configurator](skills/vivado-ip-configurator/) | Configure one Vivado IP cell from a natural-language description | [isp-skill-comparison](examples/vivado-ip-configurator/isp-skill-comparison/) |
 
 ### Vitis HLS
 
@@ -130,6 +130,14 @@ These skills require the [Vivado MCP Server](docs/reference/vivado-mcp-tools.md)
 These three skills are the primary entry points for HLS development. Each skill automatically invokes specialized helper skills (dataflow checks, burst inference, array partitioning, report extraction, etc.) as needed — you don't need to install or invoke helpers separately.
 
 **Build skill:** [hls-run-flow](skills/hls-run-flow/) runs the HLS compilation pipeline (csim, csynth, cosim, implementation) and is called by the core skills above or can be invoked directly. Example: [intro-matmul](examples/hls-run-flow/intro-matmul/).
+
+### Vitis
+
+This skill is beta. Run it in the Vitis IDE, or in another AI coding agent. The coding agent invokes Vitis with `vitis -s`.
+
+| Skill | Description | Examples |
+|-------|-------------|----------|
+| [vitis-embedded](skills/vitis-embedded/) | Create an embedded platform, application, and boot image | [platform](examples/vitis-embedded/platform-standalone-vck190/), [application](examples/vitis-embedded/app-hello-vck190/), [boot image](examples/vitis-embedded/boot-image-versal-pdi/) |
 
 ### Hardware Debug
 

@@ -17,6 +17,11 @@ Set up the AMD Ross Agentic AI Assistant in your preferred environment. Follow t
     - **Vivado MCP Server** binary — for CLI setups (Claude Code, Copilot CLI, Codex). Install to a directory like `~/tools/`.
 - A running Vivado session or a design checkpoint (DCP) to work with
 
+**For Vitis skills (beta):**
+
+- **Vitis 2024.2 or later**, installed and licensed. Source `settings64.sh` before a headless `vitis -s` run
+- In the Vitis IDE, the skill uses the IDE's Vitis Python tool. Outside the IDE, a coding agent invokes Vitis with `vitis -s`
+
 **For Vitis HLS AI Assistant (Agent Skills):**
 
 - **Vitis Unified IDE** installed and licensed — after sourcing `settings64.sh`, `v++ --version` and `vitis-run --version` should both work

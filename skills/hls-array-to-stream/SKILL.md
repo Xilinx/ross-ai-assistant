@@ -89,11 +89,3 @@ If the user asks you to **fix** code so it follows the recommended array-to-stre
    // fixed code here
    ```
    ````
-4. Then end your response with this JSON object as the very last thing:
-   ```
-   {"verdict": "FIXED_FOLLOWS_STYLE", "explanation": "<brief reason>"}
-   ```
-   or if you cannot fix it:
-   ```
-   {"verdict": "COULD_NOT_FIX", "explanation": "<reason>"}
-   ```

@@ -102,15 +102,6 @@ These conditions may cause burst inference to fail even if preconditions are met
 #### Verdict:
 If **all preconditions** (1–9) are met and no **limitations** (1–5) apply, burst inference optimization **can be applied**. Otherwise, it **cannot** be applied.
 
-End your response with this JSON object as the very last thing you write, with nothing after it:
-```
-{"verdict": "BURST_APPLICABLE", "explanation": "<burst inference can be applied>"}
-```
-or if burst inference cannot be applied:
-```
-{"verdict": "BURST_NOT_APPLICABLE", "explanation": "<reason it cannot be applied>"}
-```
-
 ---
 
 ## When Asked to Fix Code for Burst Inference
@@ -125,11 +116,3 @@ If the user asks you to **fix** code so that burst inference can be applied:
    // fixed code here
    ```
    ````
-4. End your response with this JSON object as the very last thing:
-   ```
-   {"verdict": "FIXED_BURST_APPLICABLE", "explanation": "reason"}
-   ```
-   or if you cannot fix it:
-   ```
-   {"verdict": "COULD_NOT_FIX", "explanation": "reason"}
-   ```

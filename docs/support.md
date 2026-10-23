@@ -32,7 +32,6 @@ When reporting an issue on the forum, please include:
 
 | Limitation | Workaround |
 |------------|------------|
-| LSF tool (`vivado_lsf`) only works inside the AMD network | Use `vivado_ssh` for remote deployment outside AMD. LSF support for external customers is planned for a future release |
 | GUI mode may open on a virtual/VNC display instead of your native display | Tell the agent your display value, e.g. *"use display :0"* or *"use my $DISPLAY"*. Run `echo $DISPLAY` in your terminal to find it |
 | Long-running Vivado commands may cause the chat to stop waiting for a response | Ask the agent to *"check status"* or *"continue"*. This is an AI infrastructure limitation, not specific to the MCP server |
 | The agent may interpret "visualize the design" as taking GUI screenshots via `vivado_computer_use` | Disable the `vivado_computer_use` tool if you do not need automated GUI interaction |

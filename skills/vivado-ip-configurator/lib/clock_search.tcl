@@ -385,6 +385,7 @@ proc ipcfg::clocksearch::try_candidate {vlnv source targets candidate capacity s
     return [list $cells $observations {}]
 }
 
+# Search clocking-wizard configurations until the exact target rates are proven; CLOCK_SEARCH:PASS with evidence under evidence_dir.
 proc ipcfg::search_clock_config {vlnv source targets evidence_dir args} {
     # Options: -max_generators N (1) -min_attempts N (10) -max_attempts N (24)
     # -prefix NAME (clksearch) -isolate 0|1 (1). With -isolate 1 candidates are

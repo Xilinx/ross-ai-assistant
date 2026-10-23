@@ -10,7 +10,7 @@
       "name": "amd-ross-agentic-ai-assistant",
       "displayName": "AMD Ross Agentic AI Assistant",
       "description": "Agent Skills for Developing Products with AMD Embedded Technologies",
-      "version": "2026.9.1",
+      "version": "2026.10.1",
       "source": "./"
     }
   ]

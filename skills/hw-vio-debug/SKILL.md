@@ -9,7 +9,7 @@ description: >-
 license: MIT
 compatibility: Requires Vivado 2026.1+, hardware with a VIO core, and access to either vivado-mcp or chipscope-mcp.
 metadata:
-  version: "1.2.2"
+  version: "1.2.3"
   stage: beta
 ---
 
@@ -168,6 +168,7 @@ file tool creates missing parent directories, so do not shell out to `mkdir`
 | No VIO cores | `get_hw_vios` empty | Check: bitstream has debug cores? .ltx file associated? |
 | No hw_server | `get_hw_servers` empty | Guide: `connect_hw_server -url localhost:3121` |
 | VIO out-of-sync | Status shows "Outputs out-of-sync" | Run: `refresh_hw_vio -update_output_values [get_hw_vios]` |
+| Design stalls after a chipscope-mcp write | Write succeeded and readback matches, but inputs stop changing | Partial write. Write every output of the VIO in one call (see [Chipscope-mcp Fallback](#chipscope-mcp-fallback)) |
 
 ---
 
@@ -189,11 +190,34 @@ chipscope_device(action="select", device_selector="0")
 chipscope_scan(action="scan", ltx_path="<path-to-design>.ltx")
 ```
 
-**VIO — read inputs, drive outputs:**
+**VIO — read inputs:**
 ```
 chipscope_vio(action="read", vio_name="<vio-name>")
-chipscope_vio(action="write", vio_name="<vio-name>", probe_values={"<probe>": 1})
 ```
+
+**VIO — drive outputs: ALWAYS write every output probe of the VIO in one `write` call.**
+
+Some chipscope-mcp versions write only the probes you name. After programming, a write that names only some outputs can leave the VIO's other outputs driving wrong values and stall the design. The tool still returns success, and the readback shows the value you asked for. Writing every output in one call is correct on every version, with or without the fix.
+
+1. List the VIO's output probes (entries with `direction` `"out"`):
+   ```
+   chipscope_vio(action="probes", vio_name="<vio-name>")
+   ```
+2. Read their current values:
+   ```
+   chipscope_vio(action="read", vio_name="<vio-name>", probes=["<out1>", "<out2>", ...])
+   ```
+3. Write all of them in one call. Change only what the user asked for; pass the current value for every other output:
+   ```
+   chipscope_vio(action="write", vio_name="<vio-name>",
+                 probe_values={"<out1>": <current>, "<out2>": <new>, ...})
+   ```
+4. Confirm the change through an **input** probe the output drives (value moving, direction, activity). Do not use the write `readback` as proof.
+
+- A pulse (assert, then deassert) is two `write` calls, each with every output.
+- `action="ports_write"` has the same problem. If you use it, pass every `probe_out<N>` port.
+- `action="reset"` restores initial values but does not prevent this. Still write every output afterwards.
+- If the design already stalled after a partial write, one write of every output recovers it.
 
 Exact action/parameter names must be confirmed against the live chipscope-mcp tool schema before use — do not assume the names above are final without checking `chipscope-mcp/src/chipscope_mcp/tools/chipscope_vio.py`.
 

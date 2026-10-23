@@ -128,8 +128,3 @@ instead of a fixed bound.
 ## Success criteria
 
 Done when: the diff was applied, outer signature unchanged, the chain matches what the user signed off on, no fork-join, no RAM shared across stages, and the summary checklist was emitted. II/timing verification is the user's responsibility — if they report II regression, deadlock, or mismatch after `csynth_design`, walk back through steps 4-7 with them; the usual bugs are missing forwarding, mis-sized intermediate FIFO, or accidentally-shared RAM.
-
-## Machine-Readable Verdict
-
-When you have completed the pipeline decomposition, end your response with:
-PIPEDECOMP_VERDICT: DECOMPOSED

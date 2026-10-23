@@ -14,6 +14,5 @@ Start with setup, then the workflow guides for the tools you use. FAQ and Suppor
 | [Vitis AI workflows](vitis-ai/index.md) | AI-assisted quantization, compiler options, and custom-operator skills for AMD NPU |
 | [Vivado MCP Tools](reference/vivado-mcp-tools.md) | Reference for all Vivado MCP Server tools |
 | [Local Knowledge Base](local-kb/README.md) | Offline / air-gapped documentation search (RAG) |
-| [Changelog](changelog.md) | What is in this public release |
 | [FAQ](faq.md) | Setup, skills, troubleshooting, security, and privacy |
 | [Support](support.md) | AMD Adaptive Support forum and known limitations |

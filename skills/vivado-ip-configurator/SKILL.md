@@ -11,7 +11,7 @@ description: >
 license: MIT
 compatibility: Requires Vivado 2026.1, Vivado MCP and AMD documentation search MCP. Python 3.10+ is resolved automatically, preferring Vivado's bundled interpreter.
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   stage: beta
 ---
 
@@ -24,10 +24,9 @@ SPDX-License-Identifier: MIT
 
 ## Python quick reference and local API
 
-In the Vivado session, `ipcfg::help <word>` prints each matching helper's call shape,
-purpose and success/failure results, generated from the loaded code; use it instead of
-reading `lib/*.tcl`. The [local Tcl API inventory](../vivado-ipi-assembler/REFERENCE.md#local-tcl-api-inventory) adds
-gates and mutation ownership. Do not infer a helper's
+[FUNCTIONS.md](FUNCTIONS.md) lists every `ipcfg::` helper with its call shape, purpose and
+success/failure results, generated from the code and readable without Vivado. In the Vivado
+session, `ipcfg::help <word>` prints the same entry. Use these instead of reading `lib/*.tcl`. Do not infer a helper's
 contract from its name or parse every return as a status line.
 
 **Offline scripts:** use `lib/vivado_python.sh` (`vivado_python.cmd` on Windows).
@@ -547,11 +546,9 @@ vivado_execute("source -notrace <skill_dir>/lib/ipcfg.tcl")
 The helpers contain **no** IP names, VLNVs, or parameter names — every IP-specific value is
 passed in by you (discovered from doc search + Vivado feedback). Mutation helpers generally
 return status text; queries may return a dict, list, path or multiline display text.
-Use the [local API return contracts](../vivado-ipi-assembler/REFERENCE.md#local-tcl-api-inventory),
-not a universal `SUCCESS:` parser. Repeated source is guarded in the current library;
-never hot-reload changed code into an older live session. See
-[assembler lifecycle](../vivado-ipi-assembler/SKILL.md#setup-and-lifecycle) before resuming or
-transitioning from scratch to delivery; `init` resets gates and is not a reload check.
+Do not parse every return as a status line or with a universal `SUCCESS:` parser.
+Repeated source is guarded in the current library;
+never hot-reload changed code into an older live session. `init` resets gates and is not a reload check.
 
 | Helper | Purpose |
 |---|---|
@@ -574,6 +571,7 @@ transitioning from scratch to delivery; `init` resets gates and is not a reload 
 | `ipcfg::help ?<word or glob>?` | Call shape, purpose and `ok:`/`fail:` results of matching `ipcfg::`/`ipiasm::` helpers, generated from the loaded code |
 | `ipcfg::snapshot_all <cell>` | Capture the **entire** `CONFIG.*` dict in one pass (baseline for `config_diff`/`run_automation`) |
 | `ipcfg::config_diff <cell> <baseline> ?reqmap?` | Full-config diff after an apply. Requested keys → `EXACT/RESOLVED/REVERTED`; other moved keys → `CHANGED` (IP side effect). Returns `{key old new class ...}` |
+| `ipcfg::export_proven <abs_out_json> <entries>` | Record proven cells for replay (`role` = the binding key in `binding_snapshot.json`). Each entry is `{cell role apply_via create_cell\|ps_wizard\|board_preset evidence {files} spec_pointers {ptrs}}`. Diffs each `create_cell` cell against a fresh default sibling: user-set keys → `requested`, other non-default keys → `derived`, plus `board_owned` and `readback`. Writes the JSON (`ipcfg.proven/1`) and a review-only `.tcl`; write-once → `EXPORT:OK n= json= tcl=` or `EXPORT_FAIL:<why>`. |
 | `ipcfg::classify_change <want> <base> <cur> ?validset? ?tolerance?` | One-key verdict: `EXACT` / `RESOLVED` (numeric and within the `tolerance` the requirement supplied: `<abs>` or `<n>%`; never without one) / `NEAREST` (a **miss**: the IP snapped to a nearby legal value, reported as a diagnostic) / `REVERTED` (snapped to default/elsewhere); `UNCHANGED`/`CHANGED` when `want=""` |
 | `ipcfg::discover_params <vlnv> <keyword>` | Scoped introspection on a throwaway `create_ip` cell → `DISCOVER:CONFIG.<...> ...` (the **complete** param neighborhood matching a feature keyword). The one sanctioned `list_property` use; maps a requirement to the full sibling set (e.g. `CMN_NUM_LANES` **and** `C_DPHY_LANES`) |
 | `ipcfg::native_caps` / `ipcfg::has_native <feature>` | **Version gate (2026.1+).** Detects, once per session, whether the native VIVADO-23126 commands exist (by **command presence**, not version string — some `2026.1_*` builds report `2025.2.0`). `feature` = `dump_param_deps` \| `can_connect` → `0/1`. All native helpers below return `*_NA` when 0 so you fall back to the reactive path |
@@ -1032,12 +1030,6 @@ not sufficient*. Before reporting, confirm all of:
    treat it as `INTENT_FAIL` when a *competing* param better matches the doc description —
    then remap and re-apply. (Re-run `verify_intent` with `flag_no_change=0` once you have
    confirmed the grounding, so only hard reverts remain.)
-   **Exception — on/enable requirements:** when the requirement asks to turn something on,
-   enable or include it, and the param you chose already held that value by default, do
-   not accept the default yet. Run `ipcfg::discover_params <vlnv> <keyword>` with the
-   feature keyword (e.g. `REG_IF`) and read each match's description: one phrase often
-   covers one param per sub-block (controller, PHY, ...). Set every match the description
-   supports; accept `value_src=default` only when no sibling applies.
 3. `ipcfg::find_disabled <raw_output>` returned `""` (no non-fatal gated-param warning).
 4. **Ledger coverage:** every requirement from Step 1.5 is mapped to a param that is
    confirmed by 1–3. Any uncovered or suspect requirement downgrades the result and
@@ -1285,6 +1277,14 @@ report the attempt history and diagnostics, and ask for user intervention.
   integration-derived; grade `partial` and record it in `runtime_params`
 - **Do not pick a param by name similarity** — ground every requirement in the param's
   documented *description*; same-keyword params often implement different functions
+- **Do not pin or prove a value the connection generates** — some parameters are computed
+  from what the cell connects to when the design validates (`VALUE_SRC=PROPAGATED` afterwards).
+  Before then they read back as defaults, so pinning one "passes" only when the default happens
+  to match, and validation overwrites it later. `ipcfg::require` refuses a `PROPAGATED` key.
+  Check the IP's product guide for "propagated" or "generated by the master". For example, a
+  memory behind a BRAM controller gets its size and widths from the controller's width and
+  address range (PG326), and a reset's polarity comes from its input's driver. Set the source
+  of the value, then read the value back after validation
 - **Do not trust a stuck value that equals the default** for an enable/select requirement —
   `verify_intent` flags it `suspect-no-change`; it usually means you set the wrong param
 - **Do not grade `creation_only` on a disabled/ignored param** before running the

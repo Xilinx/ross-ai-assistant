@@ -10,7 +10,6 @@ metadata:
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
 SPDX-License-Identifier: MIT
 -->
-
 # HLS Line Buffer
 
 The LLM can generate a line buffer and window buffer structure on its own. This guide fills the gap on what it consistently gets wrong.
@@ -47,23 +46,3 @@ Check these before running csim/cosim:
 - `WARMUP = KRAD * COLS + KRAD` — uses the same COLS as col_ptr wrapping (if col_ptr wraps at COLS_POW2, WARMUP must also use COLS_POW2)
 - Zero tail is inline in the loop (`n < num_pixels` ternary), not a second loop
 - Output is gated on `n >= WARMUP` — no output written during warmup
-
-
----
-
-## Output Contract
-
-### When Asked to Generate/Implement Code with Line Buffer
-
-If the user asks you to **generate**, **implement**, or **create** code using a line buffer:
-
-1. Generate the complete implementation following Steps 1-2 above
-2. **If line buffer is successfully applied:** you must output the 
-
-```
-LINE_BUFFER_VERDICT: GENERATED_PASS
-```
-or if it did not apply, you must 
-```
-LINE_BUFFER_VERDICT: GENERATED_FAILED
-```

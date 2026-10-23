@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires Vivado (validated on 2025.2 and 2026.1) with the Vivado MCP server, and Python 3 for the bundled scripts. Third-party simulators need their own install, license, and version-matched compile_simlib libraries.
 metadata:
   author: AMD Skill Developer
-  version: "1.0.0"
+  version: "1.0.1"
   stage: beta
 allowed-tools: Read Bash Write
 ---
