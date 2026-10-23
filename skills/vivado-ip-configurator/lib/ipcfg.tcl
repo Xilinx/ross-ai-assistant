@@ -59,6 +59,8 @@ namespace eval ipcfg {
     # Board values a pinned requirement deliberately replaced: cell -> list of
     # {key want spec-statement} from require's board_override argument. A board
     variable board_override {}
+    # The {directory project BD} whose design ledger this process has loaded (ledger_load).
+    variable ledger_loaded {}
     # lib dir (resolved at source time) -> locate the cache engine + store
     variable dir [file dirname [file normalize [info script]]]
     variable cache_engine [file join $dir ipcfg_cache.py]
@@ -67,6 +69,9 @@ namespace eval ipcfg {
     # environment inputs so an explicit override takes effect immediately.
     variable python_runtime_cache [dict create]
     variable python_runtime_key {}
+    # Leading arguments that run each .py script under a profiler. Empty
+    # except while vivado-ipi-assembler's opt-in stage trace is recording.
+    variable python_wrapper {}
 }
 
 # --- Shared Python runtime ---------------------------------------------------
@@ -85,6 +90,7 @@ proc ipcfg::_python_env_key {} {
     return $key
 }
 
+# Forget the cached Python runtime so the next call re-resolves it.
 proc ipcfg::python_reset {} {
     variable python_runtime_cache
     variable python_runtime_key
@@ -235,6 +241,7 @@ proc ipcfg::_python_bundle_candidates {} {
     return $candidates
 }
 
+# Resolve and cache the Python runtime dict (executable, root, source, version); raises PYTHON_RUNTIME_FAIL.
 proc ipcfg::python_runtime {} {
     variable python_runtime_cache
     variable python_runtime_key
@@ -305,14 +312,21 @@ proc ipcfg::python_runtime {} {
     error "PYTHON_RUNTIME_FAIL:no Python 3.10+; vivado_roots={$roots} attempted={$attempted}"
 }
 
+# Path of the Python interpreter the skills use (Vivado's bundled one when available).
 proc ipcfg::python_exe {} {
     return [dict get [ipcfg::python_runtime] executable]
 }
 
+# Run the skills' Python with the given arguments and return its stdout; errors on a nonzero exit.
 proc ipcfg::python_exec {args} {
+    variable python_wrapper
+    if {[llength $python_wrapper] && [file extension [lindex $args 0]] eq ".py"} {
+        set args [concat $python_wrapper $args]
+    }
     return [ipcfg::_python_invoke [ipcfg::python_runtime] $args]
 }
 
+# Run an absolute .py script path with arguments through python_exec.
 proc ipcfg::python_script {script args} {
     if {[file pathtype $script] ne "absolute" || ![file isfile $script] ||
         [file extension $script] ne ".py"} {
@@ -321,6 +335,7 @@ proc ipcfg::python_script {script args} {
     return [ipcfg::python_exec $script {*}$args]
 }
 
+# Write a data dict to a new absolute evidence file (refuses to overwrite).
 proc ipcfg::write_evidence {path data} {
     if {[file pathtype $path] ne "absolute"} {
         error "EVIDENCE_FAIL:expected an absolute output path"
@@ -350,6 +365,7 @@ proc ipcfg::_message_snapshot {path} {
     return $text
 }
 
+# Classify a helper result string as PASS or FAIL against the expected success prefixes.
 proc ipcfg::result_status {raw prefixes} {
     if {[regexp -nocase {(^|[\s:;])([A-Z0-9_]*FAIL(ED|URE)?|ERROR|PENDING|PARTIAL)([\s:;]|$)|CRITICAL WARNING} $raw]} {return FAIL}
     if {![regexp {^([A-Z][A-Z0-9_]*):([^\s:]+)} $raw -> family token]} {return FAIL}
@@ -383,8 +399,11 @@ proc ipcfg::_message_counts {} {
     return $counts
 }
 
+# Run a Tcl body once and write a .tcldict receipt with its result and native Vivado messages; the evidence record for experiments.
 proc ipcfg::capture {path script {expect {}}} {
     if {[file pathtype $path] ne "absolute"} {error "CAPTURE_FAIL:absolute evidence path required"}
+    # Receipts are found by this extension; a receipt under another name is lost evidence.
+    if {[file extension $path] ne ".tcldict"} {error "CAPTURE_FAIL:evidence path must end in .tcldict: $path"}
     if {![llength [info commands write_messages]]} {error "CAPTURE_FAIL:Vivado write_messages unavailable"}
     set path [file normalize $path]
     set channel [open $path {WRONLY CREAT EXCL}]
@@ -451,6 +470,12 @@ proc ipcfg::capture {path script {expect {}}} {
                         # ('<ip>/bd_xxxx/...') is not a caller's write being dropped.
                         if {[regexp {IP_Flow 19-(7090|3374)\].*for IP '[^']*/[^']*'} $line]} {
                             dict lappend record subcore_ignored $line
+                        } elseif {[regexp {BD 41-702\].* on '([^']+)'} $line -> object]
+                                  && [llength [info commands get_bd_cells]]
+                                  && [get_bd_cells -quiet $object] eq ""} {
+                            # The same inside an IP's own generated design (axi_noc2 builds an
+                            # AI Engine adapter there): no cell of the caller's design is involved.
+                            dict lappend record subcore_ignored $line
                         } elseif {[regexp -nocase {ignoring|ignored|does not exist|BD 41-1276|IP_Flow 19-(7090|3374)} $line]} {set unsafe 1}
                     }
                     default {dict incr record critical_count; set unsafe 1}
@@ -497,6 +522,7 @@ proc ipcfg::capture {path script {expect {}}} {
     return $receipt
 }
 
+# One-line PYTHON:OK report of the resolved runtime, or the resolution error.
 proc ipcfg::python_status {} {
     if {[catch {set runtime [ipcfg::python_runtime]} detail]} {
         return $detail
@@ -516,6 +542,7 @@ proc ipcfg::set_mode {m} {
     set mode $m
     return "SUCCESS:mode=$mode"
 }
+# Return the current configurator mode (for example assemble).
 proc ipcfg::get_mode {} {
     variable mode
     return $mode
@@ -870,6 +897,7 @@ proc ipcfg::_suggest_parts {parts grade max} {
     return $out
 }
 
+# Run one create/configure/automation script against a cell, counted in the persistent per-cell attempt ledger.
 proc ipcfg::attempt_call {cell operation script} {
     set project [current_project]
     set design [current_bd_design]
@@ -956,6 +984,117 @@ proc ipcfg::_attempt_save {ledger state} {
     file rename -force $temporary $ledger
 }
 
+# --- design ledger: what was recorded when it happened, kept across processes ---
+# board_bind records which CONFIG keys the board file set, and require records what the
+# spec pinned. Neither can be re-derived from the design afterwards: IP integrator gives
+# a preset write the same USER strength as any other write (UG994, Parameter
+# Propagation). A lab stage can start in a new Vivado process, so each change is written
+# through to <project>/.ipcfg/ledger.tcldict beside the attempt ledger, one entry per BD.
+# ipiasm keeps its registered contracts in the same entry. Loading fills only registries
+# this process does not already hold, and only for the same project directory and BD.
+proc ipcfg::_ledger_context {} {
+    if {[catch {
+        set project [current_project]
+        set design [current_bd_design]
+        set directory [get_property DIRECTORY $project]
+    }] || $project eq "" || $design eq "" || $directory eq ""} {return {}}
+    return [list [file normalize $directory] $project $design]
+}
+
+proc ipcfg::_ledger_file {context} {
+    return [file join [lindex $context 0] .ipcfg ledger.tcldict]
+}
+
+# Apply one change to this BD's entry under the ledger lock. A failure is reported, not
+# raised: the in-process state is still right, only its survival of a restart is at risk.
+proc ipcfg::_ledger_update {script} {
+    set context [ipcfg::_ledger_context]
+    if {$context eq {}} {return ""}
+    set file [ipcfg::_ledger_file $context]
+    set lock ""
+    for {set try 0} {$try < 100} {incr try} {
+        if {![catch {file mkdir [file dirname $file]; set lock [open ${file}.lock {WRONLY CREAT EXCL}]}]} {break}
+        after 20
+    }
+    if {$lock eq ""} {
+        puts "LEDGER_WARNING:[file tail $file].lock held; this change is not persisted"
+        return ""
+    }
+    set code [catch {
+        set state {}
+        if {[file exists $file]} {
+            set channel [open $file r]
+            try { set state [read $channel] } finally { close $channel }
+            dict size $state
+        }
+        set key [lindex $context 2]
+        set entry [expr {[dict exists $state $key] ? [dict get $state $key] : {}}]
+        set entry [apply [list {entry} $script] $entry]
+        if {$entry eq {}} {
+            if {[dict exists $state $key]} {dict unset state $key}
+        } else {
+            dict set state $key [dict replace $entry context $context]
+        }
+        ipcfg::_attempt_save $file $state
+    } error]
+    close $lock
+    file delete ${file}.lock
+    if {$code} {puts "LEDGER_WARNING:[file tail $file]: $error; this change is not persisted"}
+    return ""
+}
+
+# Persist one registry (section) for the current BD.
+proc ipcfg::ledger_record {section value} {
+    ipcfg::_ledger_update [list dict set entry $section $value]
+}
+
+# Drop the current BD's entry: a new design, or one the plan just created.
+proc ipcfg::ledger_clear {} {
+    variable ledger_loaded
+    set ledger_loaded {}
+    ipcfg::_ledger_update {return {}}
+}
+
+# The current BD's recorded registries, or {} when none match this project and BD.
+proc ipcfg::ledger_entry {} {
+    set context [ipcfg::_ledger_context]
+    if {$context eq {}} {return {}}
+    set file [ipcfg::_ledger_file $context]
+    if {![file exists $file] || [catch {
+        set channel [open $file r]
+        try { set state [read $channel] } finally { close $channel }
+        set entry [dict get $state [lindex $context 2]]
+    }]} {return {}}
+    if {![dict exists $entry context] || [dict get $entry context] ne $context} {return {}}
+    return $entry
+}
+
+# Restore this BD's board ownership, board overrides and requirement pins into a process
+# that holds none of them. Idempotent per process and BD.
+proc ipcfg::ledger_load {} {
+    variable ledger_loaded
+    variable board_owned
+    variable board_override
+    variable req
+    set context [ipcfg::_ledger_context]
+    if {$context eq {} || $ledger_loaded eq $context} {return "LEDGER:current"}
+    set ledger_loaded $context
+    set entry [ipcfg::ledger_entry]
+    if {$entry eq {}} {return "LEDGER:none"}
+    set restored {}
+    foreach section {board_owned board_override req} {
+        if {[set $section] ne {} || ![dict exists $entry $section]} {continue}
+        # A cell the BD no longer has is stale evidence, not something to restore.
+        set kept [dict filter [dict get $entry $section] script {cell value} {
+            expr {[get_bd_cells -quiet $cell] ne ""}
+        }]
+        if {$kept eq {}} {continue}
+        set $section $kept
+        lappend restored "$section=[dict size $kept]"
+    }
+    return "LEDGER:loaded [join $restored { }]"
+}
+
 # --- Phase 2: create the cell (idempotent) ---
 # The ipdef's SUPPORTED_PARTS predicts create-time [BD 5-683]; refuse before the
 # attempt and name catalog IP with a similar display name that this part supports.
@@ -984,6 +1123,7 @@ proc ipcfg::_part_mismatch {vlnv} {
     return "$def is not supported on $part (SUPPORTED_PARTS excludes it; create_bd_cell would fail with BD 5-683); same-function IP this part supports: {[join $alternatives { }]} -- choose from these or run ipcfg::ip_availability"
 }
 
+# Create one BD cell from a VLNV if absent, refusing a VLNV this part does not support; counted as an attempt.
 proc ipcfg::create_cell {vlnv cell} {
     if {[llength [get_bd_cells -quiet $cell]] == 0} {
         set mismatch [ipcfg::_part_mismatch $vlnv]
@@ -1046,7 +1186,9 @@ proc ipcfg::_config_satisfied {cell desired} {
     return 1
 }
 
+# Apply one CONFIG -dict to an existing cell atomically; refuses board-owned keys unless allow_board is 1.
 proc ipcfg::apply_dict {cell d {allow_board 0}} {
+    ipcfg::ledger_load
     if {[llength $d] == 0} { return "SUCCESS:no-params" }
     if {!$allow_board} {
         set clash [ipcfg::_board_conflicts $cell $d]
@@ -1445,8 +1587,8 @@ proc ipcfg::audit_intent {cell reqmap {tolerances {}}} {
 #            other key must read back exactly
 #   board_override : the spec statement that names a value the board file set
 #            ("spec camera0: RAW12 at 1500 Mbps"); empty = board values are refused
-# Re-pinning a key is allowed but never silent: it returns REQ:REPINNED so a
-# recovery that genuinely changes the spec is visible in the transcript.
+# Re-pinning a key is allowed but never silent: the REQ:pinned+applied result then
+# names it (REPINNED k(a->b)), so a recovery that changes the spec is visible.
 #
 # THIS ALSO WRITES. Recording without writing was a trap with no legitimate
 # use: a run pinned four parameters on each of two camera receivers, wrote
@@ -1458,6 +1600,7 @@ proc ipcfg::audit_intent {cell reqmap {tolerances {}}} {
 # base value is captured first, so a later drift is still caught by the audit.
 proc ipcfg::require {cell d {reason ""} {tolerances {}} {board_override ""}} {
     variable req
+    ipcfg::ledger_load
     if {[llength $d] % 2 != 0} { return "REQ_ERR:odd-length dict for $cell" }
     if {[llength $tolerances] % 2 != 0} { return "REQ_ERR:odd-length tolerances for $cell" }
     foreach {k t} $tolerances {
@@ -1465,6 +1608,20 @@ proc ipcfg::require {cell d {reason ""} {tolerances {}} {board_override ""}} {
         if {![ipcfg::_tolerance_ok $t] || ![ipcfg::_is_num [dict get $d $k]]} {
             return "REQ_ERR:tolerance '$t' for $k must be <abs> or <n>% on a numeric value"
         }
+    }
+    # A propagated value follows the cell's connections and is read-only. Pinning one
+    # "passes" only while the wiring already happens to give it, so a proof made that
+    # way fails on a fresh cell; it is asserted after propagation, never written.
+    set propagated {}
+    foreach {k v} $d {
+        set source ""
+        catch {set source [get_property $k.VALUE_SRC [get_bd_cells -quiet $cell]]}
+        if {$source eq "PROPAGATED"} { lappend propagated $k }
+    }
+    if {[llength $propagated]} {
+        return "REQ_FAIL:$cell [join $propagated { }] VALUE_SRC=PROPAGATED: derived from the cell's\
+ connections and read-only, so it cannot be pinned or written -> drop it from the dict, make the\
+ connection that gives it, and assert it after propagation with ipiasm::check_cell_config"
     }
     set existing [expr {[dict exists $req $cell] ? [dict get $req $cell] : {}}]
     set repinned {}
@@ -1492,6 +1649,7 @@ proc ipcfg::require {cell d {reason ""} {tolerances {}} {board_override ""}} {
         lappend existing [list $k $v $base $reason $tolerance]
     }
     dict set req $cell $existing
+    ipcfg::ledger_record req $req
     set n [llength $existing]
     set note ""
     if {[llength $repinned] > 0} { set note " REPINNED [join $repinned { }]" }
@@ -1518,6 +1676,7 @@ board_override set to that spec statement: ipcfg::require <cell> <dict> <reason>
                 lappend names [ipcfg::_key_leaf $k]
             }
             dict set ::ipcfg::board_override $cell $kept
+            ipcfg::ledger_record board_override $::ipcfg::board_override
             return "REQ:pinned+applied [expr {[llength $d] / 2}] (total $n for\
 $cell)$note -- OVERRODE the board preset on [join $names { }] because\
 '$board_override'; audit_board will report this as an override"
@@ -1527,12 +1686,21 @@ $cell)$note -- OVERRODE the board preset on [join $names { }] because\
         return "REQ_FAIL:$cell pinned but NOT written ($n pinned)$note\n  ->\
 $applied"
     }
+    # A write can re-resolve a board-bound IP and silently drop values its board binding set
+    # (raising an axi_noc2's NUM_MI after board memory is attached drops DDRMC5 settings).
+    set board [ipcfg::audit_board [string trimleft $cell /]]
+    if {[string match "BOARD_FAIL:*" $board]} {
+        return "REQ_FAIL:$cell written, but the write dropped values its board binding\
+set -> make this change before the board binding (e.g. before attach_board_memory), not\
+after it\n  $board"
+    }
     return "REQ:pinned+applied [expr {[llength $d] / 2}] (total $n for\
 $cell)$note"
 }
 
 # Dump the ledger (one line per requirement) for the named cell, or all cells.
 proc ipcfg::requirements_data {{cell ""}} {
+    ipcfg::ledger_load
     variable req
     set cells [expr {$cell eq "" ? [dict keys $req] : [list $cell]}]
     set records {}
@@ -1546,6 +1714,7 @@ proc ipcfg::requirements_data {{cell ""}} {
     return $records
 }
 
+# Display the pinned requirements (per cell or all); use requirements_data for machine reads.
 proc ipcfg::requirements {{cell ""}} {
     variable req
     set cells [expr {$cell eq "" ? [dict keys $req] : [list $cell]}]
@@ -1565,6 +1734,7 @@ proc ipcfg::requirements {{cell ""}} {
 # Audit the FINAL design against everything pinned: exact, unless the
 # requirement itself carries a tolerance. Run this last, after the design validates.
 proc ipcfg::audit_requirements {{cell ""}} {
+    ipcfg::ledger_load
     variable req
     set cells [expr {$cell eq "" ? [dict keys $req] : [list $cell]}]
     set bad {}; set n 0
@@ -1598,24 +1768,32 @@ proc ipcfg::audit_requirements {{cell ""}} {
 # preset landed), with one restore dict so a single ipcfg::require repairs all.
 # Returns "" when nothing drifted, else "PINNED_RESET:<n> <k>=<cur>(want <v>) ... restore={..}".
 proc ipcfg::pinned_reset {cell} {
+    set drift [ipcfg::pinned_drift $cell]
+    if {![llength [dict get $drift items]]} { return "" }
+    return "PINNED_RESET:[llength [dict get $drift items]] [join [dict get $drift items] { }]\
+restore={[dict get $drift restore]}"
+}
+
+# Pinned requirements on <cell> that no longer hold, as data:
+# {items {<key>=<current>(want <value>) ...} restore {<key> <value> ...}}.
+proc ipcfg::pinned_drift {cell} {
     variable req
+    set drift [dict create items {} restore {}]
     set name ""
     foreach candidate [list $cell [string trimleft $cell /] "/[string trimleft $cell /]"] {
         if {[dict exists $req $candidate]} { set name $candidate; break }
     }
-    if {$name eq ""} { return "" }
+    if {$name eq ""} { return $drift }
     set object [get_bd_cells -quiet $cell]
-    if {$object eq ""} { return "" }
-    set items {}; set restore {}
+    if {$object eq ""} { return $drift }
     foreach entry [dict get $req $name] {
         lassign $entry key want base reason tolerance
         if {[catch {get_property $key $object} current]} { set current "(missing)" }
         if {[ipcfg::classify_change $want $base $current {} $tolerance] in {EXACT RESOLVED}} { continue }
-        lappend items "[ipcfg::_key_leaf $key]=${current}(want $want)"
-        lappend restore $key $want
+        dict lappend drift items "[ipcfg::_key_leaf $key]=${current}(want $want)"
+        dict lappend drift restore $key $want
     }
-    if {![llength $items]} { return "" }
-    return "PINNED_RESET:[llength $items] [join $items { }] restore={$restore}"
+    return $drift
 }
 
 # Commands a script calls that do not exist in this session, found without running it:
@@ -1624,6 +1802,21 @@ proc ipcfg::script_check {path} {
     if {[catch {set channel [open $path r]} err]} { return "SCRIPT_CHECK_FAIL:cannot read $path: $err" }
     set text [read $channel]
     close $channel
+    # An unbalanced brace or quote is reported by the sourcing parser as a bare
+    # "missing close-brace" with no line, costing a whole repair cycle. Locate it
+    # here instead: the last line at which the script was still parseable is the
+    # line the unclosed construct was opened on or before.
+    if {![info complete $text]} {
+        set lines [split $text \n]
+        set partial ""
+        set opened 0
+        for {set index 0} {$index < [llength $lines]} {incr index} {
+            append partial [lindex $lines $index] \n
+            if {[info complete $partial]} { set opened [expr {$index + 2}] }
+        }
+        return "SCRIPT_CHECK_FAIL:[file tail $path] is not a complete Tcl script -- unclosed brace,\
+            bracket or quote opened at or after line $opened. Nothing was run."
+    }
     set code {}
     foreach line [split $text \n] {
         if {![regexp {^\s*#} $line]} { lappend code $line }
@@ -1666,16 +1859,19 @@ proc ipcfg::source_reported {path} {
 proc ipcfg::forget_requirements {{cell ""}} {
     variable req
     variable board_override
+    ipcfg::ledger_load
     if {$cell eq ""} {
         set req {}
         set board_override {}
-        return "REQ:cleared all"
+    } else {
+        if {[dict exists $req $cell]} { set req [dict remove $req $cell] }
+        if {[dict exists $board_override $cell]} {
+            set board_override [dict remove $board_override $cell]
+        }
     }
-    if {[dict exists $req $cell]} { set req [dict remove $req $cell] }
-    if {[dict exists $board_override $cell]} {
-        set board_override [dict remove $board_override $cell]
-    }
-    return "REQ:cleared $cell"
+    ipcfg::ledger_record req $req
+    ipcfg::ledger_record board_override $board_override
+    return [expr {$cell eq "" ? "REQ:cleared all" : "REQ:cleared $cell"}]
 }
 
 # ============================================================================
@@ -1752,6 +1948,7 @@ proc ipcfg::_cfg_snapshot {c} {
 # retries once, reporting which enabler it needed.
 proc ipcfg::board_bind {cell binding {extra {}} {reason "board preset"}} {
     variable board_owned
+    ipcfg::ledger_load
     set c [get_bd_cells -quiet $cell]
     if {$c eq ""} { return "BOARD_FAIL:no such cell $cell" }
     if {[llength $binding] % 2 != 0} { return "BOARD_FAIL:odd-length binding for $cell" }
@@ -1806,6 +2003,7 @@ proc ipcfg::board_bind {cell binding {extra {}} {reason "board preset"}} {
         set owned [lindex [dict get $board_owned $cell] 0]
     }
     dict set board_owned $cell [list $owned $reason]
+    ipcfg::ledger_record board_owned $board_owned
     set note ""
     if {[llength $flipped] > 0} { set note " (needed enabler [join $flipped { }])" }
     set reset [ipcfg::pinned_reset $cell]
@@ -1893,6 +2091,7 @@ proc ipcfg::_board_merge {cell d} {
 
 # The keys the board wrote for this cell (names only), for callers and gates.
 proc ipcfg::board_owned {{cell ""}} {
+    ipcfg::ledger_load
     variable board_owned
     set cells [expr {$cell eq "" ? [dict keys $board_owned] : [list $cell]}]
     set out {}
@@ -1910,6 +2109,7 @@ proc ipcfg::board_owned {{cell ""}} {
 # bind means something hand-wrote over the board file, which is the defect this
 # whole section exists to catch.
 proc ipcfg::audit_board {{cell ""}} {
+    ipcfg::ledger_load
     variable board_owned
     variable board_override
     set cells [expr {$cell eq "" ? [dict keys $board_owned] : [list $cell]}]
@@ -1977,11 +2177,17 @@ proc ipcfg::audit_board {{cell ""}} {
     return "BOARD:OK $n/$n board-owned values intact$note"
 }
 
+# Clear the board-ownership ledger for one cell, or for all cells with no argument.
 proc ipcfg::forget_board {{cell ""}} {
     variable board_owned
-    if {$cell eq ""} { set board_owned {}; return "BOARD:cleared all" }
-    if {[dict exists $board_owned $cell]} { set board_owned [dict remove $board_owned $cell] }
-    return "BOARD:cleared $cell"
+    ipcfg::ledger_load
+    if {$cell eq ""} {
+        set board_owned {}
+    } elseif {[dict exists $board_owned $cell]} {
+        set board_owned [dict remove $board_owned $cell]
+    }
+    ipcfg::ledger_record board_owned $board_owned
+    return [expr {$cell eq "" ? "BOARD:cleared all" : "BOARD:cleared $cell"}]
 }
 
 # --- Disabled/ignored scan: catch gated params that catch{} returns 0 for ---
@@ -2160,6 +2366,157 @@ proc ipcfg::config_diff {cell baseline {reqmap {}}} {
     return $out
 }
 
+# --- Proven-config export (Stage 2 proof -> Stage 4 exact replay) ---
+
+# Write each proven cell's configuration to one JSON fragment plus a review-only
+# Tcl copy beside it (<out>.tcl, never sourced). IP-agnostic.
+#   entries: list of dicts {cell <inst> role <role> apply_via create_cell|ps_wizard|board_preset
+#            evidence {<abs capture path> ...} spec_pointers {<json pointer> ...}}
+# requested = the ipcfg::require ledger plus user-set non-default keys (what
+# create_cell must replay); derived = every other non-default key (IP-computed or
+# propagated) and is never pinned. ps_wizard/board_preset cells export the ledger
+# and readback only -- the preset/wizard owns the rest.
+# Returns "EXPORT:OK n=<cells> json=<path> tcl=<path>" or "EXPORT_FAIL:<why>".
+proc ipcfg::export_proven {out_json entries} {
+    ipcfg::ledger_load
+    variable board_override
+    if {[file pathtype $out_json] ne "absolute"} { return "EXPORT_FAIL:absolute output path required" }
+    set out_json [file normalize $out_json]
+    set out_tcl "[file rootname $out_json].tcl"
+    foreach p [list $out_json $out_tcl] {
+        if {[file exists $p]} { return "EXPORT_FAIL:output exists (one export per group): $p" }
+    }
+    if {![llength $entries]} { return "EXPORT_FAIL:no cells to export" }
+    set cells_json {}
+    set tcl_lines [list "# Review copy of [file tail $out_json]; never sourced. Stage 4 replays the JSON via proven_to_plan.py."]
+    set roles {}
+    foreach e $entries {
+        foreach f {cell role apply_via} {
+            if {![dict exists $e $f] || [dict get $e $f] eq ""} { return "EXPORT_FAIL:entry missing $f: $e" }
+        }
+        set cell [dict get $e cell]
+        set role [dict get $e role]
+        set via  [dict get $e apply_via]
+        if {$via ni {create_cell ps_wizard board_preset}} { return "EXPORT_FAIL:$cell apply_via '$via' (expected create_cell|ps_wizard|board_preset)" }
+        if {$role in $roles} { return "EXPORT_FAIL:duplicate role $role" }
+        lappend roles $role
+        set obj [get_bd_cells -quiet $cell]
+        if {[llength $obj] != 1} { return "EXPORT_FAIL:$cell not found in the open block design" }
+        set vlnv [get_property VLNV $obj]
+        set evidence [expr {[dict exists $e evidence] ? [dict get $e evidence] : {}}]
+        if {![llength $evidence]} { return "EXPORT_FAIL:$cell has no capture evidence; export only what ipcfg::capture proved" }
+        foreach p $evidence {
+            if {[file pathtype $p] ne "absolute" || ![file isfile $p]} { return "EXPORT_FAIL:$cell evidence not found: $p" }
+        }
+        set pointers [expr {[dict exists $e spec_pointers] ? [dict get $e spec_pointers] : {}}]
+
+        set requested {}
+        foreach r [ipcfg::requirements_data $cell] {
+            dict set requested [dict get $r key] [dict get $r expected]
+        }
+        set owned {}
+        foreach s [ipcfg::board_owned $cell] { lappend owned [lindex $s 1] }
+        set overrides {}
+        if {[dict exists $board_override $cell]} {
+            foreach ov [dict get $board_override $cell] { dict set overrides [lindex $ov 0] [lindex $ov 2] }
+        }
+
+        # Non-default keys, measured against an unconfigured sibling of the same VLNV.
+        set derived {}
+        if {$via eq "create_cell"} {
+            # BD names may not contain "__".
+            set sib "${cell}_proven_default"
+            if {[catch {create_bd_cell -type ip -vlnv $vlnv $sib} err]} {
+                return "EXPORT_FAIL:$cell default sibling not created: $err"
+            }
+            try {
+                set base [ipcfg::snapshot_all $sib]
+            } finally {
+                delete_bd_objs [get_bd_cells -quiet $sib]
+            }
+            foreach {k old new cls} [ipcfg::config_diff $cell $base] {
+                # Component_Name only differs because the instance names differ.
+                if {[dict exists $requested $k] || $k eq "CONFIG.Component_Name"} { continue }
+                set src ""
+                catch {set src [get_property $k.VALUE_SRC $obj]}
+                if {[string tolower $src] eq "user"} {
+                    dict set requested $k $new
+                } else {
+                    dict set derived $k [dict create default $old value $new value_src $src]
+                }
+            }
+        }
+
+        set readback {}
+        foreach k [lsort -unique [concat [dict keys $requested] [dict keys $derived] $owned]] {
+            if {![catch {get_property $k $obj} v]} { dict set readback $k $v }
+        }
+        set derived_json {}
+        dict for {k d} $derived { lappend derived_json $k [ipcfg::_json_strmap $d] }
+        lappend cells_json [ipcfg::_json_obj [list \
+            role           [ipcfg::_json_str $role] \
+            instance       [ipcfg::_json_str $cell] \
+            vlnv           [ipcfg::_json_str $vlnv] \
+            apply_via      [ipcfg::_json_str $via] \
+            requested      [ipcfg::_json_strmap $requested] \
+            derived        [ipcfg::_json_obj $derived_json] \
+            board_owned    [ipcfg::_json_strlist $owned] \
+            board_override [ipcfg::_json_strmap $overrides] \
+            readback       [ipcfg::_json_strmap $readback] \
+            spec_pointers  [ipcfg::_json_strlist $pointers] \
+            evidence       [ipcfg::_json_strlist [lmap p $evidence {file normalize $p}]]]]
+
+        lappend tcl_lines "" "# role=$role apply_via=$via"
+        if {$via eq "create_cell"} { lappend tcl_lines [list ipiasm::create_cell $vlnv $cell $requested] }
+        if {[dict size $requested]} { lappend tcl_lines [list ipiasm::check_cell_config $cell $requested] }
+    }
+    set part ""; set board ""
+    catch {set part [get_property PART [current_project]]}
+    catch {set board [get_property BOARD_PART [current_project]]}
+    set doc "[ipcfg::_json_obj [list \
+        schema     [ipcfg::_json_str ipcfg.proven/1] \
+        part       [ipcfg::_json_str $part] \
+        board_part [ipcfg::_json_str $board] \
+        cells      "\[[join $cells_json {, }]\]"]]\n"
+    if {[catch {file mkdir [file dirname $out_json]} err]} { return "EXPORT_FAIL:cannot create [file dirname $out_json]: $err" }
+    foreach {p text} [list $out_json $doc $out_tcl "[join $tcl_lines \n]\n"] {
+        set channel [open $p {WRONLY CREAT EXCL}]
+        try {
+            fconfigure $channel -encoding utf-8 -translation lf
+            puts -nonewline $channel $text
+        } finally { close $channel }
+    }
+    return "EXPORT:OK n=[llength $entries] json=$out_json tcl=$out_tcl"
+}
+
+proc ipcfg::_json_str {s} {
+    variable json_escape_map
+    if {![info exists json_escape_map]} {
+        set json_escape_map [list \\ \\\\ \" \\\"]
+        for {set i 0} {$i < 32} {incr i} {
+            lappend json_escape_map [format %c $i] [format "\\u%04x" $i]
+        }
+    }
+    return "\"[string map $json_escape_map $s]\""
+}
+
+# pairs: {key <already-encoded JSON value> ...}
+proc ipcfg::_json_obj {pairs} {
+    set parts {}
+    foreach {k v} $pairs { lappend parts "[ipcfg::_json_str $k]: $v" }
+    return "\{[join $parts {, }]\}"
+}
+
+proc ipcfg::_json_strmap {d} {
+    set pairs {}
+    foreach {k v} $d { lappend pairs $k [ipcfg::_json_str $v] }
+    return [ipcfg::_json_obj $pairs]
+}
+
+proc ipcfg::_json_strlist {items} {
+    return "\[[join [lmap x $items {ipcfg::_json_str $x}] {, }]\]"
+}
+
 # --- System-intent heuristic (idea #5) ---
 # Does the prompt describe a SUBSYSTEM realized through block automation / a
 # wizard rather than plain standalone CONFIG.* props (integrated memory
@@ -2221,6 +2578,7 @@ proc ipcfg::_addr_space_count {cell} {
     return $n
 }
 
+# Apply one bd_rule to a cell after checking the -config against the rule's live option schema; fills omitted keys with defaults.
 proc ipcfg::run_automation {cell rule {config {}} {baseline {}}} {
     # apply_rule reports only the first missing/illegal option per attempt and
     # silently ignores undeclared keys; check the whole -config against the
@@ -2976,7 +3334,9 @@ proc ipcfg::_help_purposes {} {
     variable help_purposes
     if {[info exists help_purposes]} { return $help_purposes }
     set help_purposes {}
-    set dirs [list [file dirname [info script]] $::ipcfg::dir]
+    # Library directories only: [info script] here is whatever script is running
+    # now, and a caller's own .tcl files must not redefine a helper's purpose.
+    set dirs [list $::ipcfg::dir]
     if {[info exists ::ipiasm::library_dir]} { lappend dirs $::ipiasm::library_dir }
     foreach path [lsort -unique [concat {*}[lmap d [lsort -unique $dirs] {glob -nocomplain -directory $d *.tcl}]]] {
         set channel [open $path r]
@@ -2985,6 +3345,8 @@ proc ipcfg::_help_purposes {} {
         set comment {}
         foreach line $lines {
             if {[regexp {^\s*#\s?(.*)$} $line -> text]} {
+                # Section banners are not a helper's purpose.
+                if {[regexp {^[=#*]{4,}} [string trim $text]]} { continue }
                 lappend comment [string trim [regsub -all {^-+\s*|\s*-+$} [string trim $text] {}]]
             } elseif {[regexp {^proc\s+(?:::)?((?:ipcfg|ipiasm)::[A-Za-z0-9_]+)\s} $line -> name]} {
                 set purpose [lsearch -all -inline -not -exact $comment {}]
@@ -2998,6 +3360,7 @@ proc ipcfg::_help_purposes {} {
     return $help_purposes
 }
 
+# Call shape, purpose and ok/fail result tokens for every ipcfg::/ipiasm:: helper matching a word.
 proc ipcfg::help {{pattern *}} {
     if {![string match *::* $pattern]} { set pattern "*$pattern*" }
     set purposes [ipcfg::_help_purposes]
@@ -3025,7 +3388,7 @@ proc ipcfg::help {{pattern *}} {
             }
         }
         set ok {}; set fail {}
-        foreach {- family token} [regexp -all -inline {return "([A-Z][A-Z0-9_]*):([A-Za-z+]*)} [info body ::$name]] {
+        foreach {- family token} [regexp -all -inline {return "([A-Z][A-Z0-9_]*):([A-Za-z0-9_+]*)} [info body ::$name]] {
             if {[regexp {FAIL|ERR} $family]} { lappend fail $family } else { lappend ok [expr {$token eq "" ? "$family:" : "$family:$token"}] }
         }
         lappend out $call
@@ -3039,6 +3402,7 @@ proc ipcfg::help {{pattern *}} {
     return [join $out \n]
 }
 
+# Configurator workflow index: numbered STEPS with no argument, matching glossary lines for a word.
 proc ipcfg::api {{pat ""}} {
     set steps {STEPS (2026.1: run has_native first; 0 -> use the 2025.2 column)
  0 part      ensure_part / restore_part when the IP needs another device family
@@ -3577,6 +3941,7 @@ proc ipcfg::cache_get {ip feature} {
     } out]} { return "" }
     return [string trim $out]
 }
+# Record one learned ip/feature -> parameter fact in the cache; returns CACHE_ERR on failure.
 proc ipcfg::cache_put {ip feature param shape enabler value_src doc ipver} {
     variable cache_engine
     variable cache_file
@@ -3588,6 +3953,7 @@ proc ipcfg::cache_put {ip feature param shape enabler value_src doc ipver} {
     }
     return [string trim $out]
 }
+# Dump the learned IP-parameter cache as JSON ({} when unavailable).
 proc ipcfg::cache_dump {} {
     variable cache_engine
     variable cache_file

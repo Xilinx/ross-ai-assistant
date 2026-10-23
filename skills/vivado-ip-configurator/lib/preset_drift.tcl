@@ -107,6 +107,7 @@ proc ipcfg::preset::live_proc_names {cell} {
     return $names
 }
 
+# Compare a board-bound cell's live values with its board preset; PRESET:OK or PRESET_DRIFT listing each changed key.
 proc ipcfg::preset_drift {cell} {
     # Returns PRESET:OK n=<checked> or PRESET_DRIFT:<n> <key>=<actual>(preset <value>) ...
     set code [catch {

@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 ## Tested clients and models
 
-| Client | Model | Date |
+| Client | Models Tested | Date |
 | --- | --- | --- |
-| Claude Code | Claude Sonnet 5 | 2026-09-25 |
+| Claude Code | Claude Opus 5.5 | 2026-10-18 |
+| Claude Code | Claude Sonnet 5 | 2026-10-18 |
+| Copilot | GPT-6 Sol | 2026-10-14 |

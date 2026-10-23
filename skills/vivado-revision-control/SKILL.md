@@ -12,7 +12,7 @@ description: >
   "automate project recreation", or "set up Git for my FPGA design".
 license: MIT
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 <!--
@@ -288,7 +288,13 @@ RevisionControl/
 │   │                     # skipped here entirely (see below)
 │   ├── BD/               # write_bd_tcl scripts — non-preserved BDs only
 │   │                     # (no .bd copied); preserved BDs are skipped here
-│   │                     # entirely, with no Tcl fallback (see below)
+│   │                     # entirely: a preserved BD never gets a BD Tcl
+│   │                     # (design.tcl-style), and any stale <bd>.tcl /
+│   │                     # <ip>.tcl left by an earlier export is deleted.
+│   │                     # Only exception: a BD/IP selected for preservation
+│   │                     # that has no .gen yet (or lives outside the
+│   │                     # project) is NOT preserved -- it warns and is
+│   │                     # exported as a normal non-preserved item.
 │   ├── Simulation/       # Testbenches
 │   ├── Data/             # .mem, .coe, .mif, .hex, .elf, .csv files
 │   ├── Scripts/          # Tcl pre/post hook scripts

@@ -1000,7 +1000,15 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
         # to the existing TCL-regeneration path below unchanged.
         if {[lsearch -exact $preserve_ip_names $ip_name] >= 0} {
             set xci_src {}
-            catch {set xci_src [lindex [get_files -quiet -of_objects [get_ips $ip_name] -filter {FILE_TYPE == "IP"}] 0]}
+            # IP_FILE is the .xci itself. Do NOT use `get_files -of_objects
+            # [get_ips ...] -filter {FILE_TYPE == "IP"}`: once an IP has been
+            # generated, -of_objects returns its generated output files (.vho,
+            # synth/*.vhd, ...) and never the .xci, so that query comes back
+            # empty exactly when there is something worth preserving.
+            catch {set xci_src [get_property IP_FILE [get_ips $ip_name]]}
+            if {$xci_src eq ""} {
+                catch {set xci_src [lindex [get_files -quiet -filter {FILE_TYPE == "IP"} ${ip_name}.xci] 0]}
+            }
             # Record the .xci's path relative to ${proj_name}.srcs itself
             # (e.g. sources_1/ip/<name>/<name>.xci) rather than assuming
             # sources_1 -- an IP's source can live in a different fileset
@@ -1039,6 +1047,10 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
                     dict incr export_stats "preserved_ip_outputs"
                     lappend preserved_ip_names $ip_name
                     set preserved_ip_rel_path($ip_name) $ip_rel
+                    # A preserved IP must never leave an ip.tcl behind -- remove
+                    # any stale one from a previous non-preserving export into
+                    # this same export_dir.
+                    file delete -force -- "$export_dir/Sources/IP/${ip_name}.tcl"
                 }
             } elseif {$xci_src ne "" && [file exists $xci_src]} {
                 puts "    WARNING: .xci source for IP $ip_name lives outside the project directory (Remote/Mixed scenario) -- cache preservation not possible, falling back to standard export"
@@ -1187,6 +1199,11 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
                     dict incr export_stats "preserved_bd_outputs"
                     lappend preserved_bd_names $bd_name
                     set preserved_bd_rel_path($bd_name) $bd_rel
+                    # A preserved BD must never leave a BD reconstruction Tcl
+                    # (<bd>.tcl, a.k.a. design.tcl) behind -- remove any stale
+                    # one from a previous non-preserving export into this same
+                    # export_dir.
+                    file delete -force -- "$export_dir/Sources/BD/${bd_name}.tcl"
 
                     # Same wrapper-location detection as the standard path below,
                     # so Step 8 of generate_build_script still knows to make_wrapper

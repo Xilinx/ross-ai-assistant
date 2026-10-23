@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 # Examples
 
-Reference designs and walkthroughs for agentic FPGA workflows. Each example demonstrates a task or a comparison of skill-guided and direct tool use.
+Reference designs for FPGA and Vitis workflows. Each example gives you a request, required input, and expected result.
 
 ---
 
@@ -16,6 +16,7 @@ Reference designs and walkthroughs for agentic FPGA workflows. Each example demo
 | [`edge-detection/`](edge-detection/) | MATLAB Sobel RGB edge detector | `/matlab-to-cpp`, `/hls-architect`, `/hls-optimize` | 4400 FPS @ 3.3 ns |
 | [`globaltonemapping/`](globaltonemapping/) | C++ Vitis Vision L1 baseline | `/hls-optimize` | 2x latency reduction |
 | [`vivado-ip-configurator/isp-skill-comparison/`](vivado-ip-configurator/isp-skill-comparison/) | High-level ISP configuration request | `vivado-ip-configurator`, compared with direct MCP use | 15 independent streaming inputs; recorded Luna and Sol results |
+| [`vitis-embedded/`](vitis-embedded/) | Embedded platform, app, and boot image | `vitis-embedded` | VCK190 standalone, ZCU102 Linux, Versal PDI |
 
 ---
 

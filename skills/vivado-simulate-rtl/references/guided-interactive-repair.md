@@ -68,8 +68,12 @@ For a runtime failure, select:
 
 Discover actual paths from the live snapshot. Do not use recursive waveform
 capture by default. Create a uniquely named FAIL wave configuration when the
-backend supports it, and preserve a signal manifest even when the run is
-headless.
+backend supports it (XSim `.wcfg`, Questa/ModelSim `.wlf`, and so on), and
+preserve a signal manifest even when the run is headless. When the target
+simulator is not XSim, follow that backend's reference
+([questa.md](questa.md), [modelsim.md](modelsim.md), …) for launch,
+transcript location and waveform database; the diagnosis and approval-gate
+steps below are the same.
 
 Record:
 

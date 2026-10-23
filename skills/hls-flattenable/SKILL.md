@@ -113,7 +113,6 @@ If the user asks you to **fix** or **make flattenable** a non-flattenable loop n
    // fixed code here
    ```
    ````
-4. End your response with this JSON: {"verdict": "FIXED_FLATTENABLE", "explanation": "reason"} or if cannot fix: {"verdict": "COULD_NOT_FIX", "explanation": "reason"}
 
 ---
 
