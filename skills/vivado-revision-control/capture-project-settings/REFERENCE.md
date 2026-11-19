@@ -28,7 +28,7 @@ capture_project_settings "RevisionControl/Scripts/project_settings.tcl"
 
 | Category | Properties |
 |----------|-----------|
-| Project | PART, BOARD_PART, TARGET_LANGUAGE, PR_FLOW, SEGMENTED_CONFIGURATION |
+| Project | PART, BOARD_PART, TARGET_LANGUAGE, PR_FLOW, SEGMENTED_CONFIGURATION, ENABLE_LOGICAL_NOC_TOP |
 | Source fileset | TOP, VERILOG_DEFINE |
 | Synthesis run | STEPS.SYNTH_DESIGN.ARGS |
 | Implementation run | STEPS.PLACE_DESIGN.ARGS, STEPS.ROUTE_DESIGN.ARGS |
@@ -51,6 +51,7 @@ projects won't generate dual PDI files.
 - **Run after all configuration** — if you capture settings mid-setup, you'll
   miss properties set later
 - **Multiple implementation runs** — all impl runs are captured (impl_1, child runs for DFX)
+- **ENABLE_LOGICAL_NOC_TOP** — both enabled and disabled values are captured when supported; build.tcl also restores this mode before generating BD targets and wrappers.
 - **IP_REPO_PATHS** — for Remote/Mixed source scenarios, ensure IP_REPO_PATHS
   is set before capture so it gets recorded
 

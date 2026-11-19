@@ -4,8 +4,9 @@ description: 'Analyze whether user code is synthesizable for HLS'
 license: MIT
 argument-hint: "[<TOP_FUNCTION — top-level HLS function name e.g. 'Kernel'>]"
 metadata:
+  stage: beta
   author: "Alex Li"
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 <!--
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
@@ -54,7 +55,7 @@ Strictly follow our rules 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 and do not exert yoursel
 4. **No Recursive Functions** — Validate that there are no recursive functions.
 
 5. **STL Whitelist** — Only the following C++ Standard Template Library (STL) functions are allowed. Any STL function NOT in this whitelist is forbidden:
-   - std::abs, std::arg, std::norm, std::conj, std::cos, std::cosh, std::exp, std::log, std::log10, std::pow
+   - std::abs, std::arg, std::norm, std::conj, std::cos, std::cosh, std::exp, std::log, std::log10, std::pow, std::swap, std::array
    - std::sin, std::sinh, std::sqrt, std::tan, std::tanh, std::acos, std::asin, std::atan, std::acosh
    - std::asinh, std::atanh, std::fabs, std::max, std::min, std::complex, std::operator, std::real, std::imag
    - std::norm, std::pow, std::proj, std::polar, std::conj, std::fpclassify, std::isfinite, std::isinf

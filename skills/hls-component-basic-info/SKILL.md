@@ -3,6 +3,7 @@ name: hls-component-basic-info
 description: 'Get Vitis HLS component basic informations for a given HLS component. The basic informations includes component name, source files, testbench files, include paths and top function'
 license: MIT
 metadata:
+  stage: beta
   author: "Alex Li"
   version: "1.0.0"
 ---

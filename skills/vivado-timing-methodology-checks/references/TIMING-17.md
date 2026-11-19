@@ -9,9 +9,6 @@ SPDX-License-Identifier: MIT
 
 - **Check ID**: TIMING-17
 - **Severity**: Critical Warning
-- **Group**: TIMING
-- **Hierarchy**: Timing.Bad Practice
-- **Owner**: gservel
 
 ## Description
 
@@ -56,9 +53,10 @@ Collect information about the non-clocked sequential cell:
 ## Flow
 
 1. **Gather Data** → Collect cell properties and clock path information
-2. **Analyze** → Trace clock source and determine why no timing clock exists
-3. **Resolve** → Add missing clock constraints or fix clock path issues
-4. **Verify** → Confirm cell now has valid timing clock
+2. **Analyze** → Trace clock source to primary clock definition locations and determine why no timing clock exists
+3. **Resolve** → Propose missing clock constraints to the user for approval or editing.
+4. **Verify** → Confirm cell now has valid timing clock with a test constraint
+5. **Highlight** → User must provide the correct clock definition
 
 ## Verification
 

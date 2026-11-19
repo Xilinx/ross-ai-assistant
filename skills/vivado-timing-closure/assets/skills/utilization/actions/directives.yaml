@@ -1,0 +1,19 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# Utilization Skill - Available Directives and Actions
+
+utilization_directives:
+  explore_area:
+    stage: opt
+    command: "opt_design -directive ExploreArea"
+    description: "Optimize for area reduction"
+    use_when: "Overall utilization too high, need to reduce logic"
+
+  explore_sequential_area:
+    stage: opt
+    command: "opt_design -directive ExploreSequentialArea"
+    description: "Optimize sequential logic for area"
+    use_when: "FF utilization is the bottleneck"
+
+utilization_params:
+  # Placeholder for future params

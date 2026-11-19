@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 
 # Board Catalog (built-in fixed hardware platforms)
 
-> **Generated from a 2026.1 Vitis install**, verified against the shipped
+> **Compiled from 2026.1 and 2026.2 Vitis installs** (2026.2 for the `vek385_revb`, `vmk365` and `vpk360` rows), verified against the shipped
 > board XSAs at `$XILINX_VITIS/data/embeddedsw/lib/fixed_hwplatforms/<board>.xsa`.
 > Ground truth for the shipped board shortcuts, produced by
 > `client.get_processor_os_list(xsa=<fixed_hwplatforms>/<board>.xsa)`.
@@ -15,7 +15,8 @@ SPDX-License-Identifier: MIT
 >
 > **Per-board minimum Vitis** is in the **Min Vitis** column — a board whose `.xsa` is not
 > in your install's `fixed_hwplatforms/` will **not resolve** (e.g. `scu200` (MicroBlaze-V)
-> needs **2026.1+**; `vek280`/`vek385` need **2025.2+**). `2024.2` marks the skill's supported
+> needs **2026.1+**; `vek280`/`vek385` need **2025.2+**; `vek385_revb`, `vmk365`, `vpk360` need **2026.2+**,
+> and 2026.2 ships `vek385_revb` in place of `vek385`). `2024.2` marks the skill's supported
 > baseline (board present at or before 2024.2). Verified: `scu200.xsa` is absent in
 > 2024.1/2024.2/2025.1/2025.2 and present from 2026.1.
 
@@ -26,8 +27,11 @@ SPDX-License-Identifier: MIT
 | scu200 | 2026.1 | microblaze | standalone | `microblaze_riscv_0` | `—` |
 | vck190 | 2024.2 | versal | freertos, linux, standalone | `psv_cortexa72_0` | `psv_cortexa72` |
 | vek280 | 2025.2 | versal | freertos, linux, standalone | `psv_cortexa72_0` | `psv_cortexa72` |
-| vek385 | 2025.2 | versal (gen2) | linux, standalone | `cortexa78_0` | `cortexa78` |
+| vek385 | 2025.2 (to 2026.1) | versal (gen2) | linux, standalone | `cortexa78_0` | `cortexa78` |
+| vek385_revb | 2026.2 | versal (gen2) | linux, standalone | `cortexa78_0` | `cortexa78` |
 | vmk180 | 2024.2 | versal | freertos, linux, standalone | `psv_cortexa72_0` | `psv_cortexa72` |
+| vmk365 | 2026.2 | versal (gen2) | linux, standalone | `cortexa78_0` | `cortexa78` |
+| vpk360 | 2026.2 | versal | freertos, linux, standalone | `psv_cortexa72_0` | `psv_cortexa72` |
 | zc702 | 2024.2 | zynq | freertos, linux, standalone | `ps7_cortexa9_0` | `ps7_cortexa9` |
 | zc706 | 2024.2 | zynq | freertos, linux, standalone | `ps7_cortexa9_0` | `ps7_cortexa9` |
 | zcu102 | 2024.2 | zynqmp | freertos, linux, standalone | `psu_cortexa53_0` | `psu_cortexa53` |
@@ -64,6 +68,17 @@ SPDX-License-Identifier: MIT
   - `standalone` cores: `psv_cortexa72_0`, `psv_cortexa72_1`, `psv_cortexr5_0`, `psv_cortexr5_1`, `psv_pmc_0`, `psv_psm_0`
 
 ### vek385
+- **Min Vitis:** 2025.2 to 2026.1 (replaced by `vek385_revb` from 2026.2)
+- **Family:** versal (gen2)
+- **Supported OS:** linux, standalone
+- **Application cores:** `cortexa78`, `cortexa78_0`, `cortexa78_1`, `cortexa78_2`, `cortexa78_3`, `cortexa78_4`, `cortexa78_5`, `cortexa78_6`, `cortexa78_7`
+- **Real-time (R5/R52):** `cortexr52_0`, `cortexr52_1`, `cortexr52_2`, `cortexr52_3`, `cortexr52_4`, `cortexr52_5`, `cortexr52_6`, `cortexr52_7`, `cortexr52_8`, `cortexr52_9`
+- **Service cores:** `asu`, `pmc_0`
+  - `linux` cores: `cortexa78`
+  - `standalone` cores: `asu`, `cortexa78_0`, `cortexa78_1`, `cortexa78_2`, `cortexa78_3`, `cortexa78_4`, `cortexa78_5`, `cortexa78_6`, `cortexa78_7`, `cortexr52_0`, `cortexr52_1`, `cortexr52_2`, `cortexr52_3`, `cortexr52_4`, `cortexr52_5`, `cortexr52_6`, `cortexr52_7`, `cortexr52_8`, `cortexr52_9`, `pmc_0`
+
+### vek385_revb
+- **Min Vitis:** 2026.2+ (replaces `vek385`, which ships only in 2025.2 and 2026.1)
 - **Family:** versal (gen2)
 - **Supported OS:** linux, standalone
 - **Application cores:** `cortexa78`, `cortexa78_0`, `cortexa78_1`, `cortexa78_2`, `cortexa78_3`, `cortexa78_4`, `cortexa78_5`, `cortexa78_6`, `cortexa78_7`
@@ -73,6 +88,27 @@ SPDX-License-Identifier: MIT
   - `standalone` cores: `asu`, `cortexa78_0`, `cortexa78_1`, `cortexa78_2`, `cortexa78_3`, `cortexa78_4`, `cortexa78_5`, `cortexa78_6`, `cortexa78_7`, `cortexr52_0`, `cortexr52_1`, `cortexr52_2`, `cortexr52_3`, `cortexr52_4`, `cortexr52_5`, `cortexr52_6`, `cortexr52_7`, `cortexr52_8`, `cortexr52_9`, `pmc_0`
 
 ### vmk180
+- **Family:** versal
+- **Supported OS:** freertos, linux, standalone
+- **Application cores:** `psv_cortexa72`, `psv_cortexa72_0`, `psv_cortexa72_1`
+- **Real-time (R5/R52):** `psv_cortexr5_0`, `psv_cortexr5_1`
+- **Service cores:** `psv_pmc_0`, `psv_psm_0`
+  - `freertos` cores: `psv_cortexa72_0`, `psv_cortexa72_1`, `psv_cortexr5_0`, `psv_cortexr5_1`
+  - `linux` cores: `psv_cortexa72`
+  - `standalone` cores: `psv_cortexa72_0`, `psv_cortexa72_1`, `psv_cortexr5_0`, `psv_cortexr5_1`, `psv_pmc_0`, `psv_psm_0`
+
+### vmk365
+- **Min Vitis:** 2026.2+
+- **Family:** versal (gen2)
+- **Supported OS:** linux, standalone
+- **Application cores:** `cortexa78`, `cortexa78_0`, `cortexa78_1`, `cortexa78_2`, `cortexa78_3`
+- **Real-time (R5/R52):** `cortexr52_0`, `cortexr52_1`, `cortexr52_2`, `cortexr52_3`, `cortexr52_4`, `cortexr52_5`
+- **Service cores:** `asu`, `pmc_0`
+  - `linux` cores: `cortexa78`
+  - `standalone` cores: `asu`, `cortexa78_0`, `cortexa78_1`, `cortexa78_2`, `cortexa78_3`, `cortexr52_0`, `cortexr52_1`, `cortexr52_2`, `cortexr52_3`, `cortexr52_4`, `cortexr52_5`, `pmc_0`
+
+### vpk360
+- **Min Vitis:** 2026.2+
 - **Family:** versal
 - **Supported OS:** freertos, linux, standalone
 - **Application cores:** `psv_cortexa72`, `psv_cortexa72_0`, `psv_cortexa72_1`

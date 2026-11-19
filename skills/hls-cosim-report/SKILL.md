@@ -3,6 +3,7 @@ name: hls-cosim-report
 description: 'Get Vitis HLS cosimulation report information for a given HLS component.'
 license: MIT
 metadata:
+  stage: beta
   author: "Alex Li"
   version: "1.0.0"
 ---

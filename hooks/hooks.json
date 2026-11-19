@@ -1,0 +1,38 @@
+{
+  "description": "Timing closure: the stop guard",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 60,
+            "command": "t=\"${CLAUDE_PLUGIN_ROOT}/skills/vivado-timing-closure/tc\"; [ -x \"$t\" ] || exit 0; \"$t\" guard --ide auto --plugin"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 30,
+            "command": "t=\"${CLAUDE_PLUGIN_ROOT}/skills/vivado-timing-closure/tc\"; [ -x \"$t\" ] || exit 0; \"$t\" guard --ide auto --plugin"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 30,
+            "command": "t=\"${CLAUDE_PLUGIN_ROOT}/skills/vivado-timing-closure/tc\"; [ -x \"$t\" ] || exit 0; \"$t\" guard --ide auto --plugin"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -137,6 +137,7 @@ new_bif:
  {
   bh_auth_enable
  }
+ efuse_kek_iv = path/to/your/kek_iv.txt
  pskfile = path/to/your/rsa_psk.pem
  sskfile = path/to/your/rsa_ssk.pem
  id_code = 0x14CA8093
@@ -224,6 +225,11 @@ new_bif:
  }
 }
 ```
+
+> `efuse_kek_iv` is mandatory with `keysrc = efuse_blk_key` (Bootgen: `'efuse_kek_iv' is mandatory with
+> 'keysrc=efuse_blk_key'`); the file holds the 96-bit IV as 24 hex characters. If the `.nky` files do not exist yet,
+> Bootgen generates them and then needs the part name: `bootgen -arch versal -image <bif> -p <part> -w -o boot.pdi`
+> (for example `-p xcvc1902` on VCK190).
 
 ---
 
@@ -1208,7 +1214,7 @@ multiple FSBL-behavior flags in one `[fsbl_config]` clause.
 # src:bif.l (fsbl_config flag list) | ug:UG1283 §fsbl_config
 the_ROM_image:
 {
-  [fsbl_config] bh_auth_enable, opt_key
+  [fsbl_config] bh_auth_enable, puf4kmode
   [auth_params] ppk_select=0
   [pskfile] path/to/your/rsa4096_psk.pem
   [sskfile] path/to/your/rsa4096_ssk.pem
@@ -1219,15 +1225,16 @@ the_ROM_image:
 ```
 
 > `[fsbl_config]` takes a **comma-separated list** of FSBL-behavior
-> flags. The most common pair is shown above:
+> flags (`bootgen -bif_help fsbl_config`): `bh_auth_enable`, `auth_only`, `opt_key`, `pufhd_bh`,
+> `puf4kmode`, `shutter=<value>`. Shown above:
 > - `bh_auth_enable` — enables Boot-Header-based authentication for the
 >   FSBL (instead of FSBL-controlled auth);
-> - `opt_key` — enables the operational-key key-wrapping path so the
->   FSBL can derive a runtime AES key from a wrapped operational key.
+> - `puf4kmode` — PUF 4K mode.
 >
-> Neither `bh_auth_enable` nor `opt_key` is a keysrc; both are flags
-> consumed by the FSBL. Other documented `[fsbl_config]` flags (e.g.
-> `pufhd_load`, `puf4kmode`) follow the same comma-separated syntax.
+> `opt_key` (optional key used for block-0 decryption; the secure header holds it) is valid only
+> when the bootloader is encrypted; on an unencrypted bootloader Bootgen stops with
+> `Optional key cannot be used, if bootloader is not encrypted`. `pufhd_bh` stores the PUF helper
+> data in the boot header. None of these flags is a keysrc.
 > This is ZynqMP-only — Versal-family uses
 > `image_config { bh_auth_enable }` (block form) instead.
 

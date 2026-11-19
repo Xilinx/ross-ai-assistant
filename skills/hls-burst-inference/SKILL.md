@@ -2,10 +2,12 @@
 name: hls-burst-inference
 description: 'Analyze whether burst inference optimization can be applied to a given C/C++ code snippet in Vitis HLS. Keywords: burst, HLS, pragma, m_axi, AXI, memory, optimization'
 license: MIT
+compatibility: Requires Vitis 2026.1+ and the hls-component-basic-info skill
 argument-hint: "[<TOP_FUNCTION — top-level HLS function name e.g. 'Kernel'>]"
 metadata:
-  author: "Alex Li"
-  version: "1.0.0"
+  stage: beta
+  author: "Long Li, Yuxin Wang"
+  version: "1.0.1"
 ---
 <!--
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
@@ -24,8 +26,8 @@ You only answer questions related to Burst Inference.
 
 #### Scope:
 - **Global rules** (Preconditions 1–4 and Limitations 1–2) must be checked globally, NOT per region
-- **Region-local rules** (Preconditions 5–9 and Limitations 3–6) MUST be checked independently within each burst inference region
-- Strictly follow rules 1–9 for preconditions and 1–6 for limitations; do not extend
+- **Region-local rules** (Preconditions 5–9 and Limitations 3–5) MUST be checked independently within each burst inference region
+- Strictly follow rules 1–9 for preconditions and 1–5 for limitations; do not extend. Do NOT apply burst rules from general Vitis HLS knowledge (e.g. UG1399 "Conditional Access to Memory") that are not listed in this skill.
 
 ---
 
@@ -46,6 +48,7 @@ You only answer questions related to Burst Inference.
 **3. Data Type Width Check (Global)**
    - **3.1** The width of the accessed data type must be a power of 2
    - **3.2** If the accessed data type has an `aligned` attribute, always use the aligned size instead of the natural size for this check
+   - **3.3** Arbitrary precision types (`ap_int`, `ap_uint`, `ap_fixed`, `ap_float`) are padded to the next power-of-2 width under default settings. Use the padded width (e.g. `ap_int<24>` → 32 bits) for this check, so these types always PASS this check by default, regardless of their declared bit width
 
 **4. Volatile Qualifier Check (Global)**
    Validate that the variable must NOT have the `volatile` qualifier. The volatile qualifier prevents burst access.
@@ -66,6 +69,8 @@ You only answer questions related to Burst Inference.
    - **7.1** The number of read/write accesses (burst length) must be determinable before the request is sent out
    - **7.2** Burst length/step can be computed at runtime (expression), but must be computed before the read/write request is issued
    - **7.3** Do NOT require burst length/step to be a compile-time constant—dynamically provided values via function arguments or runtime variables are allowed
+   - **7.4** A guard inside the loop body that compares ONLY the loop induction variable against a loop-invariant value (e.g. `for (i = 0; i < N; i++) if (i < var) out[i] = in[i];`) does NOT violate this check: the guarded accesses form a contiguous prefix whose length `min(N, var)` is known before the request is issued. Burst inference CAN be applied.
+   - **7.5** Do NOT reject burst inference merely because an access is wrapped in an `if`. Only reject when the guard makes the accessed indices non-contiguous (e.g. data-dependent `if (in[i] > 0)`, or `if (i % 2 == 0)`), and in that case cite Precondition 6, not 7.
 
 **8. Same Direction Access Check (Region-Local)**
    - **8.1** If there are same-direction accesses (all reads or all writes) on the same channel of the same bundle in the same region, burst inference will NOT apply to any of these accesses

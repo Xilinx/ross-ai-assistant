@@ -1,9 +1,10 @@
 ---
 name: hls-architect
-description: Convert input code to a multi-stage HLS dataflow, validate with the other hls skills, then hand off to optimize.
+description: HLS Design Architecture — convert input code to multi-stage HLS dataflow, validate with hls* skills, then hand off to optimize.
 license: MIT
 argument-hint: "[<throughput-target e.g. '140 FPS'>] [part=<fpga-part>] [clock=<ns>]"
 metadata:
+  stage: beta
   author: "Sai Akhil Ayyagari"
   version: "1.0.0"
 ---

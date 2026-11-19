@@ -60,6 +60,7 @@ This is then updated by the settings on the clock modifying block.
 ```tcl
 set clk_info [get_clocks -of [get_pins ios_0/mmcm_0/CLKOUT2]]
 ```
+**NOTE:** Solve TIMING-1 and TIMING-2 before solving other violations.
 
 **DO NOT**
 ❌ Automate fixes when the the constraint file value is null
@@ -69,7 +70,7 @@ set clk_info [get_clocks -of [get_pins ios_0/mmcm_0/CLKOUT2]]
 3. Find the `create_clock` source constraint line that relates to the clock mentioned "The expected waveform..".
 
 **DO**
-✅  Use the `./CLOCK_TRACING.md` and `trace_clock_treee.tcl` to trace the clocks
+✅  Use the `<skill_dir>/references/CLOCK_TRACING.md` and `methodology_check::trace_clock_back_to_source` to trace the clocks
 ✅  First try tracing back to the CMB input pin and look for clocks
 
 
@@ -211,4 +212,5 @@ Print a table that shows the difference in:
 
 - UltraFast Design Methodology Guide (UG949)
 - Vivado Design Suite User Guide: Design Analysis and Closure Techniques (UG906)
-- Clock Tracing Methodology (../references/CLOCK_TRACING.md)
+- Clock Tracing Methodology (<skill_dir>/references/CLOCK_TRACING.md)
+

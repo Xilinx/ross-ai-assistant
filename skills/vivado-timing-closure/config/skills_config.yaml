@@ -1,0 +1,72 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# =============================================================================
+# Timing Closure Agent - Skills Configuration
+# =============================================================================
+# Each category has:
+#   - enabled: whether to use this category
+#   - priority: lower = invoked first
+#   - fix_sources: which fix sources to use [custom, rqs]
+#   - trigger: Python pre-filter condition (from report parsing)
+#   - sub_problems: list of sub-problem directories under skills/<category>/
+
+skills:
+  congestion:
+    enabled: true
+    priority: 1
+    fix_sources: [custom, rqs]
+    trigger:
+      metric: congestion_level
+      operator: ">="
+      value: 5
+    description: "Resolves routing congestion (Global/Long/Short)"
+    sub_problems:
+      - high_fanout
+      - macro_placement
+      - clock_region_density
+
+  partition:
+    enabled: true
+    priority: 2
+    fix_sources: [custom, rqs]
+    trigger:
+      metric: top_paths_slr_crossing
+      operator: ">="
+      value: 5
+    description: "Fixes bad SLR partitioning causing critical path SLR crossings"
+    sub_problems:
+      - slr_crossing
+      - unbalanced_util
+
+  clocking:
+    enabled: true
+    priority: 3
+    fix_sources: [custom, rqs]
+    trigger:
+      metric: clock_skew_dominant
+      operator: "=="
+      value: true
+    description: "Resolves clock-related issues (skew, uncertainty, interactions)"
+    sub_problems: []
+
+  timing:
+    enabled: true
+    priority: 4
+    fix_sources: [custom, rqs]
+    trigger:
+      metric: wns
+      operator: "<"
+      value: 0
+    description: "General timing optimization (constraints, path-level fixes)"
+    sub_problems: []
+
+  utilization:
+    enabled: true
+    priority: 5
+    fix_sources: [custom, rqs]
+    trigger:
+      metric: max_slr_utilization
+      operator: ">="
+      value: 85
+    description: "Resolves high utilization issues causing placement/routing pressure"
+    sub_problems: []

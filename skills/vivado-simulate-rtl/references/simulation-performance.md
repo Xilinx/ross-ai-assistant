@@ -5,6 +5,11 @@ SPDX-License-Identifier: MIT
 
 # Simulation Performance
 
+<!-- Methodology ask with no design attached: do not write the report by hand.
+Run `S advise performance --out outputs/<case>/report.md --request "<ask>" --contract --backend XSim`,
+do what its `next` says (for example vivado_doc_search), add findings with `--append`, and end
+with its contract JSON. -->
+
 Answer "where does the time go" with measurements, then reduce the dominant
 stage. Do not speculate about simulator speed.
 

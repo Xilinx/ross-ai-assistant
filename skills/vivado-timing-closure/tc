@@ -1,0 +1,119 @@
+#!/bin/sh
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# tc -- launcher. Finds a Python, then runs the engine.
+#
+# This exists so the Python requirement is invisible rather than denied. The
+# engine and the deterministic layer it drives are both Python (stdlib only,
+# nothing to install), and a host that cannot run Vivado is no use for timing
+# closure anyway -- so the interpreter Vivado itself ships is always an
+# acceptable answer.
+#
+# Resolution order, first that works:
+#   1. $TC_PYTHON                         -- explicit wins
+#   2. python3 on PATH, if >= 3.6
+#   3. Vivado's bundled interpreter, from $VIVADO_PATH or `vivado` on PATH
+#
+# The bundled one needs LD_LIBRARY_PATH; it cannot find libpython on its own.
+# Both it and $TC_PYTHON are exported, because the engine spawns further Python
+# subprocesses (orchestrate.py) that need the same answer.
+#
+# Put *this* file on PATH, not ../tc -- that one assumes an interpreter has
+# already been chosen.
+#
+# Two extra forms, for a host that registers tc itself and must not have to find a
+# Python either:
+#   tc --python              print the resolved interpreter
+#   tc --exec <script> ...   run <script> with it, instead of the engine
+
+set -e
+
+here=$(cd "$(dirname "$0")" && pwd)
+entry="$here/scripts/tc.py"
+
+usable() {
+    [ -n "$1" ] && [ -x "$1" ] && \
+        "$1" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 6) else 1)' \
+        >/dev/null 2>&1
+}
+
+py=""
+
+# -- 1. explicit --------------------------------------------------------
+if [ -n "$TC_PYTHON" ]; then
+    if ! usable "$TC_PYTHON"; then
+        echo "tc: TC_PYTHON=$TC_PYTHON is not a usable Python 3.6+" >&2
+        exit 1
+    fi
+    py="$TC_PYTHON"
+fi
+
+# -- 2. system python ---------------------------------------------------
+if [ -z "$py" ]; then
+    sys_py=$(command -v python3 2>/dev/null || true)
+    usable "$sys_py" && py="$sys_py"
+fi
+
+# -- 3. Vivado's own ----------------------------------------------------
+# Accepts either the vivado binary or its install root.
+if [ -z "$py" ]; then
+    viv="$VIVADO_PATH"
+    [ -n "$viv" ] || viv=$(command -v vivado 2>/dev/null || true)
+    if [ -n "$viv" ]; then
+        case "$viv" in
+            */bin/vivado) vroot=$(dirname "$(dirname "$viv")") ;;
+            *)            vroot="$viv" ;;
+        esac
+        for pydir in "$vroot"/tps/lnx64/python-*; do
+            [ -d "$pydir" ] || continue
+            cand="$pydir/bin/python3"
+            [ -x "$cand" ] || continue
+            if [ -d "$pydir/lib" ]; then
+                LD_LIBRARY_PATH="$pydir/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+                export LD_LIBRARY_PATH
+            fi
+            if usable "$cand"; then
+                py="$cand"
+                break
+            fi
+        done
+    fi
+fi
+
+if [ -z "$py" ]; then
+    cat >&2 <<EOF
+tc: no usable Python 3.6+ found.
+
+Tried:
+  \$TC_PYTHON            ${TC_PYTHON:-(unset)}
+  python3 on PATH        ${sys_py:-(not found)}
+  Vivado's bundled one   ${viv:-(no \$VIVADO_PATH and no vivado on PATH)}
+
+Any of these fixes it:
+  export TC_PYTHON=/path/to/python3
+  export VIVADO_PATH=/path/to/vivado      # its bundled interpreter is used
+  module load / source your site Vivado environment
+EOF
+    exit 1
+fi
+
+TC_PYTHON="$py"
+export TC_PYTHON
+
+case "$1" in
+    --python)
+        echo "$py"
+        ;;
+    --exec)
+        shift
+        [ $# -gt 0 ] || { echo "tc --exec: no script given" >&2; exit 2; }
+        exec "$py" "$@"
+        ;;
+    *)
+        if [ ! -f "$entry" ]; then
+            echo "tc: cannot find the engine at $entry" >&2
+            exit 1
+        fi
+        exec "$py" "$entry" "$@"
+        ;;
+esac

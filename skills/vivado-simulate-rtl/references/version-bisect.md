@@ -5,6 +5,11 @@ SPDX-License-Identifier: MIT
 
 # Tool Version Bisect
 
+<!-- Methodology ask with no design attached: do not write the report by hand.
+Run `S advise bisect --out outputs/<case>/report.md --request "<ask>" --contract --backend XSim`,
+do what its `next` says (for example vivado_doc_search), add findings with `--append`, and end
+with its contract JSON. -->
+
 Identify the release where a working simulation started failing. A regression
 with a named first-bad version is far more actionable than "it broke", and the
 last-good release is an immediate fallback for the user.

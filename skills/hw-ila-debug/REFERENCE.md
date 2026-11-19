@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
 
 | Property | Type | Description |
 |----------|------|-------------|
-| STATUS.CORE_STATUS | string | IDLE, ARMED, WAITING_FOR_TRIGGER, TRIGGER_CAPTURED, FULL |
+| STATUS.CORE_STATUS | string | IDLE, WAITING FOR TRIGGER, PRE-TRIGGER CAPTURE, POST-TRIGGER CAPTURE, FULL, STOPPED |
 | STATUS.SAMPLE_COUNT | int | Number of samples captured so far |
 | STATUS.IS_TRIGGER_AT_STARTUP | bool | Trigger-at-startup configured? |
 
@@ -427,14 +427,16 @@ rule here — treat it as an open question if it resurfaces, not as
 | `run_hw_ila -compile_only $ila` | Compile-check TSM without arming |
 | `run_hw_ila -file <path> $ila` | Export trigger config for startup |
 | `wait_on_hw_ila $ila` | Block until capture complete |
-| `upload_hw_ila_data $ila` | Pull captured data from device |
-| `write_hw_ila_data -csv_file <file> $data` | Export as CSV |
-| `write_hw_ila_data -vcd_file <file> $data` | Export as VCD |
-| `write_hw_ila_data <file> $data` | Export as native .ila |
+| `set ila_data [upload_hw_ila_data $ila]` | Pull captured data from device and keep the returned object |
+| `write_hw_ila_data -csv_file <file> $ila_data` | Export as CSV |
+| `write_hw_ila_data -vcd_file <file> $ila_data` | Export as VCD |
+| `write_hw_ila_data <file> $ila_data` | Export as native .ila |
 | `read_hw_ila_data <file>` | Load previously saved .ila file |
 | `list_hw_samples $probe` | List sample values for a probe |
 | `create_hw_probe -map {...} <name> $ila` | Create custom probe from physical bits |
 | `reset_hw_ila $ila` | Reset all CONTROL properties to defaults |
+
+`$ila_data` is the object returned by the single `upload_hw_ila_data` after the capture. Do not upload again: a second upload can return an empty string, and `write_hw_ila_data` then writes `current_hw_ila_data`, which may be a different ILA or an older capture. An empty result means the capture failed. Add `-force` to overwrite an existing file.
 
 ## report_data.json Schema
 
@@ -456,7 +458,7 @@ rule here — treat it as an open question if it resurfaces, not as
       "trigger_compare": "eq1'b1", "port": 3 }
   ],
   "capture": {
-    "status": "TRIGGER_CAPTURED", "sample_count": 1024,
+    "status": "FULL", "sample_count": 1024,
     "export_file": "capture_data.csv", "export_format": "csv"
   },
   "observations": ["axi_arvalid asserted at sample 512", "..."],

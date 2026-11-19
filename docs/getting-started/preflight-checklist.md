@@ -42,7 +42,20 @@ Verify your setup is ready before using the AMD Ross Agentic AI Assistant. This 
 
 ---
 
-## 3. MCP Client Configuration
+## 3. ChipScope MCP Server (Optional)
+
+If you plan to use ChipScope for Versal hardware debug, verify the binary is working.
+
+| Check | How to Verify |
+|-------|--------------|
+| Binary extracted | Check the file exists: `ls ~/chipscope-mcp/chipscope-mcp-onefile-lin64/chipscope-mcp` (Linux) or check your chosen install directory (Windows) |
+| Binary responds | Run: `./chipscope-mcp version` — should print the version number |
+| Preflight passes | Run: `./chipscope-mcp doctor --dry-run --dir /path/to/workspace` — exit code 0 means ready |
+| Client configured | For VS Code/Cursor: check `.vscode/mcp.json` or `.cursor/mcp.json` contains a `chipscope` entry. For Claude Code: run `claude mcp list` and look for `chipscope` |
+
+---
+
+## 4. MCP Client Configuration
 
 Your AI client needs a config file that tells it where to find the MCP server. Check the location for your tool:
 
@@ -105,7 +118,7 @@ Your AI client needs a config file that tells it where to find the MCP server. C
 
 ---
 
-## 4. AI Client Installed
+## 5. AI Client Installed
 
 | Client | How to Check |
 |--------|-------------|
@@ -119,7 +132,7 @@ Your AI client needs a config file that tells it where to find the MCP server. C
 
 ---
 
-## 5. Knowledge Base
+## 6. Knowledge Base
 
 The Knowledge Base provides RAG-powered documentation search via `vivado_doc_search`. By default it is hosted by **AMD** and publicly accessible — no VPN or local setup required. The MCP server connects to it automatically. For privacy, telemetry, and air-gapped options, see the [FAQ](../faq.md#security-privacy-and-the-knowledge-base) and the [local knowledge base](../local-kb/README.md).
 

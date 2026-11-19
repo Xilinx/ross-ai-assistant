@@ -17,6 +17,16 @@ portable sub-design stimulus capture with `generate_vcd_ports` and
 - Portable stimulus capture
 - Verification and reporting
 
+## Fast path
+
+`scripts/simrtl.py sim --out outputs/<case> --xpr <project> --simset <simset>`
+plus `--saif /tb/dut --window 100ns:240ns`, `--vcd "clk rst_n ..." --window A:B`,
+or `--ports /tb/dut --expect <port>=<value> --replay-marker <NAME>` (port VCD,
+`create_testbench` into its own simulation set, a separate checked copy with
+oracle, watchdog and marker, replayed outside Vivado with the generated-script
+workaround below applied only when `xelab -help` confirms it). Use the Tcl
+below only for what it cannot express.
+
 ## 1. Shared preflight
 
 Record before launch:
@@ -202,7 +212,9 @@ compare every injected option with the installed `xelab -help`. In a Vivado
    `-suppress_localparam_override_error`;
 3. replace only the obsolete option in the generated replay script;
 4. rerun elaboration and simulation;
-5. report the workaround as generated-flow remediation, not a DUT change.
+5. report the workaround as generated-flow remediation, not a DUT change,
+   and keep `failure_class` for the replay's own verdict (`none` when it
+   passes); name it in `notes`, not as `tool_defect`.
 
 Do not blindly apply this substitution to other releases.
 

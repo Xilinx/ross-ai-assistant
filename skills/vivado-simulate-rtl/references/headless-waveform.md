@@ -5,6 +5,11 @@ SPDX-License-Identifier: MIT
 
 # Headless Waveform Evidence
 
+<!-- Methodology ask with no design attached: do not write the report by hand.
+Run `S advise headless --out outputs/<case>/report.md --request "<ask>" --contract --backend XSim`,
+do what its `next` says (for example vivado_doc_search), add findings with `--append`, and end
+with its contract JSON. -->
+
 Produce and compare waveform evidence without a GUI. This keeps diagnosis
 working on batch hosts with no display, and it keeps a viewer or rendering
 defect from blocking a verdict.

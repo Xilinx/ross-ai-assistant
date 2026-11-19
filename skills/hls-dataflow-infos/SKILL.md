@@ -3,6 +3,7 @@ name: hls-dataflow-infos
 description: 'Get Vitis HLS dataflow process/channel informations for a given HLS component.'
 license: MIT
 metadata:
+  stage: beta
   author: "Alex Li"
   version: "1.0.0"
 ---

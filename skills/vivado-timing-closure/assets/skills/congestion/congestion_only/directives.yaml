@@ -1,0 +1,24 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# Congestion / High Fanout — Directive Fix (Combo 1)
+# Condition: Congestion detected AND NO SLR imbalance
+# Resolution: ReduceCongestion + ForceSpreading to spread placement
+
+run_name: ReduceCongestion
+methodology: "Reduce Congestion (Combo 1)"
+condition:
+  congestion_detected: true
+  slr_imbalance: false
+
+place:
+  subdirective: "GPlace.ReduceCongestion.high GPlace.ForceSpreading.high DPlace.ReducePinDensity.high Floorplan.ForceSpreading.high Floorplan.PartitioningClusteringEffort.low"
+  # Placer sub-directives are Versal-only; elsewhere this place directive
+  # (UG835: spreads logic to avoid congested regions).
+  directive: AltSpreadLogic_high
+
+physopt:
+  directive: AggressiveExplore
+
+route:
+  directive: NoTimingRelaxation
+  switches: "-tns_cleanup"

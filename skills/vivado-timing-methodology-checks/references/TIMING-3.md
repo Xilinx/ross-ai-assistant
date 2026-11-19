@@ -9,8 +9,6 @@ SPDX-License-Identifier: MIT
 
 - **Check ID**: TIMING-3
 - **Severity**: Critical Warning
-- **Group**: 1
-- **Priority**: 1
 - **Hierarchy Name**: Timing
 - **First Release**: 2025.1
 
@@ -52,7 +50,7 @@ The MMCM has output pin used CLKOUT0:
 * CLKOUT0_DUTY_CYCLE =0.500
 
 Expected output clock
-CLKOUT0 period = input period * (CLKFBOUT_MULT/DIVCLK_DIVIDE) / CLKOUT0_DIVIDE = 10 ns
+CLKOUT0 period = input period * DIVCLK_DIVIDE * CLKOUT0_DIVIDE / CLKFBOUT_MULT = 10 ns
 
 **DO**
 ✅  Understand the clock modifying equation from the documentation
@@ -86,20 +84,23 @@ set clk_info [get_clocks -of [get_pins ios_0/mmcm_0/CLKOUT2]]
 
 **CASE 1:**
 * **Type**: Automated Resolution
-* **Condfidence**: High
+* **Confidence**: High
 * **Usefulness**: High
 * **When**: 
 * [ ] The actual period and waveform match with the expected period and waveform. 
 * [ ] There are exceptions that reference the <CLOCK_GROUP> or generated clocks derived from it.
 * **Action**: 
-1. Create a constraint to use the method described in UG903 `renaming auto derived clocks` using the `create_generated_clock` constraint after the definition of the clock on the input 
+1. Create a `create_generated_clock` constraint and remove the `create_clock`. Use the method described in UG903 `renaming auto derived clocks`.
+**Rules:** 
+  * Do not specify `-multiply_by` or `-divide_by` values. These will be provided by the tool.
+  * Must go directly after the `create_clock` constraint that defines the input clock on the clock modifying block. Comments and white space are ok in between.
 2. Remove the clock definition of on <NETLIST_ELEMENT>. 
 3. Report that exceptions reference the clock name
 4. State that no assumptions have been made
 
 **CASE 2:**
 * **Type**: Automated Resolution
-* **Condfidence**: High
+* **Confidence**: High
 * **Usefulness**: High
 * **When**: 
 * [ ] The actual period and waveform match with the expected period and waveform. 
@@ -111,7 +112,7 @@ set clk_info [get_clocks -of [get_pins ios_0/mmcm_0/CLKOUT2]]
 
 **CASE 3:**
 * **Type**: Automated Resolution
-* **Condfidence**: High
+* **Confidence**: High
 * **Usefulness**: High
 * **When**: 
 * [ ] The actual period and waveform do not match with the expected period and waveform. 
@@ -128,7 +129,7 @@ if {[llength $net] == 0} {puts "Assume input clock is the intent"} else {puts "R
 ```
 **CASE 4:**
 * **Type**: Automated Resolution
-* **Condfidence**: Medium
+* **Confidence**: Medium
 * **Usefulness**: High
 * **When**: 
 * [ ] The actual period and waveform do not match with the expected period and waveform. 
@@ -148,7 +149,7 @@ if {[llength $net] == 0} {puts "Assume input clock is the intent"} else {puts "R
 
 **CASE 5:**
 * **Type**: User Resolution
-* **Condfidence**: Medium
+* **Confidence**: Medium
 * **Usefulness**: High
 * **When**: 
 * [ ] Expected and actual periods match but waveforms do not. 
@@ -168,7 +169,7 @@ set_property CLKOUT0_DUTY_CYCLE $hi [get_cells ios_0/mmcm_0]
 
 **CASE 6:**
 * **Type**: User Resolution
-* **Condfidence**: Medium
+* **Confidence**: Medium
 * **Usefulness**: High
 * **When**: 
 * [ ] Expected and actual periods match but waveforms do not. 
@@ -189,7 +190,7 @@ set_property CLKOUT0_PHASE <value> [get_cells ios_0/mmcm_0]; # value between -36
 
 **CASE 7:**
 * **Type**: User Resolution
-* **Condfidence**: High
+* **Confidence**: High
 * **Usefulness**: Low
 * **Prompt**: 
 ```
@@ -203,10 +204,10 @@ c) Leave the constraint as is and create a waiver
 ✅  First try tracing back to the CMB input pin and look for clocks
 
 **DO NOT**
-❌ Offer automated suggestiones when the the constraint file value is null
-❌ Offer automated suggestiones when the the line number value is null
-❌ Offer automated suggestiones when the multiply and divide calculations do not match the result
-❌ Automate fixes when the the information does not match the item 1 info.
+❌ Offer automated suggestions when the constraint file value is null
+❌ Offer automated suggestions when the line number value is null
+❌ Offer automated suggestions when the multiply and divide calculations do not match the result
+❌ Automate fixes when the information does not match the item 1 info.
 ❌ Trace through GT* blocks
 
 ## Verification
@@ -216,7 +217,7 @@ c) Leave the constraint as is and create a waiver
 
 
 ## Final Report
-Print a table using [./REPORTING_CLOCK_DIFFERENCES](./REPORTING_CLOCK_DIFFERENCES.md)
+Print a table using [METHODOLOGY_RESOLUTION_REPORT_DETAILS.md, Clock comparison table](./METHODOLOGY_RESOLUTION_REPORT_DETAILS.md#clock-comparison-table)
 Print and constraint changes before and after
 
 

@@ -86,7 +86,7 @@ branching is per-item, not a project-wide switch.
 | RTL | Verilog/SV/VHDL/VHDL2019/VH/SVH in .srcs/ | Sources/RTL/ | file copy |
 | Constraints | XDC in .srcs/ (not _ooc.xdc) | Sources/Constraints/ | file copy |
 | Standalone IP | IPs NOT inside Block Designs | Sources/IP/ | `write_ip_tcl` |
-| Block Designs | User-created BDs in .srcs/ | Sources/BD/ | `write_bd_tcl` |
+| Block Designs | User-created BDs in .srcs/ | Sources/BD/ | `write_bd_tcl`; BDs with Monitor-mode interfaces: native `.bd` + `ip/` copy |
 | Simulation | Files from sim filesets | Sources/Simulation/ | file copy |
 | Data | .mem, .mif, .coe, .hex, .elf, .csv in project dir | Sources/Data/ | file copy |
 | Hook Scripts | Tcl pre/post hooks on synth/impl runs | Sources/Scripts/ | file copy |

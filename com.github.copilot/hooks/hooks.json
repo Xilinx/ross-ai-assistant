@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "type": "command",
+        "timeout": 60,
+        "command": "t=\"${PLUGIN_ROOT}/skills/vivado-timing-closure/tc\"; [ -x \"$t\" ] || exit 0; \"$t\" guard --ide vscode"
+      }
+    ],
+    "SessionStart": [
+      {
+        "type": "command",
+        "timeout": 30,
+        "command": "t=\"${PLUGIN_ROOT}/skills/vivado-timing-closure/tc\"; [ -x \"$t\" ] || exit 0; \"$t\" guard --ide vscode"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "timeout": 30,
+        "command": "t=\"${PLUGIN_ROOT}/skills/vivado-timing-closure/tc\"; [ -x \"$t\" ] || exit 0; \"$t\" guard --ide vscode"
+      }
+    ]
+  }
+}
