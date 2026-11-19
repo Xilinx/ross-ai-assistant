@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ExampleDesign>
+  <Vendor>xilinx.com</Vendor>
+  <Library>design</Library>
+  <Name>epsilon_ext</Name>
+  <DisplayName>Epsilon Extensible Platform</DisplayName>
+  <Description>Extensible platform for the acceleration flow. Renamed in this release.</Description>
+  <Version>1.0</Version>
+  <Design>init.tcl</Design>
+</ExampleDesign>

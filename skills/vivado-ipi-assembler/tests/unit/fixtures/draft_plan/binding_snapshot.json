@@ -1,0 +1,518 @@
+{
+ "catalog": {
+  "accelerator": {
+   "interfaces": [
+    {
+     "mode": "Master",
+     "name": "M_AXI_SG",
+     "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+    },
+    {
+     "mode": "Master",
+     "name": "M_AXI",
+     "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+    },
+    {
+     "mode": "Slave",
+     "name": "S_AXI_LITE",
+     "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+    }
+   ],
+   "pins": [
+    {
+     "direction": "O",
+     "name": "cdma_introut",
+     "type": "intr",
+     "width": "1"
+    },
+    {
+     "direction": "I",
+     "name": "m_axi_aclk",
+     "type": "clk",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_araddr",
+     "type": "undef",
+     "width": "32"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_arburst",
+     "type": "undef",
+     "width": "2"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_arcache",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_arlen",
+     "type": "undef",
+     "width": "8"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_arprot",
+     "type": "undef",
+     "width": "3"
+    },
+    {
+     "direction": "I",
+     "name": "m_axi_arready",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_arsize",
+     "type": "undef",
+     "width": "3"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_arvalid",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_awaddr",
+     "type": "undef",
+     "width": "32"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_awburst",
+     "type": "undef",
+     "width": "2"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_awcache",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_awlen",
+     "type": "undef",
+     "width": "8"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_awprot",
+     "type": "undef",
+     "width": "3"
+    },
+    {
+     "direction": "I",
+     "name": "m_axi_awready",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_awsize",
+     "type": "undef",
+     "width": "3"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_awvalid",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "m_axi_bready",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "I",
+     "name": "m_axi_bresp",
+     "type": "undef",
+     "width": "2"
+    }
+   ],
+   "requested": "xilinx.com:ip:axi_cdma",
+   "resolved_vlnv": "xilinx.com:ip:axi_cdma:4.1"
+  },
+  "control_bridge": {
+   "interfaces": [
+    {
+     "mode": "Master",
+     "name": "M00_AXI",
+     "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+    },
+    {
+     "mode": "Slave",
+     "name": "S00_AXI",
+     "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+    },
+    {
+     "mode": "Slave",
+     "name": "S01_AXI",
+     "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+    }
+   ],
+   "pins": [
+    {
+     "direction": "O",
+     "name": "M00_AXI_araddr",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arburst",
+     "type": "undef",
+     "width": "2"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arcache",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arid",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arlen",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arlock",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arprot",
+     "type": "undef",
+     "width": "3"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arqos",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "I",
+     "name": "M00_AXI_arready",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arregion",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arsize",
+     "type": "undef",
+     "width": "3"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_aruser",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arvalid",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awaddr",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awburst",
+     "type": "undef",
+     "width": "2"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awcache",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awid",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awlen",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awlock",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awprot",
+     "type": "undef",
+     "width": "3"
+    }
+   ],
+   "requested": "xilinx.com:ip:smartconnect",
+   "resolved_vlnv": "xilinx.com:ip:smartconnect:1.0"
+  },
+  "memory_noc": {
+   "interfaces": [
+    {
+     "mode": "Master",
+     "name": "M00_AXI",
+     "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+    },
+    {
+     "mode": "Slave",
+     "name": "S00_AXI",
+     "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+    }
+   ],
+   "pins": [
+    {
+     "direction": "O",
+     "name": "M00_AXI_araddr",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arburst",
+     "type": "undef",
+     "width": "2"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arcache",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arid",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arlen",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arlock",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arprot",
+     "type": "undef",
+     "width": "3"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arqos",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "I",
+     "name": "M00_AXI_arready",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arregion",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arsize",
+     "type": "undef",
+     "width": "3"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_aruser",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_arvalid",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awaddr",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awburst",
+     "type": "undef",
+     "width": "2"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awcache",
+     "type": "undef",
+     "width": "4"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awid",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awlen",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awlock",
+     "type": "undef",
+     "width": "1"
+    },
+    {
+     "direction": "O",
+     "name": "M00_AXI_awprot",
+     "type": "undef",
+     "width": "3"
+    }
+   ],
+   "requested": "xilinx.com:ip:axi_noc",
+   "resolved_vlnv": "xilinx.com:ip:axi_noc:1.1"
+  },
+  "ps": {
+   "interfaces": [],
+   "pins": [],
+   "requested": "xilinx.com:ip:versal_cips",
+   "resolved_vlnv": "xilinx.com:ip:versal_cips:3.4"
+  }
+ },
+ "environment": {
+  "board_interfaces": [
+   "bank103_104_gty_pcie_x8",
+   "bank103_gty0_rx_pcie_x1",
+   "bank103_gty0_rx_pcie_x2",
+   "bank103_gty0_rx_pcie_x4",
+   "bank103_gty0_rx_pcie_x8",
+   "bank103_gty0_tx_pcie_x1",
+   "bank103_gty0_tx_pcie_x2",
+   "bank103_gty0_tx_pcie_x4",
+   "bank103_gty0_tx_pcie_x8",
+   "bank103_gty1_rx_pcie_x2",
+   "bank103_gty1_rx_pcie_x4",
+   "bank103_gty1_rx_pcie_x8",
+   "bank103_gty1_tx_pcie_x2",
+   "bank103_gty1_tx_pcie_x4",
+   "bank103_gty1_tx_pcie_x8",
+   "bank103_gty2_rx_pcie_x4",
+   "bank103_gty2_rx_pcie_x8",
+   "bank103_gty2_tx_pcie_x4",
+   "bank103_gty2_tx_pcie_x8",
+   "bank103_gty3_rx_pcie_x4",
+   "bank103_gty3_rx_pcie_x8",
+   "bank103_gty3_tx_pcie_x4",
+   "bank103_gty3_tx_pcie_x8",
+   "bank103_gty_pcie_x1",
+   "bank103_gty_pcie_x2",
+   "bank103_gty_pcie_x4",
+   "bank104_gty0_rx_pcie_x8",
+   "bank104_gty0_tx_pcie_x8",
+   "bank104_gty1_rx_pcie_x8",
+   "bank104_gty1_tx_pcie_x8",
+   "bank104_gty2_rx_pcie_x8",
+   "bank104_gty2_tx_pcie_x8",
+   "bank104_gty3_rx_pcie_x8",
+   "bank104_gty3_tx_pcie_x8",
+   "bank105_gty2_axi_eth",
+   "bank105_gty2_rx_axi_eth",
+   "bank105_gty2_rx_l_eth",
+   "bank105_gty2_rx_xxv",
+   "bank105_gty2_tx_axi_eth",
+   "bank105_gty2_tx_l_eth",
+   "bank105_gty2_tx_xxv",
+   "bank105_gty2_xxv",
+   "bank105_gty2gty3_l_eth",
+   "bank105_gty3_axi_eth",
+   "bank105_gty3_rx_axi_eth",
+   "bank105_gty3_rx_l_eth",
+   "bank105_gty3_rx_xxv",
+   "bank105_gty3_tx_axi_eth",
+   "bank105_gty3_tx_l_eth",
+   "bank105_gty3_tx_xxv",
+   "bank105_gty3_xxv",
+   "ch0_lpddr4_c0",
+   "ch0_lpddr4_c1",
+   "ch1_lpddr4_c0",
+   "ch1_lpddr4_c1",
+   "dc_pl_gpio",
+   "ddr4_dimm1",
+   "ddr4_dimm1_sma_clk",
+   "gpio_dp",
+   "gpio_led",
+   "gpio_pb",
+   "gtrefclk0_bank105",
+   "lpddr4_sma_clk1",
+   "lpddr4_sma_clk2",
+   "pcie_refclk_bank103",
+   "ps_pmc_fixed_io",
+   "ps_pmc_fixed_io_OSPI",
+   "ps_pmc_fixed_io_eMMC",
+   "sysctlr_gpio",
+   "uart2_bank306"
+  ],
+  "board_part": "xilinx.com:vck190:part0:3.4",
+  "capabilities": {
+   "can_connect": "1",
+   "dump_param_deps": "1"
+  },
+  "part": "xcvc1902-vsva2197-2MP-e-S",
+  "vivado_version": "2026.2"
+ },
+ "probe": {
+  "complete": "1"
+ }
+}

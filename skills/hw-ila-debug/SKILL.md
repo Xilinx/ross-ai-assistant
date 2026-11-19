@@ -11,7 +11,7 @@ description: >-
 license: MIT
 compatibility: Requires Vivado 2026.1+, hardware with an ILA core, and access to either vivado-mcp or chipscope-mcp.
 metadata:
-  version: "1.2.2"
+  version: "1.2.3"
   stage: beta
 ---
 
@@ -62,6 +62,7 @@ See [REFERENCE.md](REFERENCE.md) for ILA property tables, Tcl command reference,
   is launched from that same Vivado install, so it cannot be version-mismatched — see
   "No hw_server" below.
 - Only reuse a session once its version matches.
+- **Finding the hw_server address.** Use the address the user gives. If they say it is in an environment variable that Vivado sees, read it through `vivado_execute`, for example `puts $::env(HW_SERVER_URL)` with the name they gave, not with a terminal command (no `echo`, `env` or `ls`). If a session is already connected, `current_hw_server` shows the address. If none of these gives one, ask the user.
 
 ---
 
@@ -73,7 +74,7 @@ See [REFERENCE.md](REFERENCE.md) for ILA property tables, Tcl command reference,
 - **Write reports to file** — do not dump full waveform data in chat. Give a short summary only.
 - **Use `vivado_doc_search`** for unfamiliar probe properties, TSM syntax, or compare value encoding.
 - **Do NOT** use `display_hw_ila_data` — it opens a GUI window. Use `write_hw_ila_data` + `list_hw_samples` for data extraction.
-- **Do NOT** use `shell` commands or Vivado Tcl file I/O. Use agent file tools.
+- **Do NOT** use `shell` commands or Vivado Tcl file I/O, except `file mkdir vivado_agentic_ai_reports/hw-ila-debug` before `write_hw_ila_data` in Step 4. Use agent file tools for everything else.
 - **Do NOT** retry failed Tcl with different syntax. Search docs first, then report the error.
 
 ---
@@ -143,29 +144,46 @@ set_property CAPTURE_COMPARE_VALUE eq1'b1 [get_hw_probes <probe> -of_objects $il
 ### Step 3: Arm, Wait & Upload
 
 ```tcl
+unset -nocomplain ila_data
 run_hw_ila $ila
 wait_on_hw_ila $ila
-upload_hw_ila_data $ila
+set ila_data [upload_hw_ila_data $ila]
+if {[llength $ila_data] == 0} {
+  unset ila_data
+  error "ILA upload returned no data: the capture failed or the trigger did not fire. Retry from Step 3; do not run Step 4."
+}
 ```
 
 For immediate capture (no trigger, "aliveness" check):
 ```tcl
+unset -nocomplain ila_data
 run_hw_ila -trigger_now $ila
 wait_on_hw_ila $ila
-upload_hw_ila_data $ila
+set ila_data [upload_hw_ila_data $ila]
+if {[llength $ila_data] == 0} {
+  unset ila_data
+  error "ILA upload returned no data: the capture failed or the trigger did not fire. Retry from Step 3; do not run Step 4."
+}
 ```
+
+**Keep `$ila_data`.** Step 4 writes it. Never call `upload_hw_ila_data` again for the same capture: a second upload can return an empty string, and `write_hw_ila_data` then writes a different ILA's data or an older capture with no error. An empty upload means the capture failed: retry from Step 3 and do not run Step 4.
+
+**If `vivado_execute` replies `SKIPPED (duplicate)`, nothing ran.** Vivado MCP skips a command identical to one it ran moments ago, so `$ila_data` still holds the earlier capture. To capture again, change the command (for example add a comment line such as `# capture 2`) and run Step 3 again.
 
 **⚠️ `wait_on_hw_ila` blocks until trigger fires.** If the trigger condition is never met, the agent will hang. For conditions that may not fire, use `run_hw_ila -trigger_now` first to verify probe connectivity.
 
 **⚠️ `wait_on_hw_ila -timeout N` is in MINUTES** (not seconds). Use `-timeout 1` for a 1-minute cap. Omitting `-timeout` waits indefinitely.
 
-**⚠️ Versal DPC arm latency.** On Versal (axis_ila via DPC JTAG), there is a brief latency between `run_hw_ila` returning and the ILA hardware being fully armed. If the triggering event is driven by VIO in the same Vivado session, issue the `commit_hw_vio` that fires the trigger in a **separate `vivado_execute` call** — not in the same command as `run_hw_ila`. The natural inter-call latency (~100 ms) is sufficient for the ILA to settle into WAITING_FOR_TRIGGER state.
+**⚠️ Versal DPC arm latency.** On Versal (axis_ila via DPC JTAG), there is a brief latency between `run_hw_ila` returning and the ILA hardware being fully armed. If the triggering event is driven by VIO in the same Vivado session, issue the `commit_hw_vio` that fires the trigger in a **separate `vivado_execute` call** — not in the same command as `run_hw_ila`. The natural inter-call latency (~100 ms) is sufficient for the ILA to settle into WAITING FOR TRIGGER state.
 
 ### Step 4: Export & Analyze Data
 
 ```tcl
-write_hw_ila_data -csv_file vivado_agentic_ai_reports/hw-ila-debug/capture_data [upload_hw_ila_data $ila]
+file mkdir vivado_agentic_ai_reports/hw-ila-debug
+write_hw_ila_data -force -csv_file vivado_agentic_ai_reports/hw-ila-debug/capture_data $ila_data
 ```
+
+`file mkdir` is needed because Vivado does not create the folder, and in a fresh session no agent file tool has run yet. `-force` lets you write the same capture again. If Tcl reports `can't read "ila_data"`, Step 3 did not produce data: go back to Step 3.
 
 Export formats: `-csv_file` (spreadsheet), `-vcd_file` (waveform viewer), or native `.ila` (Vivado reload).
 
@@ -174,19 +192,24 @@ To read specific probe sample values programmatically:
 list_hw_samples [get_hw_probes <probe_name> -of_objects $ila]
 ```
 
+**Check the capture without a terminal.** `list_hw_samples` returns a probe's values in sample order, so check the data in Tcl through `vivado_execute`, for example with `lindex` and `lsearch`. The trigger sample's index in the window is `CONTROL.TRIGGER_POSITION`. To look at rows of `capture_data.csv`, or to read REFERENCE.md, use your file tool. Do not run `awk`, `grep`, `python` or other shell commands on these files.
+
 ### Step 5: Write Output Files — MANDATORY after every successful capture
 
 **This step is not optional and does not depend on the user asking for a report.** Any prompt that results in a completed ILA capture — including "display captured data", "show the waveform", "upload and display", or "arm and capture" — MUST produce all three output files before any chat summary is given.
 
-Write every file below under `vivado_agentic_ai_reports/hw-ila-debug/`. The
-file tool creates missing parent directories, so do not shell out to `mkdir`
-(this skill forbids terminal commands).
+Write every file below under `vivado_agentic_ai_reports/hw-ila-debug/`. Step 4
+already created the folder with `file mkdir`; the file tool also creates missing
+parent directories, so do not shell out to `mkdir` (this skill forbids terminal
+commands).
 
 | File | Format | Content |
 |------|--------|---------|
 | `capture_data.csv` | CSV | Raw waveform data from ILA (via `write_hw_ila_data`) |
 | `report_data.json` | JSON | Structured capture metadata + analysis (schema in [REFERENCE.md](REFERENCE.md)) |
 | `REPORT.md` | Markdown | Executive summary: trigger config, capture stats, signal observations |
+
+`report_data.json` uses these top-level keys: `metadata`, `ila_config`, `probes`, `capture`, `observations`, `recommendations`. The full schema with every field is in [REFERENCE.md](REFERENCE.md#report_datajson-schema).
 
 **Prompt mapping** — these user phrases all require files to be written before summarizing in chat:
 
@@ -199,7 +222,7 @@ file tool creates missing parent directories, so do not shell out to `mkdir`
 
 **After writing files, confirm in chat:** "Files written to `vivado_agentic_ai_reports/hw-ila-debug/`: `capture_data.csv`, `report_data.json`, `REPORT.md`."
 
-**Where to find the report:** `vivado_agentic_ai_reports/hw-ila-debug/REPORT.md` in the working directory where the agent session was started. If the report was not generated, the capture data is still uploaded (from Step 3) — write the output files from that existing upload without re-arming. Only retry from Step 3 if the capture itself failed (e.g. trigger never fired, upload returned no samples).
+**Where to find the report:** `vivado_agentic_ai_reports/hw-ila-debug/REPORT.md` in the working directory where the agent session was started. If the report was not generated, the capture data is still uploaded (from Step 3) — write the output files from `$ila_data` (Step 3) without re-arming or uploading again. Only retry from Step 3 if the capture itself failed (e.g. trigger never fired, upload returned no samples).
 
 
 ---
@@ -231,7 +254,7 @@ file tool creates missing parent directories, so do not shell out to `mkdir`
 
 ## Examples
 
-**"Capture whatever is on the ILA right now"** → Discover ILA → `run_hw_ila -trigger_now` → `wait_on_hw_ila` → `upload_hw_ila_data` → export CSV → summarize.
+**"Capture whatever is on the ILA right now"** → Discover ILA → `run_hw_ila -trigger_now` → `wait_on_hw_ila` → `set ila_data [upload_hw_ila_data $ila]` → export `$ila_data` as CSV → summarize.
 
 **"Trigger when AXI RVALID goes high"** → Find probe for `axi_rvalid` → `set_property TRIGGER_COMPARE_VALUE eq1'b1` → arm → wait → upload → export.
 

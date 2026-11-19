@@ -1,0 +1,33 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# Timing Skill - Available Directives and Actions
+
+timing_directives:
+  extra_timing_opt:
+    stage: place
+    command: "place_design -directive ExtraTimingOpt"
+    description: "Extra timing optimization during placement"
+    use_when: "Timing failures not caused by congestion/partition"
+
+  extra_net_delay_high:
+    stage: place
+    command: "place_design -directive ExtraNetDelay_high"
+    description: "Pessimistic net delay estimation during placement"
+    use_when: "Route delay dominates, want placer to account for it"
+
+  extra_net_delay_medium:
+    stage: place
+    command: "place_design -directive ExtraNetDelay_medium"
+    description: "Moderate net delay estimation during placement"
+    use_when: "Route delay is moderately high"
+
+timing_physopt:
+  aggressive_fanout:
+    command: "phys_opt_design -directive AggressiveFanoutOpt"
+    description: "Aggressive fanout optimization"
+    use_when: "High fanout nets contributing to timing failures"
+
+  retiming:
+    command: "phys_opt_design -directive AlternateFlowWithRetiming"
+    description: "Physical optimization with retiming"
+    use_when: "Logic depth is too high, retiming can balance pipeline"

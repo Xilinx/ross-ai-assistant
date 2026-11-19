@@ -1,0 +1,702 @@
+{
+  "schema_version": 1,
+  "id": "timing-closure",
+  "title": "Timing closure",
+  "description": "Close timing on a post-synthesis or post-opt checkpoint: placer exploration, fixes and reruns on LSF or locally, with a few judgement calls left to the agent.",
+  "version": "0.9.0",
+  "entry": "tc",
+  "actions": {
+    "doctor": {
+      "description": "Check the workspace can run the flow: Python, config, Vivado, backend, LSF.",
+      "argv": [
+        "doctor",
+        "--workspace",
+        "{workspace}",
+        "--json"
+      ],
+      "readOnly": true
+    },
+    "setup": {
+      "description": "Record this workspace's settings for runs: from Vivado MCP's settings the first time, and any values given (Vivado, LSF queue, OS type, memory, slots, LSF env script) on top. An existing file is otherwise left alone unless force.",
+      "argv": [
+        "setup",
+        "--host-context",
+        "{context_file}",
+        "--workspace",
+        "{workspace}",
+        "--json",
+        {
+          "if": "force",
+          "argv": [
+            "--force"
+          ]
+        },
+        {
+          "if": "dry_run",
+          "argv": [
+            "--dry-run"
+          ]
+        },
+        {
+          "if": "vivado",
+          "argv": [
+            "--vivado",
+            "{vivado}"
+          ]
+        },
+        {
+          "if": "queue",
+          "argv": [
+            "--queue",
+            "{queue}"
+          ]
+        },
+        {
+          "if": "os_type",
+          "argv": [
+            "--os-type",
+            "{os_type}"
+          ]
+        },
+        {
+          "if": "memory_mb",
+          "argv": [
+            "--memory-mb",
+            "{memory_mb}"
+          ]
+        },
+        {
+          "if": "slots",
+          "argv": [
+            "--slots",
+            "{slots}"
+          ]
+        },
+        {
+          "if": "env_script",
+          "argv": [
+            "--env-script",
+            "{env_script}"
+          ]
+        }
+      ],
+      "args": {
+        "force": {
+          "type": "boolean",
+          "description": "replace an existing config (kept as .bak)"
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "report what would be written; write nothing"
+        },
+        "vivado": {
+          "type": "path",
+          "description": "the vivado executable or its install folder, as the user gave it"
+        },
+        "queue": {
+          "type": "string",
+          "description": "the LSF queue runs go to, as the user chose it"
+        },
+        "os_type": {
+          "type": "string",
+          "description": "the OS type hosts must have (e.g. ws8), as the user gave it"
+        },
+        "memory_mb": {
+          "type": "integer",
+          "description": "memory per run in MB"
+        },
+        "slots": {
+          "type": "integer",
+          "description": "CPU slots per run"
+        },
+        "env_script": {
+          "type": "path",
+          "description": "the script that sets up LSF on this host"
+        }
+      }
+    },
+    "check": {
+      "description": "Can runs start here? Reports each missing or wrong setting (Vivado, LSF queue, OS type) with what to ask the user; writes nothing.",
+      "argv": [
+        "setup",
+        "--host-context",
+        "{context_file}",
+        "--workspace",
+        "{workspace}",
+        "--json",
+        "--check"
+      ],
+      "readOnly": true
+    },
+    "start": {
+      "description": "Start (or resume) the flow on a checkpoint and return at once; a supervisor drives it from then on.",
+      "argv": [
+        "close",
+        "--dcp",
+        "{dcp}",
+        "--json",
+        "--attach",
+        {
+          "if": "design",
+          "argv": [
+            "--design",
+            "{design}"
+          ]
+        },
+        {
+          "if": "output_dir",
+          "argv": [
+            "--output-dir",
+            "{output_dir}"
+          ]
+        },
+        {
+          "if": "concurrency",
+          "argv": [
+            "--concurrency",
+            "{concurrency}"
+          ]
+        },
+        {
+          "if": "no_probe",
+          "argv": [
+            "--no-probe"
+          ]
+        }
+      ],
+      "args": {
+        "dcp": {
+          "type": "path",
+          "required": true,
+          "description": "the input checkpoint"
+        },
+        "design": {
+          "type": "string",
+          "description": "design name; default from the checkpoint"
+        },
+        "output_dir": {
+          "type": "path",
+          "description": "default: <dcp dir>/<dcp name>_tc"
+        },
+        "concurrency": {
+          "type": "integer",
+          "description": "runs in flight; default from the backend"
+        },
+        "no_probe": {
+          "type": "boolean",
+          "description": "skip the short build-probe job (the Versal device check still runs, from the checkpoint)"
+        }
+      },
+      "timeout": 600
+    },
+    "start_batch": {
+      "description": "Start (or resume) a run for every design in a list, in one call: one line `name,dcp` per design (# comments allowed), each run under output_root/<name>. Returns how many started, resumed and failed; then use wait_all. Stops at the first `needs: setup`.",
+      "argv": [
+        "batch",
+        "--designs",
+        "{designs}",
+        "--json",
+        {
+          "if": "output_root",
+          "argv": [
+            "--output-root",
+            "{output_root}"
+          ]
+        },
+        {
+          "if": "only",
+          "argv": [
+            "--only",
+            "{only}"
+          ]
+        },
+        {
+          "if": "concurrency",
+          "argv": [
+            "--concurrency",
+            "{concurrency}"
+          ]
+        },
+        {
+          "if": "no_probe",
+          "argv": [
+            "--no-probe"
+          ]
+        }
+      ],
+      "args": {
+        "designs": {
+          "type": "path",
+          "required": true,
+          "description": "the design list, e.g. designs.cfg"
+        },
+        "output_root": {
+          "type": "path",
+          "description": "default: runs/ beside the design list"
+        },
+        "only": {
+          "type": "string",
+          "description": "start only this design"
+        },
+        "concurrency": {
+          "type": "integer",
+          "description": "runs in flight per design; default from the backend"
+        },
+        "no_probe": {
+          "type": "boolean",
+          "description": "skip the short build-probe job (the Versal device check still runs, from the checkpoint)"
+        }
+      },
+      "timeout": 3600
+    },
+    "extend": {
+      "description": "Add work to a run that exists (finished, or between stages) instead of a new flow: ideas to try (physical XDC, the Stage 1 flows to try them on, early-fix switches) or one more planner round, from the overall best or a run named. Every result so far stays and the report is rebuilt.",
+      "argv": [
+        "extend",
+        "--output-dir",
+        "{output_dir}",
+        "--json",
+        "--attach",
+        {
+          "if": "ideas",
+          "argv": [
+            "--ideas",
+            "{ideas}"
+          ]
+        },
+        {
+          "if": "plan",
+          "argv": [
+            "--plan",
+            "{plan}"
+          ]
+        },
+        {
+          "if": "from_run",
+          "argv": [
+            "--from",
+            "{from_run}"
+          ]
+        },
+        {
+          "if": "placers",
+          "argv": [
+            "--placers",
+            "{placers}"
+          ]
+        },
+        {
+          "if": "early_fix",
+          "argv": [
+            "--early-fix",
+            "{early_fix}"
+          ]
+        },
+        {
+          "if": "max_runs",
+          "argv": [
+            "--max-runs",
+            "{max_runs}"
+          ]
+        },
+        {
+          "if": "restore",
+          "argv": [
+            "--restore"
+          ]
+        }
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path",
+          "required": true,
+          "description": "the run to extend"
+        },
+        "ideas": {
+          "type": "path",
+          "description": "JSON list of ideas: {name, xdc (a file) | xdc_lines, placers, early_fixes, place_directive, ...}"
+        },
+        "plan": {
+          "type": "path",
+          "description": "a plan.json in the planner's format, instead of ideas"
+        },
+        "from_run": {
+          "type": "string",
+          "description": "start from this run (id or folder) instead of the overall best; a run other than the winner has no checkpoint left (see restore)"
+        },
+        "placers": {
+          "type": "string",
+          "description": "Stage 1 flows to try each idea on, comma-separated (e.g. explore,auto_5)"
+        },
+        "early_fix": {
+          "type": "string",
+          "description": "an early-fix switch for the ideas, e.g. structural_analysis=1"
+        },
+        "max_runs": {
+          "type": "integer",
+          "description": "allow this many more runs than the run's guardrail leaves (only when the user asks)"
+        },
+        "restore": {
+          "type": "boolean",
+          "description": "the starting run's checkpoint was removed (only the winner's are kept): re-run it first to rebuild it; needed for incremental fixes or a planner round from it, not for flow / over-constrain / RQS ideas"
+        }
+      },
+      "timeout": 600
+    },
+    "runs": {
+      "description": "Every run in the workspace, newest first: phase, best result, pending decisions.",
+      "argv": [
+        "runs",
+        "--workspace",
+        "{workspace}",
+        "--json"
+      ],
+      "readOnly": true
+    },
+    "status": {
+      "description": "One run in full: phase, runs, stage bests, decisions, supervisor.",
+      "argv": [
+        "snapshot",
+        "--output-dir",
+        "{output_dir}",
+        "--compact"
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path",
+          "required": true
+        }
+      },
+      "readOnly": true
+    },
+    "wait": {
+      "description": "Block until the run needs attention (a decision, a phase change, a failure, done) or the timeout; returns a snapshot.",
+      "argv": [
+        "wait",
+        "--output-dir",
+        "{output_dir}",
+        "--timeout",
+        "{timeout}",
+        "--compact"
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path",
+          "required": true
+        },
+        "timeout": {
+          "type": "integer",
+          "default": 600,
+          "description": "seconds; capped by the host"
+        }
+      },
+      "readOnly": true,
+      "longPoll": true
+    },
+    "wait_all": {
+      "description": "Wait on every active run in the workspace at once. Returns the run with the event (output_dir) and, for the rest, counts by phase and the names of runs that have decisions or whose supervisor stopped. Event 'idle' when none is active.",
+      "argv": [
+        "wait",
+        "--all",
+        "--workspace",
+        "{workspace}",
+        "--timeout",
+        "{timeout}",
+        "--compact"
+      ],
+      "args": {
+        "timeout": {
+          "type": "integer",
+          "default": 600,
+          "description": "seconds; capped by the host"
+        }
+      },
+      "readOnly": true,
+      "longPoll": true
+    },
+    "watch": {
+      "description": "Wait on every unfinished run in a large batch, reading run files instead of a status process per run; ignores phase changes and reports a supervisor that died without an outcome once. Opt-in flags (only when the user asked): auto_triage answers triage calls the evidence settles, restart_dead restarts a supervisor that died, free_space deletes superseded checkpoints when writes fail, kill_strays kills jobs left in retired attempt folders. `actions` lists what was done.",
+      "argv": [
+        "watch",
+        "--workspace",
+        "{workspace}",
+        "--timeout",
+        "{timeout}",
+        "--compact",
+        {
+          "if": "auto_triage",
+          "argv": [
+            "--auto-triage"
+          ]
+        },
+        {
+          "if": "restart_dead",
+          "argv": [
+            "--restart-dead"
+          ]
+        },
+        {
+          "if": "free_space",
+          "argv": [
+            "--free-space"
+          ]
+        },
+        {
+          "if": "kill_strays",
+          "argv": [
+            "--kill-strays"
+          ]
+        }
+      ],
+      "args": {
+        "timeout": {
+          "type": "integer",
+          "default": 600,
+          "description": "seconds; capped by the host"
+        },
+        "auto_triage": {
+          "type": "boolean",
+          "default": false
+        },
+        "restart_dead": {
+          "type": "boolean",
+          "default": false
+        },
+        "free_space": {
+          "type": "boolean",
+          "default": false
+        },
+        "kill_strays": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "readOnly": false,
+      "longPoll": true
+    },
+    "migrate": {
+      "description": "List what the retired workspace install left in this workspace (skill copies, agents, hooks, the timing-closure MCP server, claude-tc). Read-only.",
+      "argv": [
+        "migrate",
+        "--workspace",
+        "{workspace}",
+        "--json"
+      ],
+      "readOnly": true
+    },
+    "migrate_remove": {
+      "description": "Remove what migrate lists. The user is asked first; their own skills, agents, hooks and servers are kept, and edited files get a .bak.",
+      "argv": [
+        "migrate",
+        "--workspace",
+        "{workspace}",
+        "--remove",
+        "--yes",
+        "--json"
+      ],
+      "timeout": 120
+    },
+    "view_runs": {
+      "description": "For an IDE's Workflows view: every run in the workspace as workflow-view/1 list items.",
+      "argv": [
+        "view",
+        "runs",
+        "--workspace",
+        "{workspace}"
+      ],
+      "readOnly": true
+    },
+    "view_run": {
+      "description": "For an IDE's Workflows view: one run as a workflow-view/1 detail document.",
+      "argv": [
+        "view",
+        "run",
+        "--output-dir",
+        "{output_dir}"
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path",
+          "required": true
+        }
+      },
+      "readOnly": true
+    },
+    "decisions": {
+      "description": "The run's decisions; pending ones only unless pending=false.",
+      "argv": [
+        "decisions",
+        "list",
+        "--output-dir",
+        "{output_dir}",
+        "--json",
+        {
+          "if": "pending",
+          "argv": [
+            "--pending"
+          ]
+        }
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path",
+          "required": true
+        },
+        "pending": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "readOnly": true
+    },
+    "decision": {
+      "description": "One decision with its evidence, schema and rule default.",
+      "argv": [
+        "decisions",
+        "get",
+        "--output-dir",
+        "{output_dir}",
+        "--id",
+        "{id}"
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path",
+          "required": true
+        },
+        "id": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "readOnly": true
+    },
+    "answer": {
+      "description": "Answer a pending decision with JSON matching its schema. Validated; a rejected answer changes nothing.",
+      "argv": [
+        "decisions",
+        "answer",
+        "--output-dir",
+        "{output_dir}",
+        "--id",
+        "{id}",
+        "--answer-json",
+        "{answer}"
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path",
+          "required": true
+        },
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "answer": {
+          "type": "json",
+          "required": true,
+          "description": "the answer object"
+        }
+      },
+      "confirm": false
+    },
+    "detach": {
+      "description": "Release your watch on a run (all runs without output_dir) when you exit. Refused while a run is active unless user_asked; the runs themselves keep going.",
+      "argv": [
+        "detach",
+        "--workspace",
+        "{workspace}",
+        {
+          "if": "output_dir",
+          "argv": [
+            "--output-dir",
+            "{output_dir}"
+          ]
+        },
+        {
+          "if": "user_asked",
+          "argv": [
+            "--user-asked"
+          ]
+        }
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path"
+        },
+        "user_asked": {
+          "type": "boolean",
+          "description": "the user asked you to stop"
+        }
+      },
+      "confirm": false
+    },
+    "stop": {
+      "description": "Stop the supervisor. Submitted runs keep going; start again to adopt them.",
+      "argv": [
+        "serve",
+        "--output-dir",
+        "{output_dir}",
+        "--stop"
+      ],
+      "args": {
+        "output_dir": {
+          "type": "path",
+          "required": true
+        }
+      }
+    }
+  },
+  "view": {
+    "list": "view_runs",
+    "detail": "view_run",
+    "detail_arg": "output_dir",
+    "refresh_seconds": 30
+  },
+  "prompts": {
+    "start": {
+      "title": "Start timing closure",
+      "description": "Start (or resume) timing closure on a post-synthesis or post-opt checkpoint",
+      "action": "start",
+      "arguments": {
+        "dcp": {
+          "description": "the checkpoint, for example top_opt.dcp",
+          "required": true
+        },
+        "design": {
+          "description": "design name; default from the checkpoint"
+        }
+      },
+      "text": "Start timing closure on {dcp}."
+    },
+    "runs": {
+      "title": "Timing-closure runs",
+      "description": "List the timing-closure runs in this workspace and where each stands",
+      "action": "runs"
+    },
+    "status": {
+      "title": "Timing-closure status",
+      "description": "Where one timing-closure run stands: phase, best WNS, pending decisions",
+      "action": "status",
+      "arguments": {
+        "output_dir": {
+          "description": "the run's output directory",
+          "required": true
+        }
+      },
+      "text": "Show where the timing-closure run in {output_dir} stands, and any decision waiting on me."
+    },
+    "extend": {
+      "title": "Extend a timing-closure run",
+      "description": "Try more ideas on a timing-closure run that exists, instead of starting over",
+      "action": "extend",
+      "arguments": {
+        "output_dir": {
+          "description": "the run's output directory",
+          "required": true
+        }
+      },
+      "text": "Try more on the timing-closure run in {output_dir}: extend it rather than start a new flow."
+    }
+  }
+}

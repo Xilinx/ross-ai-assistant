@@ -17,10 +17,11 @@ Set up the AMD Ross Agentic AI Assistant in your preferred environment. Follow t
     - **Vivado MCP Server** binary — for CLI setups (Claude Code, Copilot CLI, Codex). Install to a directory like `~/tools/`.
 - A running Vivado session or a design checkpoint (DCP) to work with
 
-**For Vitis skills (beta):**
+**For ChipScope MCP Server:**
 
-- **Vitis 2024.2 or later**, installed and licensed. Source `settings64.sh` before a headless `vitis -s` run
-- In the Vitis IDE, the skill uses the IDE's Vitis Python tool. Outside the IDE, a coding agent invokes Vitis with `vitis -s`
+- **AMD Versal** device with a programmed design
+- `hw_server` and `cs_server` running on your lab machine
+- The `chipscope-mcp` binary archive (downloaded from the EA release page)
 
 **For Vitis HLS AI Assistant (Agent Skills):**
 
@@ -32,26 +33,27 @@ Set up the AMD Ross Agentic AI Assistant in your preferred environment. Follow t
 
 ## Setup Guides
 
-> Cursor, Claude Code and Codex users can install step 1's skills as a plugin instead — see [Install as a plugin](../../README.md#install-as-a-plugin). The plugin contains skills only; the MCP servers in the remaining steps are still installed separately.
+> Install step 1's skills as a plugin in supported clients, or import the plugin into a ChatGPT workspace — see [Install as a plugin](install-plugin.md) for installation and update steps. Claude Code and Codex can install directly from GitHub without a manual clone. The plugin contains skills only; the MCP servers in the remaining steps are still installed separately.
 
 | Step | Guide | What it covers |
 |------|-------|----------------|
 | 1 | [Install Agent Skills](../../README.md#quick-start) | `npx skills add` — install HLS and Vivado methodology skills |
 | 2 | [Vivado MCP Server](vivado-mcp.md) | VSIX extension (VS Code / Cursor) or standalone binary (CLI tools) |
-| 3 | [HLS Quick Start](hls-quickstart.md) | Vitis HLS skills — no MCP server needed |
-| 4 | [Pre-Flight Checklist](preflight-checklist.md) | Verify everything works end-to-end |
+| 3 | [ChipScope MCP Server](chipscope-mcp.md) | Binary install and per-client configuration for Versal debug |
+| 4 | [HLS Quick Start](hls-quickstart.md) | Vitis HLS skills — no MCP server needed |
+| 5 | [Pre-Flight Checklist](preflight-checklist.md) | Verify everything works end-to-end |
 
 ## Architecture Overview
 
-**Vivado AI Assistant** uses the MCP protocol to give your AI agent live tool access:
+**Vivado AI Assistant** and **ChipScope MCP Server** use the MCP protocol to give your AI agent live tool access:
 
 ```
-Your AI Client  ──MCP protocol──>  MCP Server  ──Tcl──>  Vivado
+Your AI Client  ──MCP protocol──>  MCP Server  ──Tcl / API──>  Vivado / ChipScoPy
 ```
 
 1. **Your client** (IDE or CLI) connects to the MCP server via stdio
 2. **The MCP server** translates AI agent requests into tool commands
-3. **Vivado** executes the commands and returns results through the same chain
+3. **Vivado / ChipScoPy** executes the commands and returns results through the same chain
 
 **Vitis HLS AI Assistant** uses agent skills — no MCP server required:
 

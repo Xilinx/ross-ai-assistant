@@ -5,6 +5,11 @@ SPDX-License-Identifier: MIT
 
 # Minimal Reproducer and Defect Package
 
+<!-- Methodology ask with no design attached: do not write the report by hand.
+Run `S advise reproducer --out outputs/<case>/report.md --request "<ask>" --contract --backend XSim`,
+do what its `next` says (for example vivado_doc_search), add findings with `--append`, and end
+with its contract JSON. -->
+
 A tool defect is only actionable with a small, self-contained case and an
 exact command. Building that case is usually the expensive part, and it is
 work this skill can do.

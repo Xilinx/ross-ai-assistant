@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "hooks": {
+    "stop": [
+      {
+        "command": "t=\"${CURSOR_PLUGIN_ROOT}/skills/vivado-timing-closure/tc\"; [ -x \"$t\" ] || exit 0; \"$t\" guard --ide cursor",
+        "timeout": 60,
+        "loop_limit": null
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": "t=\"${CURSOR_PLUGIN_ROOT}/skills/vivado-timing-closure/tc\"; [ -x \"$t\" ] || exit 0; \"$t\" guard --ide cursor",
+        "timeout": 30
+      }
+    ]
+  }
+}

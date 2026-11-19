@@ -1,0 +1,18 @@
+{
+  "catalog": {
+    "items": [
+      {"name": "alpha_preset", "display": "Alpha Processor Presets", "latest_revision": "1.0",
+       "commit_id": "1111111111111111111111111111111111111111",
+       "config": {"root": "ced/Xilinx/IPI/Alpha_Presets", "metadata_file": "xitem.json"}, "company": "xilinx.com"},
+      {"name": "beta_pcie", "display": "Beta PCIe Endpoint", "latest_revision": "2.0",
+       "commit_id": "2222222222222222222222222222222222222222",
+       "config": {"root": "ced/Xilinx/IPI/Beta_PCIe", "metadata_file": "xitem.json"}, "company": "xilinx.com"},
+      {"name": "beta_stale", "display": "Beta Stale Entry", "latest_revision": "1.0",
+       "commit_id": "3333333333333333333333333333333333333333",
+       "config": {"root": "ced/Xilinx/IPI/Beta_PCIe", "metadata_file": "xitem.json"}, "company": "xilinx.com"}
+    ],
+    "categories": []
+  },
+  "_major": 1,
+  "_minor": 0
+}

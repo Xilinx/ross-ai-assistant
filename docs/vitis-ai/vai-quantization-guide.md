@@ -10,7 +10,7 @@ compiles, evaluates accuracy against an FP32 baseline, and iterates until your
 targets are met.
 
 The points in [Board access](index.md#board-access) apply to this workflow. For the manual procedure
-this workflow automates, see the [Model Quantization](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/model_quantization/model_quantization.html) and [Mixed Precision Compilation](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/model_compilation/mixed_precision_compilation.html) sections of the Vitis AI documentation.
+this workflow automates, see the [Model Quantization](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/model_quantization/model_quantization.html) and [Mixed Precision Compilation](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/model_compilation/mixed_precision_compilation.html) sections of the Vitis AI documentation.
 
 ## When to use
 

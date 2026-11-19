@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ExampleDesign>
+  <Vendor>xilinx.com</Vendor>
+  <Library>design</Library>
+  <Name>beta_pcie</Name>
+  <DisplayName>Beta PCIe Endpoint</DisplayName>
+  <Description>PCIe endpoint example with a queue DMA and performance variants.</Description>
+  <Version>2.0</Version>
+  <Design>init.tcl</Design>
+</ExampleDesign>

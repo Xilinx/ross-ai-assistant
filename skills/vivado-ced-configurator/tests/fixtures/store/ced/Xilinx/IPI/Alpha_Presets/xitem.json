@@ -1,0 +1,19 @@
+{
+  "config": {
+    "items": [
+      {
+        "infra": {
+          "name": "alpha_preset",
+          "display": "Alpha Processor Presets",
+          "revision": "1.0",
+          "description": "A processor based example design",
+          "category": "Embedded",
+          "is_active": true,
+          "search-keywords": ["processor presets", "microcontroller"]
+        }
+      }
+    ]
+  },
+  "_major": 1,
+  "_minor": 0
+}

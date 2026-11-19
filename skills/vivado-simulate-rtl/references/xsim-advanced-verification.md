@@ -19,6 +19,15 @@ database and closure workflow.
 - Functional coverage
 - Run manifests and merging
 
+## Fast path
+
+`scripts/simrtl.py sim --out outputs/<case> --xpr <project> --simset <simset>`
+plus `--uvm-test <test>` (integrated UVM 1.2), `--seeds a,b --replay-failures`
+(one manifest per run, failing seeds replayed and compared), or
+`--assert-pass` (per-assertion pass/fail table read from the transcript and
+source). One command per request; use the Tcl below only for what it cannot
+express.
+
 ## 1. Preflight
 
 Record:

@@ -1,0 +1,25 @@
+# Exported from Vitis Analyzer (Host > Native XRT API calls). Times in ms from xrt::device open.
+thread,start_ms,end_ms,function,object,direction,bytes
+main,0.500,2.500,xrt::bo::sync,bo_a,TO_DEVICE,16777216
+main,2.500,4.500,xrt::bo::sync,bo_b,TO_DEVICE,16777216
+main,4.500,4.550,xrt::kernel::operator(),krnl_vadd,,0
+main,4.550,7.650,xrt::run::wait,krnl_vadd,,0
+main,7.650,8.650,xrt::bo::sync,bo_c,FROM_DEVICE,16777216
+main,9.500,11.500,xrt::bo::sync,bo_a,TO_DEVICE,16777216
+xdp_offload,10.000,10.350,xrt::bo::sync,xdp_trace_buf_0,FROM_DEVICE,1048576
+main,11.500,13.500,xrt::bo::sync,bo_b,TO_DEVICE,16777216
+main,13.500,13.550,xrt::kernel::operator(),krnl_vadd,,0
+main,13.550,16.650,xrt::run::wait,krnl_vadd,,0
+main,16.650,17.650,xrt::bo::sync,bo_c,FROM_DEVICE,16777216
+main,18.500,20.500,xrt::bo::sync,bo_a,TO_DEVICE,16777216
+xdp_offload,20.000,20.350,xrt::bo::sync,xdp_trace_buf_0,FROM_DEVICE,1048576
+main,20.500,22.500,xrt::bo::sync,bo_b,TO_DEVICE,16777216
+main,22.500,22.550,xrt::kernel::operator(),krnl_vadd,,0
+main,22.550,25.650,xrt::run::wait,krnl_vadd,,0
+main,25.650,26.650,xrt::bo::sync,bo_c,FROM_DEVICE,16777216
+main,27.500,29.500,xrt::bo::sync,bo_a,TO_DEVICE,16777216
+main,29.500,31.500,xrt::bo::sync,bo_b,TO_DEVICE,16777216
+xdp_offload,30.000,30.350,xrt::bo::sync,xdp_trace_buf_0,FROM_DEVICE,1048576
+main,31.500,31.550,xrt::kernel::operator(),krnl_vadd,,0
+main,31.550,34.650,xrt::run::wait,krnl_vadd,,0
+main,34.650,35.650,xrt::bo::sync,bo_c,FROM_DEVICE,16777216

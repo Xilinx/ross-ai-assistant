@@ -1,0 +1,21 @@
+# aiesim_options.txt — AIE VCD-dump options for hw_emu.
+#
+# Used only when AIE waveform (VCD) capture is wanted. The skill copies this file to
+# `aiesim_options.txt` in COMPILED_OUT_DIRECTORY, sets the AIE_PKG_DIR line to the user's
+# AIE_WORK_DIR (or removes the line when AIE_WORK_DIR is blank), and passes it to the launch:
+#     <PACKAGE_DIR>/launch_hw_emu.sh ... -aie-sim-options ${PWD}/aiesim_options.txt
+#
+# AIE_PKG_DIR is set to the AIE compile Work directory (the user's AIE_WORK_DIR); its name
+# and location vary between builds. Without it the VCD is still written, but the run
+# summary has no AIE compiler summary and no GMIO throughput.
+AIE_PKG_DIR=<AIE_WORK_DIR>
+
+# VCD dump switches (leave as-is for a full dump; drop lines to narrow scope).
+AIE_DUMP_VCD_SHIM=true
+AIE_DUMP_VCD_CORE=true
+AIE_DUMP_VCD_INTERVAL=(0,50000000)
+AIE_DUMP_VCD_STREAM_SWITCH=true
+AIE_DUMP_VCD_IO=true
+
+# AIE_DUMP_VCD — output VCD basename (produces <name>.vcd).
+AIE_DUMP_VCD=foo

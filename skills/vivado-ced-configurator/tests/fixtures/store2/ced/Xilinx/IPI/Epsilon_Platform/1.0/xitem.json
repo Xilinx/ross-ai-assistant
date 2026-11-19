@@ -1,0 +1,18 @@
+{
+  "config": {
+    "items": [
+      {
+        "infra": {
+          "name": "epsilon_ext",
+          "display": "Epsilon Extensible Platform",
+          "description": "Extensible platform for the acceleration flow",
+          "category": "Platforms",
+          "is_active": true,
+          "search-keywords": ["extensible", "platform", "vitis"]
+        }
+      }
+    ]
+  },
+  "_major": 1,
+  "_minor": 0
+}

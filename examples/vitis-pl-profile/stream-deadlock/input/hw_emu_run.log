@@ -1,0 +1,10 @@
+$ export XCL_EMULATION_MODE=hw_emu
+$ ./host.exe binary_container_1.xclbin
+INFO: Loading 'binary_container_1.xclbin'
+INFO: [HW-EMU 01] Hardware emulation runs simulation underneath. Using a large data set will result in long simulation times. It is recommended that a small dataset is used for faster execution. The flow uses approximate models for Global memories and interconnect and hence the performance data generated is approximate.
+INFO: [HW-EMU 05] Path of the simulation directory : .run/41207/hw_emu/device0/binary_0/behav_waveform/xsim
+Starting mm2s_1 and s2mm_1 (n = 1024)
+mm2s_1 done
+... (no further output for 40 minutes; host is blocked in run_s2mm.wait()) ...
+^C
+INFO: [HW-EMU 07-0] Please refer the path ".run/41207/hw_emu/device0/binary_0/behav_waveform/xsim/simulate.log" for more detailed simulation infos, errors and warnings.

@@ -12,7 +12,8 @@ description: >
   "automate project recreation", or "set up Git for my FPGA design".
 license: MIT
 metadata:
-  version: "1.0.1"
+  stage: beta
+  version: "1.0.2"
 ---
 
 <!--
@@ -51,6 +52,12 @@ Before running, the Vivado project must be open with:
 - A valid PART property set
 - Source files added to the project
 - TOP module configured
+- IPs up to date: locked/out-of-date IPs are flagged by the export's IP
+  precheck, and a project exported with them will not rebuild cleanly
+  (do **not** run `upgrade_ip` or `generate_target` on the user's original
+  project: that rewrites its `.bd`/`.xci` files. The generated `build.tcl`
+  upgrades locked IPs itself on rebuild; if the export reports locked IPs, say
+  so and tell the user how to upgrade them, or work on a scratch copy)
 - For DFX: PR_FLOW property enabled
 - For Segmented Config: SEGMENTED_CONFIGURATION property set (or Versal Gen2 device)
 
@@ -147,22 +154,44 @@ preserves the old fully-automated 5-step behavior unchanged.
 **Agentic (an AI agent driving Vivado via Bash/batch-mode Tcl calls, chatting
 with a human)** — do **not** call `prompt_preserve_outputs`: its `gets stdin`
 has no real tty to block on and will just read EOF, silently disabling
-preservation with no visible prompt at all. Instead:
+preservation with no visible prompt at all. **This step is mandatory for
+agents: do not run Step 3 until you have either asked the user the question
+below and recorded the answer, recorded an explicit choice already supplied
+by the user, or confirmed that nothing is eligible.**
+Skipping it silently disables preservation, and different agent backends have
+skipped it inconsistently. Instead (see item 5 for the no-answer case):
 
 1. Call `list_preservable_outputs` (pure query, no stdin) to see what's eligible.
-2. If it returns any IPs or BDs, ask the human directly in the conversation
-   which ones (if any) they want to preserve, AND for an absolute path to a
-   cache directory outside the project to store the preserved outputs.
+2. If it returns any IPs or BDs and the user has not already made an explicit
+   choice, ask which ones (if any) they want to preserve, AND for an absolute
+   path to a cache directory outside the project to store the preserved
+   outputs. Wait for the answer before continuing.
 3. Call `build_preserve_selection $chosen_ips $chosen_bds $cache_dir` with
-   the human's answers to get the `preserve_selection` dict.
+   the human's answers to get the `preserve_selection` dict. If the human
+   declines, call `build_preserve_selection {} {} {}` — this records "no" as a
+   non-empty `enabled 0` selection.
 4. If `list_preservable_outputs` returns nothing, skip asking — there's
    nothing to preserve.
+5. If the user cannot be asked or has already said to use defaults / run
+   non-interactively, **do not stop and wait**: call
+   `build_preserve_selection {} {} {}` (no preservation), continue through
+   Steps 3-5, and say in your final summary that preservation was skipped by
+   default and which items were eligible, so the user can ask for a re-run.
+   A request that is a complete task (for example "export, rebuild and tell me
+   whether it matches") without mentioning preservation counts as this case:
+   still do the whole task, then offer preservation at the end instead of
+   ending your turn on the question.
 
 ```tcl
 set items [list_preservable_outputs]
 # ... ask the human in conversation, then:
 set preserve_selection [build_preserve_selection $chosen_ips $chosen_bds $cache_dir]
 ```
+
+If you call `export_all_sources` without a `preserve_selection` on a non-tty
+session while something is eligible, it prints a `NOTICE (Step 2.5)` line
+saying no outputs will be preserved. Treat that notice as a signal that you
+skipped this step: stop, ask the user, and re-run Step 3.
 
 Pass the returned `preserve_selection` into Step 3 (`export_all_sources`).
 For details, read
@@ -171,7 +200,10 @@ For details, read
 ### Step 3: Export All Sources (conditional)
 
 Skip this step if Step 2 returned "Remote". Otherwise, export RTL, constraints,
-IP (as Tcl via `write_ip_tcl`), Block Designs (as Tcl via `write_bd_tcl`),
+IP (as Tcl via `write_ip_tcl`), Block Designs (as Tcl via `write_bd_tcl`,
+except BDs with Monitor-mode interfaces, which are kept as native `.bd` files
+with their `ip/` folders — see
+[generate-build-script/REFERENCE.md](generate-build-script/REFERENCE.md)),
 simulation files, and data files to an organized directory.
 
 Pass `flow_info` from Step 1 to enable DFX/Segmented Config-specific exports
@@ -286,7 +318,9 @@ RevisionControl/
 │   ├── IP/               # write_ip_tcl scripts — non-preserved standalone
 │   │                     # IPs only (no .xci copied); preserved IPs are
 │   │                     # skipped here entirely (see below)
-│   ├── BD/               # write_bd_tcl scripts — non-preserved BDs only
+│   ├── BD/               # write_bd_tcl scripts — non-preserved BDs only;
+│   │                     # BDs with Monitor-mode interfaces are native
+│   │                     # <bd>.bd + ip/ here instead (no .tcl)
 │   │                     # (no .bd copied); preserved BDs are skipped here
 │   │                     # entirely: a preserved BD never gets a BD Tcl
 │   │                     # (design.tcl-style), and any stale <bd>.tcl /
@@ -366,7 +400,7 @@ For DFX projects, configure Git LFS for DCP files:
 git lfs track "*.dcp"
 ```
 
-### Optional: Verify the Rebuild Matches the Original
+### Verify the Rebuild Matches the Original
 
 Vivado gives no built-in signal that a recreated project actually matches the
 original — a silently-skipped BD, a missing wrapper module, or a dropped run
@@ -384,6 +418,15 @@ verify_rebuild "RevisionControl/Scripts/verification_manifest.tcl"
 `verify_rebuild` checks that all expected Block Designs, the top module (including
 auto-managed wrapper modules with no physical source file), and all expected
 runs are present, plus an IP-count sanity check — and prints a PASS/FAIL report.
+
+**When the user asks whether the rebuilt project matches the original, this
+step is required, not optional.** Call `capture_verification_manifest` after
+export and `verify_rebuild` after the rebuild, and end your final reply with a
+line naming the result, e.g. `verify_rebuild: PASS (BDs 2/2, top module, runs
+2/2, IPs 12/12)` — or `verify_rebuild: FAIL` plus the failed checks. Always use
+the literal name `verify_rebuild` and report its actual outcome; do not
+paraphrase it as "the export tool's own check". If you also diff the two
+projects yourself, report that as an additional check, not a replacement.
 For details, read
 [helper-procedures/REFERENCE.md](helper-procedures/REFERENCE.md).
 

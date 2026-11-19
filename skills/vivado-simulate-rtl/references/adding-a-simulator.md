@@ -5,6 +5,11 @@ SPDX-License-Identifier: MIT
 
 # Adding a Simulator Backend
 
+<!-- Methodology ask with no design attached: do not write the report by hand.
+Run `S advise new-backend --out outputs/<case>/report.md --request "<ask>" --contract --backend XSim`,
+do what its `next` says (for example vivado_doc_search), add findings with `--append`, and end
+with its contract JSON. -->
+
 Add a backend only after the installed Vivado release officially supports it.
 Do not infer support from a compatible HDL command line.
 

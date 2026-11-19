@@ -264,8 +264,12 @@ proc _rc_is_exportable_local {file proj_dir} {
     if {[string first $norm_proj $norm_file] != 0} {
         return 0
     }
+    # Match against the path RELATIVE to the project dir: an absolute path
+    # like ~/.cache/<ws>/proj/... would otherwise hit "*.cache/*" and make
+    # every source look non-exportable.
+    set rel_file [string range $norm_file [string length $norm_proj] end]
     foreach pat {"*.gen/*" "*.cache/*" "*.sim/*" "*.hw/*" "*.ip_user_files/*" "*.runs/*" "*/.Xil/*"} {
-        if {[string match $pat $norm_file]} {
+        if {[string match $pat $rel_file]} {
             return 0
         }
     }
@@ -313,6 +317,7 @@ proc _validate_ip_blocks {} {
     set summary [dict create]
     dict set summary total_ips 0
     dict set summary locked_ips 0
+    dict set summary locked_ip_names {}
     dict set summary upgraded_ips 0
     dict set summary missing_ips 0
     dict set summary missing_ip_names {}
@@ -329,6 +334,8 @@ proc _validate_ip_blocks {} {
         set is_locked [get_property -quiet IS_LOCKED $ip]
         if {$is_locked eq "1" || $is_locked eq "true"} {
             dict incr summary locked_ips
+            dict lappend summary locked_ip_names $ip_name
+            puts "  WARNING: IP is LOCKED (customized with an older release / catalog revision): $ip_name"
         }
 
         # Some Vivado versions expose UPGRADE_VERSIONS as list/string.
@@ -361,6 +368,13 @@ proc _validate_ip_blocks {} {
     puts "IPs missing generated artifacts: [dict get $summary missing_ips]"
     if {[dict get $summary missing_ips] > 0} {
         puts "  Missing/Unresolved IP list: [dict get $summary missing_ip_names]"
+    }
+    if {[dict get $summary locked_ips] > 0} {
+        puts "  WARNING: [dict get $summary locked_ips] locked IP(s) -- the exported project will NOT rebuild"
+        puts "  cleanly in this Vivado release (locked IPs cannot regenerate output products and"
+        puts "  BD tcl may reference IP versions the part no longer supports, e.g. BD 5-216)."
+        puts "  Fix on the ORIGINAL project, then re-run this export:"
+        puts "    report_ip_status; upgrade_ip \[get_ips -filter {IS_LOCKED==1}\]; generate_target all \[get_ips\]"
     }
     puts "─────────────────────────────────────────────────────────────────────"
 
@@ -442,6 +456,49 @@ proc _rc_validate_cache_dir {cache_dir proj_dir} {
     return 1
 }
 
+# Some Vivado releases cannot replay Tcl for BDs with monitor-mode boundary
+# interfaces: width-dependent interface pins are missing when the parent is
+# recreated. Keep the native .bd source for those designs instead.
+proc _rc_has_monitor_bd_intf {} {
+    # 1. Monitor interface pins on cells at the current level (original check).
+    foreach pin [get_bd_intf_pins -quiet] {
+        set mode ""
+        catch {set mode [get_property MODE $pin]}
+        if {[string equal -nocase $mode "Monitor"]} {
+            return 1
+        }
+    }
+    # 2. Monitor interface PORTS on the BD itself. A BDC child (e.g. a debug
+    #    hierarchy) exposes its boundary interface as a port, not a pin, so
+    #    check 1 never sees it.
+    set ports {}
+    catch {set ports [get_bd_intf_ports -quiet]}
+    foreach port $ports {
+        set mode ""
+        catch {set mode [get_property MODE $port]}
+        if {[string equal -nocase $mode "Monitor"]} {
+            return 1
+        }
+    }
+    # 3. Monitor pins directly on a hierarchy/BDC cell (the parent side of
+    #    the same pattern). Only hier cells are inspected, so a Monitor slot
+    #    on an ordinary IP nested inside a hierarchy does not trigger this.
+    set hier_cells {}
+    catch {set hier_cells [get_bd_cells -quiet -hierarchical -filter {TYPE == hier}]}
+    foreach cell $hier_cells {
+        set cell_pins {}
+        catch {set cell_pins [get_bd_intf_pins -quiet -of_objects $cell]}
+        foreach pin $cell_pins {
+            set mode ""
+            catch {set mode [get_property MODE $pin]}
+            if {[string equal -nocase $mode "Monitor"]} {
+                return 1
+            }
+        }
+    }
+    return 0
+}
+
 #══════════════════════════════════════════════════════════════════════════════
 # UTILITY: _rc_stdin_is_tty
 # Purpose: Detect whether stdin is a real interactive terminal, using the
@@ -454,6 +511,33 @@ proc _rc_validate_cache_dir {cache_dir proj_dir} {
 #══════════════════════════════════════════════════════════════════════════════
 proc _rc_stdin_is_tty {} {
     return [expr {[catch {exec test -t 0}] == 0}]
+}
+
+#══════════════════════════════════════════════════════════════════════════════
+# UTILITY: _rc_step25_notice
+# Purpose: Step 2.5 (preserve generated outputs) is only prompted automatically
+# on a real tty. An agent driving batch Tcl has none, so it must ask the human
+# itself (see SKILL.md Step 2.5) -- and agents differ in whether they do.
+# When export_all_sources is called with no preserve_selection, no tty, and
+# something is eligible, print an unmissable notice so the omission is visible
+# in the log instead of being a silent "no preservation". Returns 1 if the
+# notice was printed, else 0. An agent that asked and was told "no" avoids it by
+# passing build_preserve_selection {} {} {} (a non-empty dict with enabled 0).
+#══════════════════════════════════════════════════════════════════════════════
+proc _rc_step25_notice {} {
+    if {[catch {list_preservable_outputs} items]} { return 0 }
+    set n_ips [llength [dict get $items ips]]
+    set n_bds [llength [dict get $items bds]]
+    if {$n_ips + $n_bds == 0} { return 0 }
+    puts "NOTICE (Step 2.5): $n_ips IP(s) and $n_bds BD(s) could have their generated"
+    puts "  outputs preserved, but no preserve_selection was given and stdin is not a"
+    puts "  tty, so NO outputs will be preserved in this export."
+    puts "  - AI agent: stop and ask the user (see SKILL.md Step 2.5), then re-run"
+    puts "    export_all_sources with the preserve_selection from"
+    puts "    build_preserve_selection. If the user says no, pass"
+    puts "    \[build_preserve_selection {} {} {}\] to record that answer."
+    puts "  - CI / scripted run: ignore this notice."
+    return 1
 }
 
 #══════════════════════════════════════════════════════════════════════════════
@@ -653,6 +737,46 @@ proc build_preserve_selection {sel_ips sel_bds cache_dir} {
 }
 
 #══════════════════════════════════════════════════════════════════════════════
+# UTILITY: _rc_save_state / _rc_load_state
+# export_all_sources computes state (constraint filesets, BD order, DFX RM
+# files, preservation selection, ...) in global variables that
+# capture_project_settings and generate_build_script read. When the steps run
+# in separate Vivado sessions (typical for an agent driving batch Tcl) those
+# globals are gone and the generated scripts silently lose information (e.g.
+# secondary constraint sets merged into constrs_1). Persist them next to the
+# export and reload them when a later step finds them missing.
+#══════════════════════════════════════════════════════════════════════════════
+proc _rc_state_vars {} {
+    return {bd_name_array bd_source_order dfx_pr_configs dfx_partition_defs dfx_reconfig_modules
+            dfx_partition_cells dfx_rm_file_tails dfx_child_runs dfx_parent_impl_config
+            fileset_compile_order_map constrs_fileset_map preserved_ip_names preserved_bd_names
+            preserved_ip_rel_path preserved_bd_rel_path preserved_cache_dir native_bd_names}
+}
+
+proc _rc_save_state {export_dir} {
+    set fh [open [file join $export_dir .rc_state.tcl] w]
+    puts $fh "# generated by export_all_sources - do not edit"
+    puts $fh "set ::rc_state_marker 1"
+    foreach v [_rc_state_vars] {
+        if {[array exists ::$v]} {
+            puts $fh [list array set ::$v [array get ::$v]]
+        } elseif {[info exists ::$v]} {
+            puts $fh [list set ::$v [set ::$v]]
+        }
+    }
+    close $fh
+}
+
+proc _rc_load_state {export_dir} {
+    if {[info exists ::rc_state_marker]} { return }
+    set f [file join $export_dir .rc_state.tcl]
+    if {[file exists $f]} {
+        uplevel #0 [list source $f]
+        puts "  Restored export state from $f (export ran in an earlier session)"
+    }
+}
+
+#══════════════════════════════════════════════════════════════════════════════
 # PROCEDURE 3: export_all_sources
 # Purpose: Export all project components needed to rebuild
 # Depends on: detect_project_flow output (flow_info dict)
@@ -678,6 +802,7 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
     global preserved_ip_rel_path
     global preserved_bd_rel_path
     global preserved_cache_dir
+    global native_bd_names
 
     # Initialize
     array unset bd_name_array
@@ -691,6 +816,7 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
     array unset constrs_fileset_map
     set preserved_ip_names {}
     set preserved_bd_names {}
+    set native_bd_names {}
     array unset preserved_ip_rel_path
     array unset preserved_bd_rel_path
     set preserved_cache_dir {}
@@ -720,6 +846,8 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
             puts "  IP(s)/BD(s) eligible for output preservation."
             set preserve_selection [prompt_preserve_outputs]
         }
+    } elseif {$preserve_selection eq {}} {
+        _rc_step25_notice
     }
 
     #────────────────────────────────────────────────────────────────────────────
@@ -826,11 +954,39 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
     #────────────────────────────────────────────────────────────────────────────
     # Export RTL Sources
     #────────────────────────────────────────────────────────────────────────────
+    # A netlist-mode (GateLvl) sources_1 cannot open block designs or hold RTL
+    # sources: warn early instead of failing later with "Cannot open block
+    # design ... in Netlist project".
+    if {![catch {get_property -quiet DESIGN_MODE [get_filesets sources_1]} _dm] && $_dm eq "GateLvl"} {
+        puts "  WARNING: sources_1 DESIGN_MODE is GateLvl (netlist project): block designs and RTL cannot be exported from this project."
+        puts "           Re-run on the RTL-mode project the netlist was generated from."
+    }
     puts "Exporting RTL sources..."
+    # Files owned by simulation filesets (sim_1, ...) are exported under
+    # Sources/Simulation, not Sources/RTL. Their USED_IN usually also lists
+    # synthesis/implementation, so they must be excluded here by fileset
+    # membership rather than by USED_IN.
+    set sim_fs_files {}
+    set src_fs_files {}
+    foreach _fs [get_filesets -quiet] {
+        set _fs_type [get_property -quiet FILESET_TYPE $_fs]
+        if {$_fs_type eq "SimulationSrcs"} {
+            foreach _f [get_files -quiet -of_objects $_fs] { lappend sim_fs_files [file normalize $_f] }
+        } elseif {$_fs_type eq "DesignSrcs"} {
+            foreach _f [get_files -quiet -of_objects $_fs] { lappend src_fs_files [file normalize $_f] }
+        }
+    }
+    set sim_only_files {}
+    foreach _f [lsort -unique $sim_fs_files] {
+        if {[lsearch -exact $src_fs_files $_f] < 0} { lappend sim_only_files $_f }
+    }
     set rtl_files [get_files -quiet -filter {(FILE_TYPE == "Verilog" || FILE_TYPE == "Verilog HDL" || FILE_TYPE == "VHDL" || FILE_TYPE == "VHDL 2008" || FILE_TYPE == "VHDL 2019" || FILE_TYPE == "SystemVerilog" || FILE_TYPE == "SystemVerilog HDL" || FILE_TYPE == "Verilog Header" || FILE_TYPE == "SystemVerilog Header") && USED_IN =~ "*synthesis*"}]
     foreach file $rtl_files {
         set is_generated [get_property IS_GENERATED $file]
         if {$is_generated eq "true" || $is_generated eq "1"} {
+            continue
+        }
+        if {[lsearch -exact $sim_only_files [file normalize $file]] >= 0} {
             continue
         }
         
@@ -878,6 +1034,19 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
                 if {![file exists $dest]} {
                     file copy -force $src $dest
                     dict incr export_stats "rtl_files"
+                }
+                # RM-owned IP (.xci): also write an IP creation Tcl under
+                # Sources/IP/RM/ (NOT Sources/IP/, which build.tcl Step 6 sources
+                # at project scope). Re-adding the raw .xci leaves the IP locked
+                # (several .xci share one output directory, and a catalog
+                # revision change locks them), so build.tcl recreates the IP
+                # from this Tcl and moves it into the RM instead.
+                if {[string tolower [file extension $tail]] eq ".xci"} {
+                    set _rm_ip_name [file rootname $tail]
+                    file mkdir $export_dir/Sources/IP/RM
+                    if {[catch {write_ip_tcl -force [get_ips -all $_rm_ip_name] "$export_dir/Sources/IP/RM/${_rm_ip_name}.tcl"} _rm_ip_err]} {
+                        puts "  WARNING: could not write IP Tcl for RM IP $_rm_ip_name ($_rm_ip_err); build.tcl will attach the raw .xci"
+                    }
                 }
                 lappend dfx_rm_file_tails $tail
             }
@@ -1047,10 +1216,6 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
                     dict incr export_stats "preserved_ip_outputs"
                     lappend preserved_ip_names $ip_name
                     set preserved_ip_rel_path($ip_name) $ip_rel
-                    # A preserved IP must never leave an ip.tcl behind -- remove
-                    # any stale one from a previous non-preserving export into
-                    # this same export_dir.
-                    file delete -force -- "$export_dir/Sources/IP/${ip_name}.tcl"
                 }
             } elseif {$xci_src ne "" && [file exists $xci_src]} {
                 puts "    WARNING: .xci source for IP $ip_name lives outside the project directory (Remote/Mixed scenario) -- cache preservation not possible, falling back to standard export"
@@ -1199,11 +1364,6 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
                     dict incr export_stats "preserved_bd_outputs"
                     lappend preserved_bd_names $bd_name
                     set preserved_bd_rel_path($bd_name) $bd_rel
-                    # A preserved BD must never leave a BD reconstruction Tcl
-                    # (<bd>.tcl, a.k.a. design.tcl) behind -- remove any stale
-                    # one from a previous non-preserving export into this same
-                    # export_dir.
-                    file delete -force -- "$export_dir/Sources/BD/${bd_name}.tcl"
 
                     # Same wrapper-location detection as the standard path below,
                     # so Step 8 of generate_build_script still knows to make_wrapper
@@ -1244,7 +1404,25 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
         puts "  Exporting BD ($bd_count): $bd_name"
         if {[catch {
             open_bd_design $bd
-            write_bd_tcl -force -include_layout "$export_dir/Sources/BD/${bd_name}.tcl"
+            if {[_rc_has_monitor_bd_intf] && [file exists $bd]} {
+                file copy -force $bd "$export_dir/Sources/BD/${bd_name}.bd"
+                # The native .bd references its IP instances by relative path
+                # (ip/<inst>/<inst>.xci); without them the rebuilt BD opens
+                # with missing IPs.
+                set bd_ip_dir [file join [file dirname $bd] ip]
+                if {[file isdirectory $bd_ip_dir]} {
+                    file mkdir "$export_dir/Sources/BD/ip"
+                    foreach ip_dir [glob -nocomplain -directory $bd_ip_dir -types d *] {
+                        set ip_dst "$export_dir/Sources/BD/ip/[file tail $ip_dir]"
+                        file delete -force $ip_dst
+                        file copy -force $ip_dir $ip_dst
+                    }
+                }
+                lappend native_bd_names $bd_name
+                puts "  Preserving native BD for monitor-mode interface compatibility: $bd_name"
+            } else {
+                write_bd_tcl -force -include_layout "$export_dir/Sources/BD/${bd_name}.tcl"
+            }
             dict incr export_stats "bd_files"
             # Check if BD wrapper exists and where it is located
             set bd_wrapper_present [get_files -quiet *${bd_name}_wrapper*]
@@ -1293,10 +1471,20 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
     # Export Simulation Files
     #────────────────────────────────────────────────────────────────────────────
     puts "Exporting simulation files..."
-    set sim_files [get_files -quiet -filter {USED_IN == "simulation"}]
+    # Select by simulation-fileset membership (plus anything used only for
+    # simulation); USED_IN == "simulation" alone misses testbenches whose
+    # USED_IN also lists synthesis/implementation.
+    set sim_files [lsort -unique [concat $sim_only_files [get_files -quiet -filter {USED_IN == "simulation"}]]]
     foreach file $sim_files {
         set is_generated [get_property -quiet IS_GENERATED $file]
         if {$is_generated eq "true" || $is_generated eq "1"} {
+            continue
+        }
+        # Block designs and IP live in a simulation fileset (e.g. the Modular
+        # NoC "xlnoc" sim BD and its xlnoc_nps_* IP) but are exported through
+        # the BD/IP paths; importing them again as plain sim files makes the
+        # rebuild fail with "Design <xlnoc> already exists".
+        if {[string tolower [file extension $file]] in {.bd .xci .bda .dcp}} {
             continue
         }
         set src_file [file normalize $file]
@@ -1752,6 +1940,7 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
 
     puts "─────────────────────────────────────────────────────────────────────"
 
+    catch {_rc_save_state $export_dir}
     return $export_stats
 }
 
@@ -1760,6 +1949,7 @@ proc export_all_sources {export_dir {flow_info {}} {preserve_selection {}}} {
 # Purpose: Export non-default project properties to TCL script
 #══════════════════════════════════════════════════════════════════════════════
 proc capture_project_settings {output_file} {
+    catch {_rc_load_state [file dirname [file dirname [file normalize $output_file]]]}
     set proj [current_project]
     
     set fd [open $output_file w]
@@ -1813,6 +2003,16 @@ proc capture_project_settings {output_file} {
         puts $fd "set_property SEGMENTED_CONFIGURATION true \[current_project\]"
     }
     
+    # Other non-default project properties: simulator language, default
+    # library, XPM libraries and the logical NoC simulation-top mode.
+    foreach {_pp _pdef} {SIMULATOR_LANGUAGE Mixed DEFAULT_LIB xil_defaultlib XPM_LIBRARIES {} ENABLE_LOGICAL_NOC_TOP {}} {
+        set _pv ""
+        catch {set _pv [get_property $_pp $proj]}
+        if {[string length $_pv] > 0 && $_pv ne $_pdef} {
+            puts $fd "catch {set_property $_pp {$_pv} \[current_project\]}"
+        }
+    }
+    
     # NOTE: IP_REPO_PATHS is set in build.tcl Step 1b (with relative paths)
     # before BD sourcing — not duplicated here to avoid absolute path overwrite.
     
@@ -1846,8 +2046,88 @@ proc capture_project_settings {output_file} {
         if {[string length $generics] > 0} {
             puts $fd "set_property GENERIC {$generics} \[get_filesets $src_fileset\]"
         }
+
+        # Include directories that live outside the project (Mixed/Remote
+        # sources) are replayed relative to the RevisionControl folder; ones
+        # inside the project are recreated by Vivado when the sources are imported.
+        set _inc_dirs {}
+        catch {set _inc_dirs [get_property INCLUDE_DIRS [get_filesets $src_fileset]]}
+        set _rc_base [file dirname [file dirname [file normalize $output_file]]]
+        set _proj_norm [file normalize [get_property DIRECTORY $proj]]
+        set _inc_entries {}
+        foreach _d $_inc_dirs {
+            set _dn [file normalize $_d]
+            if {[string first $_proj_norm $_dn] == 0} { continue }
+            lappend _inc_entries "\[file normalize \[file join \$base_dir {[_relative_path $_rc_base $_dn]}\]\]"
+        }
+        if {[llength $_inc_entries] > 0} {
+            puts $fd "set_property INCLUDE_DIRS \[list [join $_inc_entries { }]\] \[get_filesets $src_fileset\]"
+        }
     }
-    
+
+    # Per-file VHDL/Verilog library assignments. import_files puts every file
+    # in xil_defaultlib, so a design whose VHDL uses `library bftLib;` fails
+    # synthesis ("package ... not found in library") unless the non-default
+    # LIBRARY is replayed. Files are matched by tail within their fileset.
+    foreach _lib_fs [get_filesets -quiet] {
+        set _lib_fs_type [get_property -quiet FILESET_TYPE $_lib_fs]
+        if {$_lib_fs_type ne "DesignSrcs" && $_lib_fs_type ne "SimulationSrcs"} { continue }
+        set _lib_fs_name [get_property NAME $_lib_fs]
+        foreach _lf [get_files -quiet -of_objects $_lib_fs] {
+            if {[lsearch -exact {.xci .bd .bda .dcp} [string tolower [file extension $_lf]]] >= 0} { continue }
+            set _lf_gen [get_property -quiet IS_GENERATED $_lf]
+            if {$_lf_gen eq "1" || $_lf_gen eq "true"} { continue }
+            set _lib [get_property -quiet LIBRARY $_lf]
+            if {$_lib eq "" || $_lib eq "xil_defaultlib"} { continue }
+            puts $fd "catch {set_property LIBRARY {$_lib} \[get_files -quiet -of_objects \[get_filesets $_lib_fs_name\] -filter {NAME =~ \"*/[file tail $_lf]\"}\]}"
+        }
+    }
+
+    # Per-file IS_GLOBAL_INCLUDE and USED_IN (e.g. timescale.v marked as a global
+    # include used in synthesis+simulation). import_files resets both to the
+    # defaults, so restore any file that deviates from them.
+    foreach _gi_fs [get_filesets -quiet] {
+        set _gi_fs_type [get_property -quiet FILESET_TYPE $_gi_fs]
+        if {$_gi_fs_type ne "DesignSrcs" && $_gi_fs_type ne "SimulationSrcs"} { continue }
+        set _gi_fs_name [get_property NAME $_gi_fs]
+        foreach _gf [get_files -quiet -of_objects $_gi_fs] {
+            if {[lsearch -exact {.xci .bd .bda .dcp} [string tolower [file extension $_gf]]] >= 0} { continue }
+            set _gf_gen [get_property -quiet IS_GENERATED $_gf]
+            if {$_gf_gen eq "1" || $_gf_gen eq "true"} { continue }
+            set _gf_sel "\[get_files -quiet -of_objects \[get_filesets $_gi_fs_name\] -filter {NAME =~ \"*/[file tail $_gf]\"}\]"
+            set _gf_gi [get_property -quiet IS_GLOBAL_INCLUDE $_gf]
+            if {$_gf_gi eq "1" || $_gf_gi eq "true"} {
+                puts $fd "catch {set_property IS_GLOBAL_INCLUDE true $_gf_sel}"
+            }
+            set _gf_used [get_property -quiet USED_IN $_gf]
+            if {[string length $_gf_used] > 0} {
+                set _gf_def [expr {$_gi_fs_type eq "SimulationSrcs" ? "simulation" : "synthesis implementation simulation"}]
+                if {[lsort $_gf_used] ne [lsort $_gf_def]} {
+                    puts $fd "catch {set_property USED_IN {$_gf_used} $_gf_sel}"
+                }
+            }
+        }
+    }
+
+    # Simulation filesets: top module, defines and generics (set once the
+    # simulation files are imported, which build.tcl does before this script)
+    foreach sim_fs [get_filesets -quiet] {
+        if {[get_property -quiet FILESET_TYPE $sim_fs] ne "SimulationSrcs"} { continue }
+        set sim_name [get_property NAME $sim_fs]
+        set sim_top [get_property -quiet TOP $sim_fs]
+        if {[string length $sim_top] > 0} {
+            puts $fd "catch {set_property TOP {$sim_top} \[get_filesets $sim_name\]}"
+        }
+        set sim_defs [get_property -quiet VERILOG_DEFINE $sim_fs]
+        if {[llength $sim_defs] > 0} {
+            puts $fd "catch {set_property VERILOG_DEFINE {$sim_defs} \[get_filesets $sim_name\]}"
+        }
+        set sim_gen [get_property -quiet GENERIC $sim_fs]
+        if {[string length $sim_gen] > 0} {
+            puts $fd "catch {set_property GENERIC {$sim_gen} \[get_filesets $sim_name\]}"
+        }
+    }
+
     puts $fd ""
     
     #────────────────────────────────────────────────────────────────────────────
@@ -2141,6 +2421,26 @@ proc capture_project_settings {output_file} {
                 set file_ext [string tolower [file extension $f]]
                 # Skip .bd files as they are handled by sourcing their TCL above
                 if {$file_ext eq ".bd"} { continue }
+                if {$file_ext eq ".xci"} {
+                    set _ip_nm [file rootname $f]
+                    puts $fd2 "    # RM-owned IP $_ip_nm: recreate from its IP Tcl (an unlocked IP in its own"
+                    puts $fd2 "    # directory) and move it into the RM; attaching the raw .xci leaves it locked."
+                    puts $fd2 "    set _rm_ip_tcl \[file normalize \$base_dir/Sources/IP/RM/${_ip_nm}.tcl\]"
+                    puts $fd2 "    set _rm_ip_done 0"
+                    puts $fd2 "    if {\[file exists \$_rm_ip_tcl\]} {"
+                    puts $fd2 "        if {\[llength \[get_files -quiet $f\]\] == 0 && !\[catch {source \$_rm_ip_tcl} _rm_ip_err\]} {"
+                    puts $fd2 "            catch {move_files -of_objects \[get_reconfig_modules $rm_name\] \[get_files $f\]}"
+                    puts $fd2 "            if {\[llength \[get_files -quiet -of_objects \[get_reconfig_modules $rm_name\] $f\]\] > 0} {"
+                    puts $fd2 "                set _rm_ip_done 1"
+                    puts $fd2 "                catch {generate_target all \[get_ips ${_ip_nm}\]}"
+                    puts $fd2 "            }"
+                    puts $fd2 "        }"
+                    puts $fd2 "    }"
+                    puts $fd2 "    if {\$_rm_ip_done} { puts \"    Recreated RM IP $_ip_nm in fileset $rm_name\" }"
+                } else {
+                    puts $fd2 "    set _rm_ip_done 0"
+                }
+                puts $fd2 "    if {!\$_rm_ip_done} {"
                 puts $fd2 "    set _rm_file \[file normalize \$base_dir/Sources/RTL/$f\]"
                 puts $fd2 "    if {\[file exists \$_rm_file\]} {"
                 puts $fd2 "        # add_files -of_objects is the only combination that actually attaches"
@@ -2155,6 +2455,7 @@ proc capture_project_settings {output_file} {
                 puts $fd2 "        }"
                 puts $fd2 "    } else {"
                 puts $fd2 "        puts \"    WARNING: RM file not found: \$_rm_file\""
+                puts $fd2 "    }"
                 puts $fd2 "    }"
             }
             puts $fd2 "    catch {update_compile_order -fileset $rm_name}"
@@ -2374,7 +2675,28 @@ proc _build_bd_dependency_order {bd_names_list} {
 # PROCEDURE 5: generate_build_script
 # Purpose: Auto-generate build.tcl that recreates project from exports
 #══════════════════════════════════════════════════════════════════════════════
+# UTILITY: _rc_launch_run
+# Purpose: launch a synthesis run from the rebuilt project. A run left in a failed or
+# incomplete state by an earlier (crashed / failed) run is refused with "Run '<r>' needs
+# to be reset before launching"; reset it and launch it once more instead of silently
+# skipping it, which left the reconfigurable module without a synthesized checkpoint.
+# Returns 1 if the run was launched, 0 otherwise (a warning is printed). The generated
+# build.tcl carries a copy of this proc (see Step 12c), so it must stay self-contained.
+#══════════════════════════════════════════════════════════════════════════════
+proc _rc_launch_run {run_name} {
+    if {![catch {launch_runs $run_name} _lr_err]} { return 1 }
+    if {[string match "*needs to be reset*" $_lr_err]} {
+        puts "  Resetting $run_name (left in a failed state) and launching it again"
+        catch {reset_run $run_name}
+        if {![catch {launch_runs $run_name} _lr_err]} { return 1 }
+    }
+    puts "  WARNING: could not launch $run_name: $_lr_err"
+    return 0
+}
+
+#══════════════════════════════════════════════════════════════════════════════
 proc generate_build_script {output_file output_dir {scenario_info {}}} {
+    catch {_rc_load_state $output_dir}
     set proj [current_project]
     set proj_name [get_property NAME $proj]
     set device [get_property PART $proj]
@@ -2390,8 +2712,10 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
     global preserved_ip_rel_path
     global preserved_bd_rel_path
     global preserved_cache_dir
+    global native_bd_names
     if {![info exists preserved_ip_names]} { set preserved_ip_names {} }
     if {![info exists preserved_bd_names]} { set preserved_bd_names {} }
+    if {![info exists native_bd_names]} { set native_bd_names {} }
     if {![info exists preserved_ip_rel_path]} { array set preserved_ip_rel_path {} }
     if {![info exists preserved_bd_rel_path]} { array set preserved_bd_rel_path {} }
     if {![info exists preserved_cache_dir]} { set preserved_cache_dir {} }
@@ -2429,6 +2753,13 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
     puts $fd "create_project $proj_name . -part $device -force"
     if {[string length $board] > 0} {
         puts $fd "set_property BOARD_PART {$board} \[current_project\]"
+    }
+    # Restore the NoC mode before BD target/wrapper generation, not just
+    # when project_settings.tcl is sourced after the sources are recreated.
+    set logical_noc_top ""
+    catch {set logical_noc_top [get_property ENABLE_LOGICAL_NOC_TOP $proj]}
+    if {$logical_noc_top ne ""} {
+        puts $fd "catch {set_property ENABLE_LOGICAL_NOC_TOP {$logical_noc_top} \[current_project\]}"
     }
     puts $fd ""
     
@@ -2543,7 +2874,7 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
             # Only add RTL-type remote files
             set ext [string tolower [file extension $rpath]]
             if {$ext in {.v .sv .vhd .vhdl .vh .svh}} {
-                puts $fd "catch {add_files -quiet \[file normalize \"$rpath\"\]}"
+                puts $fd "catch {add_files -quiet \[file normalize \[file join \$base_dir {[_relative_path $output_dir $rpath]}\]\]}"
             }
         }
         puts $fd ""
@@ -2578,7 +2909,10 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
             puts $fd "    import_files -fileset $fs_name \[set _constrs_files_$fs_name\]"
             puts $fd "}"
             if {$fs_target ne ""} {
-                puts $fd "catch {set_property TARGET_CONSTRS_FILE \[file join \$base_dir Sources Constraints {$fs_target}\] \[get_filesets $fs_name\]}"
+                # Point at the copy import_files just made inside the project, not at
+                # the RevisionControl original: a path outside the fileset makes Vivado
+                # add that file as a second constraint source.
+                puts $fd "catch {set_property TARGET_CONSTRS_FILE \[lindex \[get_files -of_objects \[get_filesets $fs_name\] \"*/$fs_target\"\] 0\] \[get_filesets $fs_name\]}"
             }
         }
         puts $fd "# Include NoC constraints if present (attached to the primary constrs_1 set)"
@@ -2602,7 +2936,7 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
         foreach rpath $remote_paths {
             set ext [string tolower [file extension $rpath]]
             if {$ext eq ".xdc"} {
-                puts $fd "catch {add_files -quiet -fileset constrs_1 \[file normalize \"$rpath\"\]}"
+                puts $fd "catch {add_files -quiet -fileset constrs_1 \[file normalize \[file join \$base_dir {[_relative_path $output_dir $rpath]}\]\]}"
             }
         }
         puts $fd ""
@@ -2625,7 +2959,7 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
         foreach rpath $remote_paths {
             set ext [string tolower [file extension $rpath]]
             if {$ext in {.sv .svh .v .vh .vhd .vhdl .vp .mem .hex .coe .dat .wcfg .tcl .txt}} {
-                puts $fd "catch {add_files -quiet -fileset sim_1 \[file normalize \"$rpath\"\]}"
+                puts $fd "catch {add_files -quiet -fileset sim_1 \[file normalize \[file join \$base_dir {[_relative_path $output_dir $rpath]}\]\]}"
             }
         }
         puts $fd ""
@@ -2648,7 +2982,7 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
         foreach rpath $remote_paths {
             set ext [string tolower [file extension $rpath]]
             if {$ext in {.mem .hex .coe .dat .bin .elf .txt .csv .json .xml .yaml .yml}} {
-                puts $fd "catch {add_files -quiet \[file normalize \"$rpath\"\]}"
+                puts $fd "catch {add_files -quiet \[file normalize \[file join \$base_dir {[_relative_path $output_dir $rpath]}\]\]}"
             }
         }
         puts $fd ""
@@ -2705,6 +3039,42 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
         puts $fd "# DFX: Skip these BD names as they belong to reconfig_modules"
         puts $fd "set _rm_owned_bd_names [list [join $dfx_rm_owned_bd_names " "]]"
     }
+    if {[llength $native_bd_names] > 0} {
+        puts $fd "# Native BDs avoid Vivado Tcl replay bugs with monitor-mode interfaces."
+        puts $fd "set _native_bd_names [list [join $native_bd_names " "]]"
+    }
+    # Helper emitted into build.tcl: source a BD Tcl, first swapping any IP
+    # version the current part does not support (BD 5-216, e.g. clk_wizard:1.0
+    # -> 2.0 on Versal) for the newest supported one. get_ipdefs without -all
+    # lists only the IP definitions usable for the project's part.
+    puts $fd {proc _rc_source_bd_tcl {bd_tcl} {
+    set fh [open $bd_tcl r]
+    set txt [read $fh]
+    close $fh
+    set map {}
+    foreach v [lsort -unique [regexp -all -inline {[A-Za-z0-9_.]+:[A-Za-z0-9_]+:[A-Za-z0-9_]+:[0-9]+(?:\.[0-9]+)*} $txt]] {
+        if {[llength [get_ipdefs -quiet -all -filter "VLNV == $v"]] == 0} { continue }
+        if {[llength [get_ipdefs -quiet -filter "VLNV == $v"]] > 0} { continue }
+        lassign [split $v :] ven lib nam ver
+        set cands [get_ipdefs -quiet -filter "VLNV =~ ${ven}:${lib}:${nam}:*"]
+        if {[llength $cands] == 0} { continue }
+        set newv [lindex [lsort -dictionary $cands] end]
+        lappend map $v $newv
+        puts "  WARNING: $v is not supported for part [get_property PART [current_project]]; using $newv in [file tail $bd_tcl]"
+    }
+    if {[llength $map] == 0} {
+        uplevel \#0 [list source $bd_tcl]
+        return
+    }
+    set tmp [file join [pwd] "_rc_patched_[file tail $bd_tcl]"]
+    set fh [open $tmp w]
+    puts -nonewline $fh [string map $map $txt]
+    close $fh
+    set rc [catch {uplevel \#0 [list source $tmp]} err opts]
+    file delete -force $tmp
+    if {$rc} { return -options $opts $err }
+}}
+    puts $fd ""
     # Source BDs in explicit dependency order (children before parents)
     if {[info exists bd_source_order] && [llength $bd_source_order] > 0} {
         set _bd_source_order_last [expr {[llength $bd_source_order] - 1}]
@@ -2728,6 +3098,40 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
             puts $fd "}"
             puts $fd "if {\$bd_is_rm_owned} {"
             puts $fd "    puts \"  Skipping BD (RM-owned): ${bd_name} — will be added to RM fileset in Step 12\""
+            puts $fd "} elseif {\[info exists _native_bd_names\] && \[lsearch -exact \$_native_bd_names \"$bd_name\"\] >= 0} {"
+            puts $fd "    set bd_file \$base_dir/Sources/BD/${bd_name}.bd"
+            puts $fd "    if {!\[file exists \$bd_file\]} { error \"Native BD source is missing: \$bd_file\" }"
+            puts $fd "    # Stage the native BD (and its ip/ folder) into the project's own"
+            puts $fd "    # BD directory: adding it in place fails when the project directory"
+            puts $fd "    # overlaps Sources/BD (e.g. build.tcl sourced from inside the"
+            puts $fd "    # RevisionControl folder) and leaves its IPs read-only/locked."
+            puts $fd "    set _nat_dir \[file join \[get_property DIRECTORY \[current_project\]\] \[current_project\].srcs sources_1 bd ${bd_name}\]"
+            puts $fd "    file mkdir \$_nat_dir"
+            puts $fd "    file copy -force \$bd_file \$_nat_dir"
+            puts $fd "    if {\[file isdirectory \$base_dir/Sources/BD/ip\]} {"
+            puts $fd "        file mkdir \$_nat_dir/ip"
+            puts $fd "        foreach _nat_ip \[glob -nocomplain -directory \$base_dir/Sources/BD/ip -types d ${bd_name}_*\] {"
+            puts $fd "            file delete -force \$_nat_dir/ip/\[file tail \$_nat_ip\]"
+            puts $fd "            file copy -force \$_nat_ip \$_nat_dir/ip"
+            puts $fd "        }"
+            puts $fd "    }"
+            puts $fd "    add_files -norecurse \$_nat_dir/${bd_name}.bd"
+            puts $fd "    # A native .bd keeps the IP revisions it was saved with; if this"
+            puts $fd "    # Vivado build's catalog is newer they load LOCKED and validate/"
+            puts $fd "    # generate_target then fail (BD 5-336). Replayed BDs don't have"
+            puts $fd "    # this problem because their IPs are recreated at current revisions."
+            puts $fd "    catch {upgrade_ip -quiet \[get_ips -all -quiet -filter {IS_LOCKED == 1}\]}"
+            puts $fd "    open_bd_design \[get_files ${bd_name}.bd\]"
+            puts $fd "    if {\[catch {validate_bd_design -force -design ${bd_name}} _vbd_native_err\]} {"
+            puts $fd "        puts \"  WARNING: validate_bd_design reported an error for native BD ${bd_name}: \$_vbd_native_err\""
+            puts $fd "    }"
+            puts $fd "    catch {save_bd_design \[get_bd_designs -quiet ${bd_name}\]}"
+            if {$_bd_source_order_idx < $_bd_source_order_last} {
+                puts $fd "    if {\[catch {generate_target all \[get_files ${bd_name}.bd\]} _gt_native_err\]} {"
+                puts $fd "        puts \"  WARNING: could not generate targets for native BDC child ${bd_name}: \$_gt_native_err\""
+                puts $fd "    }"
+            }
+            puts $fd "    puts \"  Loaded native BD: ${bd_name}\""
             puts $fd "} elseif {$_bd_is_preserved} {"
             puts $fd "    # Preserved BD (remote cache mode): add_files the .bd restored from the"
             puts $fd "    # cache in Step 1c, and rely on the .gen restored there too to avoid"
@@ -2748,7 +3152,7 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
             puts $fd "    set bd_tcl \$base_dir/Sources/BD/${bd_name}.tcl"
             puts $fd "    if {\[file exists \$bd_tcl\]} {"
             puts $fd "        puts \"  Sourcing BD: ${bd_name}\""
-            puts $fd "        source \$bd_tcl"
+            puts $fd "        _rc_source_bd_tcl \$bd_tcl"
             puts $fd "        # Validate immediately: BDC parents that reference this BD as a"
             puts $fd "        # container (create_bd_cell -type container -reference) require it"
             puts $fd "        # to be validated first, otherwise cell creation fails."
@@ -2805,7 +3209,7 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
         puts $fd "    if {\$bd_is_rm_owned} {"
         puts $fd "        puts \"  Skipping BD (RM-owned): \$bd_basename\""
         puts $fd "    } else {"
-        puts $fd "        source \$bd_tcl"
+        puts $fd "        _rc_source_bd_tcl \$bd_tcl"
         puts $fd "        if {\[catch {validate_bd_design -force -design \$bd_basename} _vbd_err\]} {"
         puts $fd "            puts \"  WARNING: validate_bd_design reported an error for \$bd_basename: \$_vbd_err\""
         puts $fd "            puts \"  This is usually caused by locked/out-of-date IPs in the BD.\""
@@ -2834,6 +3238,20 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
         puts $fd "    catch {validate_bd_design -force -design \$_bd_name}"
         puts $fd "    catch {save_bd_design \[get_bd_designs -quiet \$_bd_name\]}"
         puts $fd "}"
+    }
+    # BDs that live in a non-default fileset in the original project (e.g. the
+    # simulation-only Modular NoC "xlnoc" BD in sim_1) are created in sources_1
+    # by default -- put them back where they were.
+    if {[info exists bd_source_order]} {
+        foreach bd_name $bd_source_order {
+            set _bd_fs ""
+            catch {set _bd_fs [get_property FILESET_NAME [get_files -quiet ${bd_name}.bd]]}
+            if {$_bd_fs ne "" && $_bd_fs ne "sources_1" && ![string match "*_rm*" $_bd_fs]} {
+                puts $fd "if {\[llength \[get_files -quiet -of_objects \[get_filesets $_bd_fs\] ${bd_name}.bd\]\] == 0} {"
+                puts $fd "    catch {move_files -fileset $_bd_fs \[get_files ${bd_name}.bd\]}"
+                puts $fd "}"
+            }
+        }
     }
     puts $fd ""
     
@@ -2898,6 +3316,14 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
     puts $fd "    }"
     puts $fd "    puts \"  Generating targets for: \[file tail \$bd\]\""
     puts $fd "    if {\[catch {generate_target all \$bd} _gt_err\]} {"
+    puts $fd "        # A BD Container with marked-debug nets can fail the first generate_target on a"
+    puts $fd "        # freshly recreated design but succeed after the targets are reset (verified on"
+    puts $fd "        # the IPI BDC examples): retry once before reporting."
+    puts $fd "        catch {reset_target all \$bd}"
+    puts $fd "        if {!\[catch {generate_target all \$bd}\]} {"
+    puts $fd "            puts \"  Recovered: generate_target succeeded for \[file tail \$bd\] after reset_target (first attempt: \$_gt_err)\""
+    puts $fd "            continue"
+    puts $fd "        }"
     puts $fd "        puts \"  ERROR: generate_target failed for \[file tail \$bd\]: \$_gt_err\""
     puts $fd "        puts \"  Check the ERROR/CRITICAL WARNING lines just above for the real root\""
     puts $fd "        puts \"  cause. Two known classes seen in this skill's own validation:\""
@@ -3021,10 +3447,15 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
         
         puts $fd ""
         puts $fd "    puts \"  (Step 12c) Launching OOC synthesis runs (static + RMs)...\""
+        puts $fd "    proc _rc_launch_run {run_name} \{[info body _rc_launch_run]\}"
         puts $fd "    # Static synth first"
         puts $fd "    if {\[get_property STATUS \[get_runs synth_1\]\] ne \"synth_design Complete!\"} {"
-        puts $fd "        launch_runs synth_1"
-        puts $fd "        wait_on_run synth_1"
+        puts $fd "        _rc_launch_run synth_1"
+        puts $fd "        # A failing OOC/IP run must not abort the rebuild: the PR configurations and"
+        puts $fd "        # child runs below are structure that should still be recreated."
+        puts $fd "        if {\[catch {wait_on_run synth_1} _synth_err\]} {"
+        puts $fd "            puts \"  WARNING: static synthesis reported failures: \$_synth_err\""
+        puts $fd "        }"
         puts $fd "    }"
         puts $fd "    # Then each RM OOC synth run"
         if {[info exists dfx_reconfig_modules]} {
@@ -3033,8 +3464,10 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
                 set rm_synth "${rm_name}_synth_1"
                 puts $fd "    if {\[llength \[get_runs -quiet $rm_synth\]\] > 0} {"
                 puts $fd "        if {\[get_property STATUS \[get_runs $rm_synth\]\] ne \"synth_design Complete!\"} {"
-                puts $fd "            launch_runs $rm_synth"
-                puts $fd "            wait_on_run $rm_synth"
+                puts $fd "            _rc_launch_run $rm_synth"
+                puts $fd "            if {\[catch {wait_on_run $rm_synth} _synth_err\]} {"
+                puts $fd "                puts \"  WARNING: $rm_synth reported failures: \$_synth_err\""
+                puts $fd "            }"
                 puts $fd "        }"
                 puts $fd "    }"
             }
@@ -3092,6 +3525,7 @@ proc generate_build_script {output_file output_dir {scenario_info {}}} {
     set gitignore_file [file join $output_dir .gitignore]
     set gid [open $gitignore_file w]
     puts $gid ".Xil/"
+    puts $gid ".rc_state.tcl"
     puts $gid "*.jou"
     puts $gid "*.log"
     puts $gid "vivado*.backup.*"

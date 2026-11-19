@@ -10,7 +10,7 @@ simulation and, when a board is available, on hardware.
 
 The points in [Board access](index.md#board-access) apply to this workflow. For the manual procedure
 this workflow automates, see
-[the Vitis AI documentation](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/additional_information/custom_ops/custom_ops_introduction.html).
+[the Vitis AI documentation](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/additional_information/custom_ops/custom_ops_introduction.html).
 
 ## When to use
 
@@ -196,7 +196,7 @@ Each of these has a worked example bundled with the product, under the
 `vai-custom-op-implementation` tutorial directory: `mul/1_tiled` for tiling,
 `mul/2_distributed` for distribution, and
 `negate/3_distributed_and_vectorized` for vectorization. See the 
-[Bundled examples and utilities](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/additional_information/custom_ops/custom_ops_introduction.html#bundled-examples-and-utilities)
+[Bundled examples and utilities](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/additional_information/custom_ops/custom_ops_introduction.html#bundled-examples-and-utilities)
 section of the Vitis AI documentation for more details.
 
 ## Board runs

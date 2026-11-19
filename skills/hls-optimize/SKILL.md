@@ -3,9 +3,11 @@ name: hls-optimize
 description: Iteratively optimize the HLS kernel against a given criteria (e.g. minimize latency, reduce DSP usage, maximize throughput) by applying and measuring pragma and algorithmic changes.
 license: MIT
 argument-hint: <optimization-criteria>
+compatibility: "Requires Vitis HLS 2026.1+, Python 3.10+, git, and the following skills: hls-run-flow, hls-synth-report, hls-cosim-report, and hls-impl-report."
 metadata:
-  author: "Alex Li, Sai Akhil Ayyagari"
-  version: "1.0.0"
+  stage: beta
+  author: "Alexandre Isoard"
+  version: "1.0.2"
 ---
 <!--
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.

@@ -1,0 +1,24 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# Partition / Unbalanced Utilization — Directive Fix (Combo 3)
+# Condition: Partition detected AND SLR utilization imbalance > 30%
+# Resolution: Use BalancedSLR placement to spread logic evenly across SLRs
+
+run_name: BalancedPartition
+methodology: "Balanced Partition (Combo 3)"
+condition:
+  partition_detected: true
+  slr_imbalance: true
+
+place:
+  subdirective: "Floorplan.BalancedSLR.high Floorplan.ForceSpreading.high Floorplan.PartitioningTimingOpt.high Floorplan.PartitioningClusteringEffort.high"
+  # Placer sub-directives are Versal-only; elsewhere this place directive
+  # (UG835: partitions across SLRs to balance cells between them).
+  directive: SSI_BalanceSLRs
+
+physopt:
+  directive: AggressiveExplore
+
+route:
+  directive: NoTimingRelaxation
+  switches: "-tns_cleanup"

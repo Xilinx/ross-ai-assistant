@@ -1,0 +1,41 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# Congestion Skill - Available Directives and Actions
+
+# Directives that help resolve congestion
+congestion_directives:
+  spread_logic_high:
+    stage: place
+    command: "place_design -directive SSI_SpreadLogic_high"
+    description: "Aggressive logic spreading across SLRs"
+    use_when: "Single SLR overloaded, high utilization imbalance"
+
+  spread_logic_low:
+    stage: place
+    command: "place_design -directive SSI_SpreadLogic_low"
+    description: "Moderate logic spreading across SLRs"
+    use_when: "Moderate imbalance, want to avoid excessive SLR crossings"
+
+  alt_spread_logic_high:
+    stage: place
+    command: "place_design -directive AltSpreadLogic_high"
+    description: "Alternative spreading algorithm (aggressive)"
+    use_when: "SSI_SpreadLogic didn't help, try alternative approach"
+
+  alt_spread_logic_medium:
+    stage: place
+    command: "place_design -directive AltSpreadLogic_medium"
+    description: "Alternative spreading algorithm (moderate)"
+    use_when: "Need balanced approach between spreading and timing"
+
+# Parameters that help with congestion
+congestion_params:
+  spread_logic_level:
+    command: "set_param place.SSISpreadLogicLevel high"
+    description: "Set SSI spread logic level parameter"
+
+# Physopt directives for post-congestion optimization
+physopt_after_congestion:
+  aggressive:
+    command: "phys_opt_design -directive AggressiveExplore"
+    description: "Aggressive physical optimization after congestion fix"

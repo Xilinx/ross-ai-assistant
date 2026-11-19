@@ -1,0 +1,6 @@
+# Exported from Vitis Analyzer (Device > krnl_vadd_1 CU activity). Times in ms, same timebase as host trace.
+cu,run,cu_start_ms,cu_end_ms
+krnl_vadd_1,0,4.600,7.600
+krnl_vadd_1,1,13.600,16.600
+krnl_vadd_1,2,22.600,25.600
+krnl_vadd_1,3,31.600,34.600

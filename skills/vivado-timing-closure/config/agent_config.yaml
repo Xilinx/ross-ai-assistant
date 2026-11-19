@@ -1,0 +1,283 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# =============================================================================
+# Timing Closure Agent Skill - Configuration
+# =============================================================================
+# Where Vivado runs (locally or on LSF) and any queue/memory/slot sizing are NOT
+# configured here -- they are Vivado MCP session parameters, chosen per session by
+# the caller. Local execution is the default.
+#
+# Parsed by scripts/yaml_lite.py (a small stdlib YAML subset reader) -- keep to
+# simple scalars, lists and nested dicts.
+# =============================================================================
+
+# --- Stage 1: which baseline strategies to sweep -----------------------------
+# Upstream's three (b0cfa7a7): S1_DEFAULT, S1_EXPLORE, S1_AGGRESSIVE, plus the
+# baseline below. auto_1..auto_5 (the 7-run slide) are still defined and can be
+# listed here. Names must match the flow keys in scripts/tcl_gen.py's STAGE1_FLOWS.
+stage1:
+  runs:
+    - default_placer
+    - explore
+    - aggressive_placer
+  # Iterate phys_opt_design until it stops gaining, instead of a single pass.
+  adaptive_physopt: false
+  # Re-run opt_design -directive Explore on the input checkpoint. The inputs are
+  # usually postlogicopt.dcp already; false skips the second opt pass (F9).
+  # Changes QoR baselines -- validate before flipping it for a design suite.
+  rerun_opt_design: true
+  # Stop launching the remaining Stage 1 strategies once one run closes timing
+  # (only meaningful when runs execute one at a time). Trades "best WNS across
+  # the sweep" for compute. Can also be enabled per run: init --stop-on-first-close.
+  # Under tc serve guardrails.on_timing_closed supersedes it.
+  stop_on_first_close: false
+  # Stop a strategy right after place_design when its placement is identical to an
+  # earlier strategy's (timing summary + sampled cell LOCs): the rest would replay
+  # it. auto_1 == auto_2 and auto_3 == auto_4 on every TSR design measured.
+  stop_duplicate_placements: true
+  # auto_2 / auto_4 / auto_5 wait up to this long for auto_1 / auto_3 /
+  # default_placer to finish placing, so parallel twins are still caught.
+  duplicate_wait_minutes: 30
+  # S1_BASELINE: plain Vivado (Explore everywhere, no early fixes, no post-route
+  # phys_opt) as a reference -- reported, never ranked or replayed. On, as upstream
+  # (2026-10-08).
+  include_baseline: true
+  # report_methodology on the input design, plus check_timing / report_cdc after
+  # opt_design, in ONE Stage 1 run (the baseline, else default_placer). Shown in
+  # the Stage 1 printout, the final summary and the planner context. ~25 min on
+  # Barco_MVP; nothing waits for it.
+  run_methodology_check: true
+  # Set the AUTO placer params before Auto_n sub-directives. Upstream dropped them
+  # (2026-10-08); our 2026.1 runs failed with Constraints 18-12534 without them.
+  auto_placer_params: true
+  # route_design directive for every Stage 1 run instead of each flow's own
+  # (upstream knob; unset = each flow's directive). E.g.:
+  # route_directive_override: AggressiveExplore
+
+# --- Implementation flow: upstream's 2026-10-25 choices, each a switch -------
+# Upstream b0cfa7a7 changed every flow (Stage 1, every Stage 2 variant, planner
+# and custom flows) in these ways. Each defaults to this skill's own flow, so
+# known-good results stay put until a validation run decides; upstream's value
+# is given for each.
+flow:
+  # Post-place phys_opt. flow = each flow's own (adaptive where the run is);
+  # skill = source the shared assets/skills/early_resolution/adaptive_physopt
+  # skill (congestion-gated over-constrain + up to postplace_physopt_max_iter
+  # AggressiveExplore passes). Upstream: skill.
+  postplace_physopt: flow
+  postplace_physopt_max_iter: 6   # upstream: 6
+  # With postplace_physopt: skill, undo a pre-place over-constraint (OC and
+  # combined runs) before the skill, so it starts from the real constraints.
+  # Upstream: true.
+  reset_preplace_oc: false
+  # route_design directive for every flow, Stage 2 variants included (a stage's
+  # route_directive_override still wins). Unset = each flow's own
+  # (NoTimingRelaxation -tns_cleanup). Upstream: AggressiveExplore.
+  # route_directive: AggressiveExplore
+  # Post-route phys_opt. flow = each flow's own; single = one
+  # phys_opt_design -directive AggressiveExplore. Upstream: single.
+  postroute_physopt: flow
+
+# --- Stage 2 detection -------------------------------------------------------
+detection:
+  # Sub-problems (skill_resolver.py catalog names, e.g. clock_region_density,
+  # high_fanout) never to detect or fix in Stage 2. Upstream: init --skip-detect.
+  skip_sub_problems: []
+
+# --- Stage 2 thresholds ------------------------------------------------------
+stage2:
+  # What follows Stage 1 when timing did not close:
+  #   fixed   -- the fixed Stage 2 recipes (over-constrain, RQS, skill fixes)
+  #   planner -- an evidence-driven planner round replaces the fixed Stage 2
+  #   both    -- fixed Stage 2, then a planner round
+  # Stage 3 (if enabled and eligible) follows either way.
+  # both: on the same build, the 2026.1 report's fixed menu closed VIAVI (OC 2.5x)
+  # and got design A to -0.057 (OC 2.0x), which planner mode alone never tried.
+  mode: both
+  over_constrain:
+    # uncertainty = |WNS| x multiplier; one run per multiplier (max 4 per slide)
+    wns_multipliers: [1.5, 2.0, 2.5, 3.0]
+    # Only worth trying when WNS is between this and 0 -- further out, over-
+    # constraining just makes the placer chase an unreachable target.
+    wns_threshold_ps: -200
+  multi_physopt:
+    max_iterations: 3
+    wns_threshold_ps: -200
+  # Replay the Stage 1 winner's own flow (placer strategy, opt directive, early
+  # fixes) in every Stage 2 run, so the fix is the only difference from the run
+  # it is trying to beat -- as upstream's parallel fix runs do (parallel_fix.py
+  # _get_parent_flow_def). false = our older behaviour (explore / plain opt, no
+  # early fixes).
+  inherit_parent_flow: true
+  # Per category, as upstream's parallel fix runs: an RQS-only run when the
+  # category has suggestions, one run per actionable skill fix, and a combined
+  # run when there is a fix AND (RQS or 2+ fixes). Partition takes no RQS
+  # unless this is set (upstream parallel_fix.enable_partition_rqs).
+  enable_partition_rqs: false
+  # true = cap skill runs per category (skill_resolver BUCKET_CAPS); upstream
+  # has no cap.
+  cap_skill_runs: false
+  # One run with the fixes of EVERY detected category together (their skill
+  # XDCs, the first placement directive, their RQS categories) instead of one
+  # category at a time. Upstream's PFR combined run; off there and here.
+  combined_run: false
+  combined_categories: [congestion, clocking, partition, timing]
+  combined_include_rqs: true
+  # Instead: one combined run per multiplier, each with over-constraint added.
+  combined_oc: false
+  combined_oc_multipliers: [1.5, 2.0, 2.5, 3.0]
+  # route_design directive for Stage 2 runs that replay the parent flow (RQS,
+  # over-constrain, planner flow fixes without their own router choice);
+  # upstream knob, unset = the flow's own. E.g.:
+  # route_directive_override: AggressiveExplore
+
+# --- Stage 3: last-mile passes on the overall winner (opt-in) ----------------
+stage3:
+  enabled: false
+  # Only attempted when the best WNS after Stage 2 is within this margin.
+  max_wns_gap_ps: -150
+  # last_mile: post-route phys_opt directive sweep on the winner's routed DCP.
+  # reroute:   re-route of the winner's placed DCP.
+  # rqs:       winner's own QoR suggestions (only when the winner came from Stage 2).
+  runs:
+    - last_mile
+    - reroute
+    - rqs
+  # reroute uses the first of these that the winner's placement has not already
+  # been routed with (by the winner or any run with an identical post-place
+  # timing summary) -- the same directive would only replay that run.
+  reroute_directives:
+    - AggressiveExplore
+    - Explore
+    - NoTimingRelaxation
+    - HigherDelayCost
+    - MoreGlobalIterations
+
+# --- Path B (R2), from the upstream framework (on by default there too) -------
+# When a Stage 1 run's own placement shows failing SLR crossings (the Partition
+# checker on its post-place reports -- no Vivado), a short job opens its placed
+# checkpoint and writes the SLR-aware pblock XDC (R2D_*, report_slr_crossing
+# alone took 17-47 min on the TSR designs), then that flow runs again from the
+# input checkpoint with the XDC (R2_*). Nothing waits on them during Stage 1;
+# they are ranked with Stage 2, which is collected once they finish.
+path_b:
+  enabled: true
+  # At most this many flows get an R2 run (first to reach placement first);
+  # each costs one detect job plus one full run.
+  max_flows: 3
+  # When the best R2 run beats Stage 1 without closing: the over-constrain
+  # ladder and its own RQS again, on that R2 run's flow with its XDC (S2R2_*).
+  stage2_on_r2: true
+
+# --- Planner rounds (stage2.mode planner|both, or workflow entry 'planner') ---
+planner:
+  max_fixes: 4               # fix runs per round (also capped by guardrails.max_total_runs)
+  # Another round after one that improved the best result, up to this many.
+  max_rounds: 2
+  # Early round: when the Stage 1 best is worse than early_below_ps, a planner
+  # round starts beside the fixed Stage 2 (from the Stage 1 winner) and its
+  # fixes join Stage 2. On the suites it was the best planner result for 4
+  # designs (design C +524 ps, Barco_3screen +180).
+  early: true
+  early_below_ps: -200
+  # Re-placing fixes (flow, over_constrain, rqs) replay the winner's own
+  # skill/planner XDC first, so they build on it (14/33 round fixes with it beat
+  # the fixed flow on the suites, 6/49 without).
+  carry_winner_xdc: true
+  # Screen a round's fixes before running them: one read-only job opens the
+  # winner's routed checkpoint and checks, per fix, whether the objects it names
+  # (pblock cells, MAX_FANOUT nets, group_path ends, over-constrained clocks) are
+  # on the failing paths. off (default) | report: keep every fix, tag each run
+  # with its verdict | prune: drop fixes whose objects miss every failing path or
+  # match nothing (never all of them). Costs one checkpoint open per round.
+  # Regular rounds only (not the early round, not tc extend).
+  screen: off
+  screen_max_paths: 1000     # failing paths the screen collects (worst first)
+  # Incremental fixes keep iterating phys_opt while a pass cuts TNS by at least
+  # this % even though WNS did not move (a routed slack wall shrinks that way).
+  tns_continue_pct: 5
+  # Every object query in a planner XDC is re-checked after the XDC is applied
+  # (xdc_check.json). warn: log and continue; fail: stop the run within minutes.
+  empty_query_policy: warn
+
+# --- Which run each stage carries forward -------------------------------------
+# wns (default): hold-met runs first, then the highest WNS; TNS breaks exact ties.
+# closability: hold-met first, then timing met, then WP480's WNS band, then
+#   report_qor_assessment at least min_rqa (a gate, as IDR uses it for Last Mile;
+#   an unknown score passes), then WP480's TNS band, then WNS, TNS, failing endpoints.
+#   Also stops Stage 3 when the best run scores below min_rqa.
+# Either way each stage's *_best.json records what the other rule would pick
+# ("selection"), so a disagreement can be tried with tc extend --from.
+selection:
+  mode: wns
+  min_rqa: 3
+  wns_bands_ps: [-100, -300, -600]     # WP480: excellent / good / fair / poor
+  tns_bands_ns: [-10, -100, -1000]
+
+# --- Guardrails --------------------------------------------------------------
+guardrails:
+  max_total_runs: 40           # hard cap on Stage 1 + 2 + 3 runs plus retries; enforced by orchestrate.py
+  stage2_min_improvement_ps: 5 # a later-stage run must beat the previous best by this to count
+  min_tns_improvement_pct: 20  # ...or match its WNS (within 1 ps) and cut TNS by this much
+  skip_duplicate_runs: true    # don't generate a run whose inputs match a completed one (scripts/dedup.py)
+  max_retries_per_run: 1       # infra failures (OOM, LSF kill, license, host interruption) and crashes; decided by orchestrate.py run-status
+  retry_crash: true            # segfaults on Build 6511674 are non-deterministic (twins pass the same step): retry once
+  stale_minutes: 15            # a run dir touched more recently than this is treated as still running
+  # Once a run meets timing (orchestrate close-design): kill_all cancels every other
+  # unfinished run of the design, queued or running, as upstream's agent does;
+  # cancel_pending only those not yet started or still queued; off keeps going.
+  # The baseline and the design-checks run always finish. Nothing new starts after.
+  on_timing_closed: kill_all
+
+# --- Early fixes (Stage 1, applied in-session before opt_design) -------------
+# Consumed by skills/early_flow_fix/early_flow_fix.tcl via EF_* env vars.
+# The first three are the fixes named on the Stage 1 slide.
+early_fixes:
+  enabled: true
+  mbufg_group: true        # MBUFG Grouping   (slide)
+  gt_mrmac_loc: true       # GT_MRMAC LOC     (slide)
+  pcie_clock_root: true    # PCIE-CLOCK Root  (slide)
+  hardsync_ce: false
+  structural_analysis: false
+  postopt_rqs: false
+  # Upstream's hard-IP locality advisors (b0cfa7a7), standalone there; opt-in here.
+  hardip_proximity_pblock: false      # pull hard-IP capture/launch FFs near the IP (soft pblocks)
+  prevent_hardip_slr_crossing: false  # USER_CROSSING_SLR=0 on BRAM/URAM/DSP datapath nets
+
+# --- Output ------------------------------------------------------------------
+# Per-stage checks in Stage 1 runs (upstream PR #742): after opt, place, place
+# phys_opt, route and route phys_opt, before that step's checkpoint. Read-only,
+# each caught. report_methodology checks only TIMING-6/7/8/14/24/35 and writes
+# <stage>_methodology.rpt / .json; report_clock_interaction -delay_type min_max
+# writes <stage>_clock_interaction.rpt (post-place already has one). Not in
+# Stage 2 or Path B runs. Set false to save runtime on very large designs.
+reports:
+  per_stage_methodology: true
+  per_stage_clock_interaction: true
+
+output:
+  # Checkpoints are large but required for Stage 2 (it replays from the winning
+  # run) and for running detect.tcl against a finished run. Keep them.
+  # (Upstream's MCP path writes none: mcp_defaults.skip_dcp: true.)
+  skip_dcp: false
+  # postopt.dcp and postplace.dcp, and postroute.dcp after postroute_physopt.dcp
+  # is written. Nothing reads them; off leaves 2 checkpoints per finished run
+  # (postplace_physopt, postroute_physopt) instead of 5. On for diagnosis only.
+  intermediate_dcps: false
+  # winner: after each collect, delete the checkpoints of finished runs that can
+  # no longer win (kept: the overall best's, and a Stage 1 flow's placed one
+  # until its Path B detect has run); at finalize only the winner's remain.
+  # tc extend then starts from the winner only. all: keep every run's.
+  # Upstream's MCP path writes none at all.
+  keep_dcps: winner
+  # Block_Ram_locs.xdc after post-place phys_opt. Nothing reads it, and all 5
+  # 2026.1 segfaults seen happened inside this dump -- keep it off.
+  bram_loc_dump: false
+  # QoR-suggestion reports after opt / place / place-physopt / route. Nothing
+  # reads them (the flow uses the final postroute_physopt one, which always runs,
+  # last), and on Build 6511674 every segfault seen (14/14) followed the RQS
+  # commands. Keep off unless you need them for diagnosis.
+  intermediate_rqs: false
+  # report_route_status after every route_design (upstream's root-cause report).
+  # Cheap; a winner with routing errors gets a verification warning.
+  route_status_report: true

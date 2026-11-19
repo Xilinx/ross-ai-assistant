@@ -1,0 +1,16 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# Clocking Skill - Available Directives and Actions
+
+clocking_directives:
+  # Placeholder - to be populated as patterns are identified
+
+clocking_constraints:
+  # Example templates for clock-related XDC fixes
+  set_clock_groups:
+    template: "set_clock_groups -asynchronous -group [get_clocks {clk1}] -group [get_clocks {clk2}]"
+    description: "Mark clocks as asynchronous to avoid false cross-domain timing"
+
+  set_false_path_clocks:
+    template: "set_false_path -from [get_clocks {src_clk}] -to [get_clocks {dst_clk}]"
+    description: "Set false path between unrelated clock domains"

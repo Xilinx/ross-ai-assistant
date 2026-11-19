@@ -1,0 +1,1 @@
+{"verdict":"STRUCTURAL","structural":["axi_iic: the CED has 4, the request needs 3","axi_gpio: the CED has 4, the request needs 3","axi_uartlite: the CED has 3, the request needs 1"],"config":[],"changes":{}}

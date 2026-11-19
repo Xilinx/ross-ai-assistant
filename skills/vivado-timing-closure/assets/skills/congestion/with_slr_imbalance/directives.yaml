@@ -1,0 +1,24 @@
+# Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+# Congestion / With SLR Imbalance — Directive Fix (Combo 2)
+# Condition: Congestion detected AND SLR imbalance detected
+# Resolution: BalancedSLR + ReduceCongestion combined
+
+run_name: BalancedReduceCong
+methodology: "Balanced Partition + Reduce Congestion (Combo 2)"
+condition:
+  congestion_detected: true
+  slr_imbalance: true
+
+place:
+  subdirective: "Floorplan.BalancedSLR.high Floorplan.ForceSpreading.high Floorplan.PartitioningClusteringEffort.low GPlace.ReduceCongestion.high GPlace.ForceSpreading.high DPlace.ReducePinDensity.high"
+  # Placer sub-directives are Versal-only; elsewhere this place directive
+  # (UG835: distributes logic across SLRs, the most spreading).
+  directive: SSI_SpreadLogic_high
+
+physopt:
+  directive: AggressiveExplore
+
+route:
+  directive: NoTimingRelaxation
+  switches: "-tns_cleanup"

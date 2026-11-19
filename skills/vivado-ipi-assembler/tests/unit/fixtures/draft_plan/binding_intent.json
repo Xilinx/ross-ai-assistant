@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "blocks": {
+    "ps": {
+      "spec_block": "processing_system",
+      "vlnv_candidates": ["xilinx.com:ip:versal_cips"]
+    },
+    "memory_noc": {
+      "spec_block": "ddr4",
+      "instance": "axi_noc_0",
+      "vlnv_candidates": ["xilinx.com:ip:axi_noc"],
+      "interfaces": {
+        "ps_si": ["S00_AXI"]
+      }
+    },
+    "accelerator": {
+      "spec_block": "accelerator",
+      "vlnv_candidates": ["xilinx.com:ip:axi_cdma"],
+      "interfaces": {
+        "control": ["S_AXI_LITE"],
+        "m_axi": ["M_AXI"]
+      }
+    },
+    "control_bridge": {
+      "spec_block": "accelerator",
+      "instance": "axi4_to_axilite_bridge",
+      "vlnv_candidates": ["xilinx.com:ip:smartconnect"],
+      "interfaces": {
+        "slave": ["S00_AXI"],
+        "master": ["M00_AXI"]
+      }
+    }
+  }
+}
