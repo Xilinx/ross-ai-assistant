@@ -1,0 +1,27 @@
+Vivado 2024.1 report excerpt
+
+RTL Linter Report
+
+Table of Contents
+-----------------
+1. Summary
+2. Expanded
+
+1. Summary
+----------
+
++---------+----------+--------------+----------+------------------+
+| Rule ID | Severity | # Violations | # Waived | Message Template |
++---------+----------+--------------+----------+------------------+
+
+
+2. Expanded
+-----------
+
++---------+-------------+----------+------+---------------+----------+-------------+
+| Rule ID | description | rtl_name | info | rtl_hierarchy | rtl_file | Line number |
++---------+-------------+----------+------+---------------+----------+-------------+
+* create_waiver can be used to apply waiver to linter violations.
+** For example, create_waiver -type LINT -id RULE_ID {-rtl_name RTL_NAME} {-rtl_hierarchy RTL_MODULE_NAME} {-rtl_file RTL_FILE_NAME}.
+
+

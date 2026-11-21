@@ -92,6 +92,11 @@ def extract_synthesis_insights(file_path):
             if len(col_positions) < 8:
                 continue
 
+            # An empty table can be followed directly by waiver instructions.
+            # Only pipe-delimited table rows contain violations.
+            if not stripped.startswith('|'):
+                continue
+
             # Extract fields by slicing the raw line at fixed column positions
             raw = line.rstrip()
             fields = []
@@ -108,7 +113,7 @@ def extract_synthesis_insights(file_path):
                 found_header = True
                 continue
 
-            if len(fields) >= 7:
+            if found_header and len(fields) >= 7:
                 found_data = True
                 rule_id = fields[0]        # e.g. "ASSIGN-5 (T1)", "INFER-2"
                 description = fields[1]    # e.g. "Bit(s) not assigned"
