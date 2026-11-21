@@ -41,10 +41,17 @@ def _get_synthesis_report_content(solution_folder: str) -> tuple[str, str]:
     content = read_file(report_path)
 
     index = content.find(_REPORT_SPLIT_MARKER)
-    if index == -1:
-        return "Synthesis report content not found", pragma_report
-
-    synth_report = content[: index + len(_REPORT_SPLIT_MARKER)]
+    if index != -1:
+        synth_report = content[: index + len(_REPORT_SPLIT_MARKER)]
+    else:
+        # In 2024.1 the legend precedes the modules/loops table. Keep the
+        # whole summary section, including that table, up to the next report.
+        estimates_index = content.find("+ Performance & Resource Estimates:")
+        if estimates_index != -1:
+            next_section = content.find("\n== ", estimates_index)
+            synth_report = content[:next_section] if next_section != -1 else content
+        else:
+            synth_report = "Synthesis report content not found"
 
     pragma_index = content.find(_PRAGMA_REPORT_SPLIT_MARKER)
     if pragma_index != -1:

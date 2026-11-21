@@ -1,0 +1,17 @@
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +-------------------------------------------+------+------+---------+---------+----------+---------+------+----------+---------+----------+-------------+-------------+-----+
+    |                  Modules                  | Issue|      | Latency | Latency | Iteration|         | Trip |          |         |          |             |             |     |
+    |                  & Loops                  | Type | Slack| (cycles)|   (ns)  |  Latency | Interval| Count| Pipelined|  BRAM   |    DSP   |      FF     |     LUT     | URAM|
+    +-------------------------------------------+------+------+---------+---------+----------+---------+------+----------+---------+----------+-------------+-------------+-----+
+    |+ top                                |     -|  0.00|        -|        -|         -|        -|     -|        no|  2 (1%)|  4 (2%)|  100 (~0%)|   200 (1%)|    -|
+    |     o VITIS_LOOP_1                    |     -|  3.65|       66|  50.000|         4|        1|    64|       yes|        -|         -|            -|            -|    -|
+
+
+== HW Interfaces
+interface data
+
+== Pragma Report
+| array_partition | variable=accum complete dim=0 | sample/kernel.cpp:17 |
+| pipeline | II=1 | sample/kernel.cpp:48 |
