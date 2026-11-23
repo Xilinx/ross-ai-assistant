@@ -31,7 +31,7 @@ self-configures its environment (no `source settings64.sh`):
 <install>/bin/vitis -s /dev/stdin <<'PY'
 import vitis, os, glob
 client = vitis.create_client()               # spawn a headless server (or attach: create_client(port=N))
-client.set_workspace("/path/to/workspace")
+client.set_workspace("/path/to/workspace")   # new/empty dir or existing Vitis workspace — see "Workspace setup" below
 # ---- the SAME recipe this skill teaches ----
 # Pass the platform's BUILT .xpfm PATH (the only form portable across 2026.1/2026.2).
 xpfm = f"{client.get_workspace()}/vck190_linux_multi/export/vck190_linux_multi/vck190_linux_multi.xpfm"
@@ -48,6 +48,24 @@ PY
 
 Differences from in-console: **you** add `create_client` / `set_workspace` / `dispose` (the IDE
 provides these; headless you don't).
+
+### Workspace setup (headless)
+
+`set_workspace(path)` is strict. It accepts only: a folder that doesn't exist, a truly empty folder,
+or a folder that is already a Vitis workspace at the current version (`_ide/version.ini`). Check the
+folder before the first call:
+
+| Folder state | Call |
+|---|---|
+| Missing, empty, or already a current-version workspace (has `_ide/version.ini`) | `client.set_workspace(path)` |
+| Has files but no `_ide/` (including a folder with only an empty subfolder) | Prefer a new or empty subfolder. Use `client.update_workspace(path)` **only after the user confirms** that folder. |
+| `_ide/version.ini` from an older release | `set_workspace` fails with "…detected a workspace from version X. Use update_workspace API…". Ask the user, then `client.update_workspace(path)`. |
+
+`update_workspace(path)` replaces `set_workspace(path)`; it also sets the workspace, so don't call
+both. It leaves your files alone and initializes (or upgrades) `_ide/version.ini`.
+
+If `set_workspace` fails with `Vitis IDE cannot recognize the workspace version … Click 'Update'`
+(a GUI-worded message), treat it as the second row. Stop and ask; don't retry in a loop.
 
 ## Pass the platform as its `.xpfm` PATH — bare names misresolve
 
@@ -86,7 +104,7 @@ Build with no `LD_PRELOAD`.
 | | In-console (IDE) | Headless |
 |--|------------------|----------|
 | Run an API snippet | `runVitisPython(code=X)` | `vitis -s /dev/stdin <<'PY' … X … PY` |
-| Session | pre-bound `client` | `create_client()` + `set_workspace()` + `dispose()` |
+| Session | pre-bound `client` | `create_client()` + `set_workspace()` (see "Workspace setup") + `dispose()` |
 | Cross-step state | REPL persists | by component name / `.elf` path |
 | Platform ref | name or path | **full `.xpfm` path** (bare name misresolves) |
 | `libstdc++` preload | n/a | **not needed** (`empyro build_app`) |

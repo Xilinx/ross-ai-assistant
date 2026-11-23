@@ -3,8 +3,9 @@ name: hls-pipeline
 description: 'Guide users on how to apply pipeline pragma in C/C++ regions, analyze region validity for pipelining, and configure II, rewind, and style options'
 license: MIT
 metadata:
+  stage: beta
   author: "Sheng Wang"
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 <!--
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
@@ -203,7 +204,7 @@ The style parameter controls how the pipeline handles stalls, and comes in three
 
 **The Three Styles:**
 
-**3a. style=stp (Stalled Pipeline)** — the default, non-flushable style.
+**3a. style=stp (Stalled Pipeline)** — non-flushable style.
 ```cpp
 #pragma HLS pipeline II=1 style=stp
 ```

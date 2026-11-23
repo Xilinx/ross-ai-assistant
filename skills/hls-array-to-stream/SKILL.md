@@ -2,10 +2,12 @@
 name: hls-array-to-stream
 description: 'Analyze whether a given C/C++ code snippet follows the recommended coding style for array-to-stream conversion in Vitis HLS. Keywords: array, stream, HLS, pragma, ap_fifo, axis, interface'
 license: MIT
+compatibility: Requires Vitis 2026.1+ and the hls-component-basic-info skill
 argument-hint: "[<TOP_FUNCTION — top-level HLS function name e.g. 'Kernel'>]"
 metadata:
-  author: "Huina Li, Alex Li"
-  version: "1.0.0"
+  stage: beta
+  author: "Huina Li, Fangqing Du"
+  version: "1.0.1"
 ---
 <!--
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.

@@ -1,14 +1,10 @@
-<!--
-Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
-SPDX-License-Identifier: MIT
--->
-
 # Function index: vivado-ip-configurator
 
-Generated from the Tcl helpers; do not edit by hand. This is the complete list of what this skill can call. Read it
+Generated from the code by `vivado-ipi-assembler/tests/support/build_function_index.py`;
+do not edit by hand. This is the complete list of what this skill can call. Read it
 instead of `lib/*.tcl` or `scripts/*.py`: the source adds nothing a caller needs.
 
-## Tcl helpers: `ipcfg::` (92)
+## Tcl helpers: `ipcfg::` (97)
 
 Load the library in the Vivado session first. `ipcfg::help <word>` prints the same entry live.
 
@@ -23,6 +19,7 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
   ok: SUCCESS:already SUCCESS:applied SUCCESS:no   fail: CONFIGURE_FAIL
 - `ipcfg::attempt_call cell operation script`
   Run one create/configure/automation script against a cell, counted in the persistent per-cell attempt ledger.
+  fail: CONFIGURE_FAIL
 - `ipcfg::audit_board ?cell={}?`
   did anything move a value the board owns? Run beside audit_requirements. A board-owned value that changed after the
   ok: BOARD:OK BOARD:none   fail: BOARD_FAIL
@@ -66,7 +63,7 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
   Phase 3 verification: detect INERT writes (gated attribute, flag still off) The failure verify_stuck cannot see. An attribute parameter whose feature is
 - `ipcfg::check_value file param want`
   PRE-flight value check: validate BEFORE writing, not after Saves the whole failed-set round trip, and catches the class of bug where Vivado
-  ok: VAL_OK: VAL_OUT_OF_RANGE: VAL_UNCHECKED:
+  ok: VAL_NOT_IN_LIST: VAL_OK: VAL_OUT_OF_RANGE: VAL_UNCHECKED:
 - `ipcfg::classify_change want base cur ?validset={}? ?tolerance={}?`
   Exact-vs-miss classification Classify what happened to ONE key after an apply, using its pre-apply default.
 - `ipcfg::cleanup cell ?orig_part={}?`
@@ -74,14 +71,15 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
   ok: SKIP:cleanup SUCCESS:cleanup
 - `ipcfg::clock_placement_status ?search={}?`
   Public: are the cells placed by the last (or a given) clock search at their required rates in the caller's design? Returns CLOCK_PLACEMENT:OK|PENDING|FAIL|ERROR
-  ok: CLOCK_PLACEMENT:ERROR CLOCK_PLACEMENT:FAIL CLOCK_PLACEMENT:OK CLOCK_PLACEMENT:PENDING
+  ok: CLOCK_PLACEMENT:OK CLOCK_PLACEMENT:PENDING   fail: CLOCK_PLACEMENT:ERROR CLOCK_PLACEMENT:FAIL
 - `ipcfg::config_diff cell baseline ?reqmap={}?`
   Full-config diff with change classification (idea #1 + #2) Compare a cell's current full config to a baseline snapshot. Optionally pass a
 - `ipcfg::configure_feature cell vlnv feature intent`
   THE front door: identity -> discovery -> apply -> verify, in one call The agent supplies INTENT; this supplies the PROCEDURE. Every step that used
-  ok: CF:FAIL CF:OK CF:PARTIAL
+  ok: CF:OK CF:PARTIAL   fail: CF:FAIL
 - `ipcfg::coverage_report ledger`
   Coverage report (partial-configuration disclosure, REQUIRED) Turns the Step 1.5 requirement ledger into a verdict + a list of prompt parts
+  ok: COVERAGE:
 - `ipcfg::create_cell vlnv cell`
   Create one BD cell from a VLNV if absent, refusing a VLNV this part does not support; counted as an attempt.
   ok: SUCCESS:created   fail: CONFIGURE_FAIL
@@ -94,6 +92,8 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
 - `ipcfg::dict_keys file ?dictparam={}?`
   dict SUB-KEY NAMES from the graph -- the names param_dict cannot see param_dict parses the RESOLVED value of a dict param, so it only ever reports
   ok: DK: DK_DICTS: DK_MISS:
+- `ipcfg::discover_native_log`
+  Set ::ipcfg::native_log_path from the running Vivado's own command line (-log <file>), when the caller has not set it. Vivado prints only the first messages of
 - `ipcfg::discover_params vlnv keyword ?tmpdir=/tmp/ipcfg_disc?`
   Scoped standalone introspection (idea #4): COMPLETE param neighborhood On a throwaway standalone `create_ip` cell, return the CONFIG.* params whose
   ok: DISCOVER: DISCOVER_IPI_ONLY:   fail: DISCOVER_ERR
@@ -109,6 +109,8 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
 - `ipcfg::export_proven out_json entries`
   Write each proven cell's configuration to one JSON fragment plus a review-only Tcl copy beside it (<out>.tcl, never sourced). IP-agnostic.
   ok: EXPORT:OK   fail: EXPORT_FAIL
+- `ipcfg::failure_token raw`
+  True when a helper result carries a failure token (CONFIGURE_FAIL:..., ERROR, PENDING, ...).
 - `ipcfg::feature_flags cell words`
   Intent-side companion: which feature flags does this request need? check_enablers only fires when an ATTRIBUTE was written, so it cannot catch a
   ok: FLAGS: FLAGS:none
@@ -162,6 +164,10 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
   ok: RANGE_LIST: RANGE_NUM:
 - `ipcfg::parse_range err`
   Parse a numeric legal range out of a Vivado error message Handles the common shapes:
+- `ipcfg::part_examples def ?limit=4?`
+  How many parts an IP definition supports and up to <limit> installed examples, one per device family; remembered like part_status, so a wrong-part answer does n
+- `ipcfg::part_status def ?part={}?`
+  AVAILABLE, WRONG_PART or UNKNOWN for one IP definition on a part (the current project's by default).
 - `ipcfg::pinned_drift cell`
   Pinned requirements on <cell> that no longer hold, as data: {items {<key>=<current>(want <value>) ...} restore {<key> <value> ...}}.
 - `ipcfg::pinned_reset cell`
@@ -172,7 +178,7 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
   ok: PLAN:   fail: PLAN_ERR
 - `ipcfg::port_enablers file port`
   AUTHORITATIVE gating: which params decide whether a port/interface EXISTS This is the ground truth that check_enablers can only GUESS at by name, and that
-  ok: PE_MISS: PE_NONE:
+  ok: PE: PE_DERIVED: PE_MISS: PE_NONE:
 - `ipcfg::preset_drift cell`
   Compare a board-bound cell's live values with its board preset; PRESET:OK or PRESET_DRIFT listing each changed key.
   ok: PRESET:OK PRESET_DRIFT:   fail: PRESET_CHECK_ERROR
@@ -198,6 +204,9 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
 - `ipcfg::reconcile_disabled cell d`
   Disabled/gated param reconciliation (simpler than enabler-hunting) For params reported disabled/gated, decide which are already satisfied instead
   ok: OMIT:
+- `ipcfg::reference_precision mhz ?max_denominator=12?`
+  Is a reference frequency in MHz a truncated or rounded repeating decimal? REF_PRECISION:ROUNDED with the full-precision value, or REF_PRECISION:OK.
+  ok: REF_PRECISION:OK REF_PRECISION:ROUNDED   fail: REF_PRECISION:ERROR
 - `ipcfg::require cell d ?reason={}? ?tolerances={}? ?board_override={}?`
   Requirement ledger: pin a spec value, write it, audit it at the end. A board-file value is refused unless board_override quotes the spec statement.
   ok: REQ:pinned+applied   fail: REQ_ERR REQ_FAIL
@@ -219,7 +228,7 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
   Classify a helper result string as PASS or FAIL against the expected success prefixes.
 - `ipcfg::rule_for_vlnv dump vlnv`
   Automation rule enumeration (idea #5) The loaded Designer-Assistance rules ARE enumerable via the internal command
-  ok: RULE:none RULE:xilinx
+  ok: RULE:none RULE:xilinx   fail: RULE_ERROR
 - `ipcfg::run_automation cell rule ?config={}? ?baseline={}?`
   Apply one bd_rule to a cell after checking the -config against the rule's live option schema; fills omitted keys with defaults.
   ok: AUTOMATION:OK SKIP:board   fail: CONFIGURE_FAIL
@@ -228,7 +237,7 @@ Load the library in the Vivado session first. `ipcfg::help <word>` prints the sa
   ok: SCRIPT_CHECK:OK   fail: SCRIPT_CHECK_FAIL
 - `ipcfg::search_clock_config vlnv source targets evidence_dir ?args...?`
   Search clocking-wizard configurations until the exact target rates are proven; CLOCK_SEARCH:PASS with evidence under evidence_dir.
-  ok: CLOCK_SEARCH:ERROR
+  ok: CLOCK_SEARCH:PASS   fail: CLOCK_SEARCH:ERROR CLOCK_SEARCH:FAIL
 - `ipcfg::set_bd_file f`
   Optionally pin the bd file name explicitly (else it is auto-detected).
   ok: SUCCESS:bd_file

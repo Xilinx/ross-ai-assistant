@@ -34,8 +34,8 @@ When reporting an issue on the forum, please include:
 |------------|------------|
 | GUI mode may open on a virtual/VNC display instead of your native display | Tell the agent your display value, e.g. *"use display :0"* or *"use my $DISPLAY"*. Run `echo $DISPLAY` in your terminal to find it |
 | Long-running Vivado commands may cause the chat to stop waiting for a response | Ask the agent to *"check status"* or *"continue"*. This is an AI infrastructure limitation, not specific to the MCP server |
-| The agent may interpret "visualize the design" as taking GUI screenshots via `vivado_computer_use` | Disable the `vivado_computer_use` tool if you do not need automated GUI interaction |
 | Some LLMs may not automatically call `vivado_doc_search` for knowledge queries | Add a system prompt instructing the agent to *"always use vivado_doc_search for AMD/Xilinx documentation questions"*, or explicitly state in your query: *"use vivado_doc_search to look up..."*. More capable models generally handle tool selection reliably; smaller or older models may need this guidance |
+| `vivado-convert-flat-to-dfx` fails on modules with parameter or generic overrides | None yet. Do not edit your original source files to get past the error |
 
 ## Providing Feedback
 
@@ -45,12 +45,6 @@ Your feedback directly shapes the product. We're especially interested in:
 - **Accuracy** — Did the agent give correct recommendations?
 - **Usability** — Was the setup process smooth? What was confusing?
 - **Missing features** — What capabilities are you missing?
-
-You can also submit feedback directly from the chat terminal using the **`vivado_feedback`** MCP tool. Simply type in the chat:
-
-> *#vivado_feedback the timing closure workflow worked great, rated good*
-
-The agent will call the `vivado_feedback` tool with your rating (`good`, `neutral`, or `poor`) and comments, which are recorded and sent to the AMD engineering team. No forms to fill out — just tell the agent what you thought.
 
 Post feedback on [AMD Adaptive Support](https://adaptivesupport.amd.com/s/?language=en_US).
 

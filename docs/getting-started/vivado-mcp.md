@@ -16,7 +16,7 @@ Your AI Client  ──MCP protocol──>  Vivado MCP Server  ──Tcl──>  
 - **Vivado 2026.1** installed and on your `PATH`
 - **One of the following** (not both):
     - **Vivado AI Assistant Extension** VSIX — for IDE setups (VS Code / Cursor). The extension bundles the MCP server.
-    - **Vivado MCP Server** binary — for CLI setups (Claude Code, Copilot CLI, Codex CLI). Download from the EA release page.
+    - **Vivado MCP Server** binary — for CLI setups (Claude Code, Copilot CLI, Codex CLI). Download from the [release notes](https://github.com/Xilinx/ross-ai-assistant/releases) for your version.
 
 > **Version Compatibility:** Vivado **2026.1** is the tested baseline. The MCP server communicates through Vivado's standard Tcl interface and is architecturally compatible with all released versions. Individual skills and examples note their minimum supported versions.
 
@@ -30,7 +30,7 @@ The VSIX extension includes both the Vivado AI Assistant UI **and** the MCP serv
 
 **From VSIX file:**
 
-1. Download the Vivado AI Extension `.vsix` file from the EA release page
+1. Download the Vivado AI Extension `.vsix` file from the [release notes](https://github.com/Xilinx/ross-ai-assistant/releases) for your version
 2. Open VS Code (or Cursor)
 3. Go to **Extensions** sidebar > click `...` > **Install from VSIX...**
 4. Select the downloaded `.vsix` file
@@ -115,7 +115,7 @@ Ask the agent to connect:
 
 ### Install the MCP Server Binary
 
-Download the standalone binary from the EA release page, make it executable, and move it to a convenient location:
+Download the standalone binary from the [release notes](https://github.com/Xilinx/ross-ai-assistant/releases) for your version, make it executable, and move it to a convenient location:
 
 ```bash
 chmod +x vivado-mcp-server-linux-amd64-<version>

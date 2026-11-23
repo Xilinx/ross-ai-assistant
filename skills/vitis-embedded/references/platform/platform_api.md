@@ -44,7 +44,7 @@ client.create_platform_component(
     pmufw_Elf=None,       # prebuilt PMUFW/FSBL elf
     emu_design='',        # emulation XSA path
     platform_xpfm_path='',# wrap an existing .xpfm
-    is_pmufw_req=False,
+    is_pmufw_req=False,     # ZynqMP: pass True to build the PMUFW from source (sw/boot/pmufw.elf)
     generate_dtb=True,    # device tree blob; required for Linux
     advanced_options={},  # from create_advanced_options_dict(...)
     architecture=None,    # '64-bit' / '32-bit'
@@ -104,7 +104,8 @@ Linux device tree:
 
 > After any `set_lib`/`remove_lib`/`set_config`, **rebuild the platform** (`platform.build()`); apps
 > built against it and the boot image must be rebuilt too (the BIF itself is unchanged).
-> There is **no** `get_lib_info` method — use `get_applicable_libs()` for library descriptions.
+> `domain.get_lib_info("<lib>")` returns a library's name, description and source paths;
+> `get_applicable_libs()` lists the libraries the domain can take.
 
 ## Client helpers
 

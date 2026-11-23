@@ -4,6 +4,7 @@ description: Convert MATLAB sample-based code to plain C++ frame-based loops —
 license: MIT
 argument-hint: <matlab-file.m> [part=<fpga-part>] [clock=<ns>] [throughput=<target>]
 metadata:
+  stage: beta
   author: "Sai Akhil Ayyagari"
   version: "1.0.0"
 ---

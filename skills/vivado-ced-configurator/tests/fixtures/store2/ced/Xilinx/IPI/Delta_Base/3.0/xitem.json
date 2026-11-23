@@ -1,0 +1,19 @@
+{
+  "config": {
+    "items": [
+      {
+        "infra": {
+          "name": "delta_base",
+          "display": "Delta Common Platform",
+          "revision": "3.0",
+          "description": "Common platform base design",
+          "category": "Platforms",
+          "is_active": true,
+          "search-keywords": ["platform", "common", "base"]
+        }
+      }
+    ]
+  },
+  "_major": 1,
+  "_minor": 0
+}

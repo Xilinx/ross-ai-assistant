@@ -5,6 +5,7 @@ license: MIT
 allowed-tools: tool_search_tool_regex vivadoExecute vivado_doc_search read_file create_file replace_string_in_file
 argument-hint: "[project-path]"
 metadata:
+  stage: beta
   version: "1.0.0"
 ---
 

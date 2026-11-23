@@ -10,8 +10,6 @@ SPDX-License-Identifier: MIT
 
 - **Check ID**: TIMING-7
 - **Severity**: Critical Warning
-- **Group**: 1
-- **Priority**: 1
 - **Hierarchy Name**: Timing.Bad Practice
 - **First Release**: 2013.3
 
@@ -57,10 +55,9 @@ When clocks have no common node:
 ### Common Root Causes
 
 1. **Independent Input Clocks**: Multiple clock inputs driving separate domains
-2. **Separate PLLs/MMCMs**: Independent clock generation blocks
-3. **Missing Clock Constraints**: Asynchronous relationship not declared
-4. **External Clock Sources**: Off-chip clocks with no phase correlation
-5. **Design Bug**: Unintended clock domain crossing without CDC circuitry
+2. **Missing Clock Constraints**: Asynchronous relationship not declared
+3. **External Clock Sources**: Off-chip clocks with no phase correlation
+4. **Design Bug**: Unintended clock domain crossing without CDC circuitry
 
 ## Generate Data
 
@@ -99,8 +96,8 @@ set src1 [get_property SOURCES $clk1]
 set src2 [get_property SOURCES $clk2]
 
 # Trace clock networks
-report_clock_networks -name $clk1
-report_clock_networks -name $clk2
+report_clock_networks -clocks $clk1
+report_clock_networks -clocks $clk2
 ```
 
 **Find Timing Paths:**
@@ -115,19 +112,6 @@ report_timing -from [get_clocks $clk2] -to [get_clocks $clk1] \
     -file ./tmp/timing_cross_clk2_to_clk1.rpt
 ```
 
-**Analyze CDC Implementation:**
-```tcl
-# Look for synchronizer chains
-set paths [get_timing_paths -from [get_clocks $clk1] -to [get_clocks $clk2]]
-
-foreach path $paths {
-    set endpoint [get_property ENDPOINT_PIN $path]
-    # Check for multi-stage synchronizer (2+ FFs)
-    set fanin [all_fanin -flat -levels 2 [get_pins $endpoint]]
-    puts "Path endpoint: $endpoint"
-    puts "Fanin stages: [llength $fanin]"
-}
-```
 
 **Check Existing Constraints:**
 ```tcl
@@ -170,118 +154,52 @@ if {$src1 eq $src2} {
 
 | Scenario | Clock Sources | Relationship | Action |
 |----------|---------------|--------------|--------|
-| **Different input ports** | Separate pins | Asynchronous | `set_clock_groups -asynchronous` |
-| **Different PLLs** | Independent MMCMs | Asynchronous | `set_clock_groups -asynchronous` |
+| **Different input ports** | Separate ports | Asynchronous | `set_clock_groups -asynchronous` |
+| **Different Pins** | Different pins | Asynchronous | `set_clock_groups -asynchronous` after resolving TIMING-1, TIMING-2, TIMING-3, TIMING-4|
 | **Same PLL, different outputs** | Shared MMCM | Check if synchronous | May need `create_generated_clock` fix |
 | **Same source, wrong definition** | Should be related | Fix clock constraints | Re-define clocks properly |
 
 #### Step 3: Apply Resolution
 
-**CASE 1: Truly Asynchronous Clocks (Most Common)**
+**CASE 1: Asynchronous Clocks (Most Common)**
 - **Type**: Automated Resolution
-- **When**: Clocks from completely independent sources
+- **When**: Clocks are truly independent with no timing relationship
 
 ```tcl
-# Mark as asynchronous
+# Mark clocks as asynchronous
 set_clock_groups -asynchronous \
-    -group [get_clocks clk1] \
-    -group [get_clocks clk2]
+    -group [get_clocks <clk1>] \
+    -group [get_clocks <clk2>]
 ```
 
-**Requirements:**
-✅ Must have CDC synchronizers on all crossing paths
-✅ Should verify with `report_cdc` 
-✅ Document the independence in comments
-
+Provide alternative `set_max_delay -datapath_only` constraints
 ```tcl
-# Example with verification
-set_clock_groups -asynchronous \
-    -group [get_clocks bftClk] \
-    -group [get_clocks wbClk] \
-    -comment "Independent external clock sources with no phase relationship"
-
-# Verify CDC implementation
-report_cdc -file ./tmp/cdc_verification.rpt
+# datapath_only constraints
+set_max_delay -datapath_only -from [get_clocks <clk1>] -to [get_clocks <clk2>]
+set_max_delay -datapath_only -from [get_clocks <clk2>] -to [get_clocks <clk1>]
 ```
+
+**DO:**
+✅ Document why these clocks are asynchronous
+✅ Flag a warning that this will hide timing failures between related clocks from the user. 
+✅ When setting `set_clock_groups` recommend that a user runs `report_cdc` after to verify cross clock paths
+✅ Use `report_clock_interaction` to capture how many paths will now no longer be timed between the specfied clocks. Capture both directions and add it, break it out for setup and hold.
+
 
 **CASE 2: Physically Related (Same PLL) - Fix Clock Definitions**
 - **Type**: User Resolution
 - **When**: TIMING-7 appears but clocks should be related
 
-This typically indicates incorrect clock definitions. The clocks may share a PLL but were defined incorrectly.
-
-```tcl
-# BEFORE (causes TIMING-7):
-create_clock -period 10 -name clkA [get_pins PLL/CLKOUT0]
-create_clock -period 5 -name clkB [get_pins PLL/CLKOUT1]
-
-# AFTER (proper definition):
-# Define primary clock at the PLL input
-create_clock -period 10 -name clk_primary [get_ports CLK_IN]
-
-# Define generated clocks from outputs
-create_generated_clock -name clkA \
-    -source [get_pins PLL/CLKIN1] \
-    -master_clock clk_primary \
-    -divide_by 1 \
-    [get_pins PLL/CLKOUT0]
-
-create_generated_clock -name clkB \
-    -source [get_pins PLL/CLKIN1] \
-    -master_clock clk_primary \
-    -divide_by 2 \
-    [get_pins PLL/CLKOUT1]
-```
-
-**DO:**
-✅ Define primary clock at the actual source (input port or oscillator)
-✅ Use `create_generated_clock` for PLL/MMCM outputs
-✅ Specify proper -source and -master_clock relationships
-
-**DO NOT:**
-❌ Create primary clocks on PLL outputs (use generated clocks instead)
-❌ Ignore relationships between PLL outputs
-
+Resolve using TIMING-2 methodology.
 
 **CASE 3: Logically Related but Physically Separate**
 - **Type**: User Resolution  
-- **When**: Clocks are meant to be synchronous but physically isolated
+- **When**: Clocks are meant to be synchronous but physically isolated. E.g., OOC 
 
-This is rare but can occur with:
-- Multiple identical frequency clocks from independent sources
-- Clocks that should be rationally related
+Ignore this case. Report that the skill does not support OOC runs.
 
-```tcl
-# If periods are related (e.g., 100 MHz and 200 MHz)
-# but from separate sources, you may need:
 
-# Option A: If truly synchronous in design intent
-set_clock_groups -physically_exclusive \
-    -group [get_clocks clk_100] \
-    -group [get_clocks clk_200]
-
-# Option B: If asynchronous despite same frequency
-set_clock_groups -asynchronous \
-    -group [get_clocks clk_100] \
-    -group [get_clocks clk_200]
-```
-
-**CASE 4: Specific Paths are Asynchronous**
-- **Type**: User Resolution
-- **When**: Most paths need timing but specific crossings don't
-
-```tcl
-# For quasi-static control signals
-set_false_path -from [get_clocks clk1] -to [get_clocks clk2] \
-    -through [get_pins config_reg*/D]
-
-# For async signals with max delay requirement
-set_max_delay 5.0 -datapath_only \
-    -from [get_clocks clk1] -to [get_clocks clk2] \
-    -through [get_pins async_data*/D]
-```
-
-**CASE 5: Create Waiver (Rare)**
+**CASE 4: Create Waiver (Rare)**
 - **Type**: User Resolution
 - **When**: Violation is understood and acceptable
 
@@ -289,11 +207,19 @@ set_max_delay 5.0 -datapath_only \
 create_waiver -type METHODOLOGY -id {TIMING-7} \
     -objects [get_methodology_violations TIMING-7#1] \
     -user [get_property USER [current_project]] \
-    -description "Clocks clk1 and clk2 are from independent PCB oscillators. All crossings use proper XPM_CDC primitives with MTBF > 1000 years. Clock relationship explicitly defined as asynchronous."
+    -description "Clocks clk1 and clk2 are from independent PCB oscillators. All crossings use proper XPM_CDC primitives. Clock relationship explicitly defined as asynchronous."
 ```
 
-### DON'T:
-❌ Apply `set_clock_groups -asynchronous` without verifying CDC circuits
+### DO:
+**DO:**
+✅ Document why these clocks are asynchronous
+✅ Flag a warning that this will hide timing failures between related clocks from the user. 
+✅ When setting `set_clock_groups` recommend that a user runs `report_cdc` after to verify cross clock paths
+✅ Use `report_clock_interaction` to capture how many paths will now no longer be timed between the specfied clocks. Capture both directions and add it, break it out for setup and hold.
+✅ Provide `set_clock_groups -asynchronous` or `set_max_delay -datapath_only`
+
+### DONT:
+**DONT:**
 ❌ Ignore this violation - indicates potential metastability issues
 ❌ Assume clocks are related when they have no common node
 ❌ Fix TIMING-7 without also checking for TIMING-6 and TIMING-8
@@ -304,31 +230,14 @@ create_waiver -type METHODOLOGY -id {TIMING-7} \
 * [ ] Methodology violation TIMING-7 is no longer present
 * [ ] Related TIMING-6 and TIMING-8 violations also resolved
 * [ ] `report_clock_interaction` shows intended clock relationship
-* [ ] All clock domain crossings have proper CDC implementation
-* [ ] CDC report (`report_cdc`) shows no unknown crossings
-* [ ] Timing reports correctly include or exclude cross-domain paths
-* [ ] No new unresolved methodology warnings created
 
 **Verification Script:**
 ```tcl
-# Re-run methodology checks  
-report_methodology -checks {TIMING-6 TIMING-7 TIMING-8} \
-    -file ./tmp/methodology_timing_6_7_8_after_fix.rpt
 
 # Verify clock relationships
 report_clock_interaction -delay_type min_max \
     -file ./tmp/clock_interaction_after_fix.rpt
 
-# Check CDC implementation
-report_cdc -file ./tmp/cdc_after_fix.rpt
-
-# Verify no unknown clock crossings
-set unknown_cdc [get_cdc_violations -of_objects [get_cdc_paths -from * -to *]]
-if {[llength $unknown_cdc] > 0} {
-    puts "WARNING: Unknown CDC violations still present!"
-} else {
-    puts "SUCCESS: All CDC paths properly defined"
-}
 ```
 
 ## Final Report Guidance
@@ -362,21 +271,6 @@ set_clock_groups -asynchronous \
 # - All crossings protected by XPM_CDC_ARRAY_SINGLE synchronizers
 ```
 
-### CDC Verification
-
-**Crossing Paths Found:** 24 signals from bftClk → wbClk, 8 signals from wbClk → bftClk
-
-| Signal Path | CDC Type | Sync Stages | MTBF |
-|-------------|----------|-------------|------|
-| `bft_valid` → `wb_valid_sync` | XPM_CDC_SINGLE | 2-FF | >1000 years |
-| `bft_data[31:0]` → `wb_data_sync[31:0]` | XPM_CDC_ARRAY_SINGLE | 2-FF | >1000 years |
-| `wb_ack` → `bft_ack_sync` | XPM_CDC_SINGLE | 2-FF | >1000 years |
-
-**CDC Report Summary:**
-- ✅ All 32 crossing signals have proper CDC synchronizers
-- ✅ No unsafe clock domain crossings detected
-- ✅ MTBF requirements met for all paths
-
 ### Verification Results
 
 Before Fix:
@@ -387,8 +281,7 @@ Before Fix:
 After Fix:
 - ✅ TIMING-7 violations resolved
 - ✅ Clock interaction report shows "Asynchronous" relationship
-- ✅ All CDC paths properly synchronized
-- ✅ No new methodology warnings
+- ✅ Message that captures how many paths need looking at in `report_cdc`
 
 ### Design Impact
 
@@ -397,10 +290,6 @@ After Fix:
 - No timing paths analyzed between bftClk and wbClk domains
 - CDC paths excluded from timing (as intended)
 
-**Hardware Reliability:**
-- Metastability risk mitigated by 2-stage synchronizers
-- MTBF > 1000 years for all crossings
-- Design safe for independent clock sources
 
 ## References
 

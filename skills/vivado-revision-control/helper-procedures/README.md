@@ -405,7 +405,7 @@ its simulation BFM output by copying numbered `map_read_<N>.sv`/
 `pinout_<N>.sv` files from the Vivado install's own
 `data/ip/xilinx/noc_mc_ddr5_phy_v1_0/hdl/bfm/PINOUT/` directory. On the
 install used for this diagnosis (2026.2,
-`/proj/xbuilds/CustTA_plus/9999.0_2026_0724_2226plus/...`), several indices
+`<VIVADO_INSTALL_DIR>/...`), several indices
 are missing entirely (confirmed by direct filesystem listing — `pinout_14`,
 `pinout_19`/`map_read_19` do not exist, neighboring indices do), so
 generation fails identically regardless of whether the skill is involved at

@@ -9,9 +9,6 @@ SPDX-License-Identifier: MIT
 
 - **Check ID**: TIMING-16
 - **Severity**: Warning
-- **Group**: TIMING
-- **Hierarchy**: Timing.Bad Practice
-- **Owner**: gservel
 
 ## Description
 
@@ -35,7 +32,7 @@ This check identifies paths with large setup violations that appear early in the
 Common root causes include:
 - Unrealistic clock period constraints
 - Missing or incorrect clock relationships (set_clock_groups, set_false_path, set_max_delay)
-- Design architecture issues requiring pipelining or optimization
+- Design architecture issues requiring pipelining or optimization - beyond the scope of this skill
 - Incorrect input/output delays affecting path budgets
 
 ## Generate Data
@@ -72,17 +69,11 @@ b. `set_max_delay -datapath_only`
 
 **Clock Network**
 If it is a suboptimal clock network issue
-1. Determine if an MBUF can be used in Versal or later technology
+1. Determine if an MBUFGCE can be used in Versal or later technology
 2. For Ultrascale, if there is PE, determine if the same MMCM output can be used with BUFGCE_DIV to remove phase error.
 
 **Logic level**
-If it is a logic level issue
-1. Determine if retiming is set globally at synthesis
-2. Suggest that RTL recoding could improve the logic levels and point at the file name and line number
-```tcl
-get_property LINE_NUMBER [get_cells -of [get_pins [get_property ENDPOINT_PIN [get_timing_path <PATH>]]]]
-get_property FILE_NAME [get_cells -of [get_pins [get_property ENDPOINT_PIN [get_timing_path <PATH>]]]]
-```
+If it is a logic level issue - defer to timing closure skill
 
 4. **Verify** → Re-run methodology checks and timing analysis
 
@@ -111,4 +102,3 @@ Document the resolution:
 - [UG903](https://docs.amd.com/r/en-US/ug903-vivado-using-constraints) - Using Constraints
 - [UG949](https://docs.amd.com/r/en-US/ug949-vivado-design-methodology) - UltraFast Design Methodology (UltraScale/UltraScale+)
 - [UG1388](https://docs.amd.com/r/en-US/ug1388-acap-system-integration-validation-methodology) - Vivado Design Methodology (Versal)
-- [CommandHistory](/VIVADO_IMPLEMENTATION_COMMAND_HISTORY.md) - Finding command history in Vivado

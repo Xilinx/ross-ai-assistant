@@ -2,10 +2,12 @@
 name: hls-pipe-decomp
 description: 'Decompose a Vitis HLS pipelined region that accesses many streams into a linear chain of smaller sub-pipelines inside a dataflow region, to reduce pipeline-control complexity and improve timing. Keywords: pipeline, dataflow, stream, FIFO, timing, frequency, split pipeline, decompose'
 license: MIT
+compatibility: Requires no tools or other skills; it edits HLS C++ source only, and the user runs Vitis HLS to verify the result.
 argument-hint: "[<TOP_FUNCTION — function to decompose, or file:LOOP_LABEL>]"
 metadata:
+  stage: beta
   author: "Zayn He"
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 <!--
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.

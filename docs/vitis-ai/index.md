@@ -11,9 +11,9 @@ an AI coding assistant, follow those links instead. To set the workflows up, see
 
 | If you want to | Workflow | Manual procedure |
 | --- | --- | --- |
-| Implement a custom operator that can extend what the NPU can run and/or optimize how it runs. | [Custom operator workflow](vai-custom-op.md) | [Custom operators](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/additional_information/custom_ops/custom_ops_introduction.html) |
-| Quantize a model, including per-layer mixed precision | [Model quantization workflow](vai-quantization-guide.md) | [Model Quantization](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/model_quantization/model_quantization.html) , [Mixed Precision Compilation](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/model_compilation/mixed_precision_compilation.html) |
-| Increase NPU offload, reduce inference time, or get a model to compile | [Compiler options workflow](vai-flag-configuration.md) | [Vitis AI EP Options](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/model_compilation/ep-options.html) |
+| Implement a custom operator that can extend what the NPU can run and/or optimize how it runs. | [Custom operator workflow](vai-custom-op.md) | [Custom operators](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/additional_information/custom_ops/custom_ops_introduction.html) |
+| Quantize a model, including per-layer mixed precision | [Model quantization workflow](vai-quantization-guide.md) | [Model Quantization](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/model_quantization/model_quantization.html) , [Mixed Precision Compilation](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/model_compilation/mixed_precision_compilation.html) |
+| Increase NPU offload, reduce inference time, or get a model to compile | [Compiler options workflow](vai-flag-configuration.md) | [Vitis AI EP Options](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/model_compilation/ep-options.html) |
 
 ### Board access
 
@@ -41,11 +41,11 @@ export BOARD_PASSWORD=<password>
 >
 > `BOARD_PASSWORD` is a credential. Keep it out of scripts and version
 > control, and prefer a permission-restricted file over a plain shell export.
-> See the guidance in [the Vitis AI documentation](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/ai_workflows/llm-setup.html#configure-llm-access).
+> See the guidance in [the Vitis AI documentation](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/ai_workflows/llm-setup.html#configure-llm-access).
 
 To persist these across container restarts, append them to `$HOME/.bashrc`.
 If you followed the Vitis AI documentation example
-[Claude Code in the Vitis AI Docker container](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/ai_workflows/llm-setup.html#claude-code-docker),
+[Claude Code in the Vitis AI Docker container](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/ai_workflows/llm-setup.html#claude-code-docker),
 this file is mapped to `$WORKDIR/homedir/.bashrc` on the host.
 
 If you prefer not to set them, supply the board details in the prompt instead:
@@ -58,7 +58,7 @@ amd-edf, the password is mypassword.
 
 Boot the board and confirm it is reachable over SSH before you start a session.
 See the OSPI and SD card boot flow documentation
-[OSPI and SD Card Boot Flow](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/setup_and_installation/board_setup_ospi_sd_eou.html)
+[OSPI and SD Card Boot Flow](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/setup_and_installation/board_setup_ospi_sd_eou.html)
 for board preparation and bootup.
 
 - [Custom operator workflow](vai-custom-op.md)

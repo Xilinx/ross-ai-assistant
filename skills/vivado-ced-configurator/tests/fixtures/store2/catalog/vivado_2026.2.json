@@ -1,0 +1,33 @@
+{
+  "catalog": {
+    "items": [
+      {"name": "beta_pcie", "display": "Beta PCIe Endpoint", "latest_revision": "2.0",
+       "commit_id": "2222222222222222222222222222222222222222",
+       "config": {"root": "ced/Xilinx/IPI/Beta_PCIe", "metadata_file": "xitem.json"}, "company": "xilinx.com"},
+      {"name": "beta_stale", "display": "Beta Stale Entry", "latest_revision": "1.0",
+       "commit_id": "3333333333333333333333333333333333333333",
+       "config": {"root": "ced/Xilinx/IPI/Beta_PCIe", "metadata_file": "xitem.json"}, "company": "xilinx.com"},
+
+      {"name": "delta_base", "display": "Delta Common Platform", "latest_revision": "1.0",
+       "commit_id": "4444444444444444444444444444444444444444",
+       "config": {"root": "ced/Xilinx/IPI/Delta_Base/1.0", "metadata_file": "xitem.json"}, "company": "xilinx.com"},
+      {"name": "delta_base", "display": "Delta Common Platform", "latest_revision": "2.0",
+       "commit_id": "5555555555555555555555555555555555555555",
+       "config": {"root": "ced/Xilinx/IPI/Delta_Base/2.0", "metadata_file": "xitem.json"}, "company": "xilinx.com"},
+      {"name": "delta_base", "display": "Delta Common Platform", "latest_revision": "3.0",
+       "commit_id": "6666666666666666666666666666666666666666",
+       "config": {"root": "ced/Xilinx/IPI/Delta_Base/3.0", "metadata_file": "xitem.json"}, "company": "xilinx.com"},
+
+      {"name": "delta_base", "display": "Epsilon Extensible Platform ", "latest_revision": "1.0",
+       "commit_id": "7777777777777777777777777777777777777777",
+       "config": {"root": "ced/Xilinx/IPI/Epsilon_Platform/1.0", "metadata_file": "xitem.json"}, "company": "xilinx.com"},
+
+      {"name": "alpha_gone", "display": "Alpha Processor Presets", "latest_revision": "1.0",
+       "commit_id": "8888888888888888888888888888888888888888",
+       "config": {"root": "ced/Xilinx/IPI/Alpha_Presets", "metadata_file": "xitem.json"}, "company": "xilinx.com"}
+    ],
+    "categories": []
+  },
+  "_major": 1,
+  "_minor": 0
+}

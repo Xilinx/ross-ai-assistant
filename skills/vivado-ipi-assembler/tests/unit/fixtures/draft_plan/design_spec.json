@@ -1,0 +1,107 @@
+{
+  "name": "vck190_ps_noc_cdma",
+  "description": "VCK190: PS reaches DDR4 through the NoC; PS FPD_CCI_NOC reaches the AXI4-Lite control port of an accelerator (AXI CDMA stand-in) in PL through the NoC; the accelerator AXI4 master reaches DDR through the NoC.",
+  "target_device": "xcvc1902-vsva2197-2MP-e-S",
+  "board_part": "xilinx.com:vck190:part0:3.4",
+  "blocks": [
+    {
+      "name": "processing_system",
+      "description": "Versal CIPS configured from the VCK190 board preset",
+      "workload_type": "os_application",
+      "interfaces": [
+        {
+          "name": "fpd_cci_noc",
+          "protocol": "AXI4",
+          "direction": "out",
+          "scope": "internal"
+        }
+      ],
+      "constraints": {},
+      "parameters": {}
+    },
+    {
+      "name": "ddr4",
+      "description": "Board DDR4 reached through the NoC",
+      "workload_type": "memory_controller",
+      "interfaces": [
+        {
+          "name": "memory",
+          "protocol": "AXI4",
+          "direction": "in",
+          "scope": "internal"
+        }
+      ],
+      "constraints": {},
+      "parameters": {}
+    },
+    {
+      "name": "accelerator",
+      "description": "Stand-in for an HLS kernel (AXI CDMA): AXI4-Lite control port and AXI4 master to DDR",
+      "workload_type": "custom_pl",
+      "interfaces": [
+        {
+          "name": "control",
+          "protocol": "AXI4-Lite",
+          "direction": "in",
+          "scope": "internal"
+        },
+        {
+          "name": "m_axi",
+          "protocol": "AXI4",
+          "direction": "out",
+          "scope": "internal"
+        }
+      ],
+      "constraints": {},
+      "parameters": {}
+    }
+  ],
+  "functional_contracts": {
+    "connections": [
+      {
+        "source": "processing_system.fpd_cci_noc",
+        "destination": "accelerator.control",
+        "protocol": "AXI4 via NoC with AXI4 to AXI4-Lite bridge",
+        "purpose": "PS control of the accelerator",
+        "required": true
+      },
+      {
+        "source": "accelerator.m_axi",
+        "destination": "ddr4.memory",
+        "protocol": "AXI4 via NoC",
+        "purpose": "Accelerator master to DDR",
+        "required": true
+      }
+    ],
+    "control_reachability": [
+      {
+        "master": "linux_apu",
+        "target": "accelerator",
+        "access": "read_write",
+        "required": true
+      }
+    ],
+    "interrupts": [],
+    "memory_reachability": [
+      {
+        "master": "linux_apu",
+        "memory": "ddr4",
+        "access": "read_write",
+        "required": true
+      },
+      {
+        "master": "accelerator",
+        "memory": "ddr4",
+        "access": "read_write",
+        "required": true
+      }
+    ],
+    "fixed_address_windows": [],
+    "visibility_policy": [],
+    "clock_reset": [],
+    "software": []
+  },
+  "clock_domains": [],
+  "global_constraints": {},
+  "power_budget_watts": null
+}

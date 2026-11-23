@@ -1,0 +1,17 @@
+{
+  "scope": "protocol_semantics_not_configuration_recipes",
+  "rules": [
+    {
+      "purpose_tokens": ["pcie", "link", "speed"],
+      "unit": "GT/s",
+      "source": "https://docs.amd.com/r/en-US/ug1366-vck190-eval-bd/GTY103/104-PCI-Express-Card-Edge-Connectivity",
+      "labels": {"2.5": "Gen1", "5": "Gen2", "8": "Gen3", "16": "Gen4"}
+    },
+    {
+      "purpose_tokens": ["pcie", "bar", "bit"],
+      "boolean_width": 64,
+      "source": "https://docs.amd.com/r/en-US/pg195-pcie-dma/PCIe-BARs-Tab",
+      "labels": {"0": "32-bit", "false": "32-bit", "1": "64-bit", "true": "64-bit"}
+    }
+  ]
+}

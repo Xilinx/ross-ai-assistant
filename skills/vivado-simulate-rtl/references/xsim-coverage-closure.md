@@ -22,6 +22,23 @@ for UVM, seeded regressions, and assertion-aware verdicts.
 - Stop and report
 - Integrity rules
 
+## Fast path
+
+The bundled `scripts/simrtl.py` runs this whole loop in one command (after the
+project step in `SKILL.md`). Write only the new self-checking testbench, then:
+
+```bash
+python3 <skill-dir>/scripts/simrtl.py sim --out outputs/<case> --xpr <project> --simset sim_1 --cov --tb tb_<dut>_closure.sv
+```
+
+It runs the unchanged baseline and the new test (in its own simulation set)
+with separately named coverage databases, writes text/HTML reports per run
+with `xcrg`, merges only passing runs, and prints statement/branch/condition/
+toggle scores, per-module DUT rows and functional bins. For parameter builds,
+pass `--xpr <dirA>,<dirB> --cov` to get `build-compare.md` with elaborated-out
+scopes. Use the manual Tcl below only when the fast path cannot express the
+step.
+
 ## 1. Define the goal
 
 Record before running:

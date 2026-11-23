@@ -1,8 +1,9 @@
 ---
 name: hls-line-buffer
-description: Fill the HLS line-buffer and window-buffer gap for stencil kernels, including TOTAL_ITER drain and verification. Use when generated buffer code misses the drain or the check.
+description: 'HLS line/window buffer for stencil kernels. The LLM generates the structure; this skill fills the gap on TOTAL_ITER drain and verification.'
 license: MIT
 metadata:
+  stage: beta
   author: "Sai Akhil Ayyagari"
   version: "1.0.0"
 ---

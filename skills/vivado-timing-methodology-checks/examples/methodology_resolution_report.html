@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!--
+Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
+SPDX-License-Identifier: MIT
+-->
+<html>
+<head>
+<title>Methodology Check Diff Report — BFT</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; }
+h1 { color: #333; }
+h2 { color: #555; border-bottom: 1px solid #ccc; padding-bottom: 6px; }
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th { background: #4a4a4a; color: white; padding: 8px 12px; text-align: left; }
+td { padding: 8px 12px; border: 1px solid #ddd; vertical-align: top; }
+tr:nth-child(even) { background: #f9f9f9; }
+.resolved { background: #d4edda !important; color: #155724; font-weight: bold; }
+.waived { background: #e2d5f1 !important; color: #4a148c; font-weight: bold; }
+.new { background: #fff3cd !important; color: #856404; font-weight: bold; }
+.user { background: #cce5ff !important; color: #004085; font-weight: bold; }
+.notsup { background: #f8d7da !important; color: #721c24; font-weight: bold; }
+.na { background: #e2e3e5 !important; color: #383d41; font-weight: bold; }
+.oos { background: #e2e3e5 !important; color: #383d41; font-weight: bold; }
+.before { background: #f8d7da; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+.after { background: #d4edda; padding: 10px; border-radius: 4px; }
+.del { background: #f1aeb5; display: block; }
+.add { background: #a3cfbb; display: block; }
+pre { background: #f4f4f4; padding: 12px; border-radius: 4px; font-size: 13px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>Methodology Resolution Report — BFT Design</h1>
+<p><b>Part:</b> xcku035-fbva900-2-e (UltraScale) &nbsp; <b>Run:</b> synth_1</p>
+<h2>Violation Summary: Before vs After</h2>
+<table>
+<tr><th>Check ID</th><th>Severity</th><th>Count Before</th><th>Count After</th><th>Status</th></tr>
+<tr><td>TIMING-6</td><td>Critical Warning</td><td>2</td><td>0</td><td class='resolved'>✓ Resolved</td></tr>
+<tr><td>TIMING-7</td><td>Critical Warning</td><td>2</td><td>0</td><td class='resolved'>✓ Resolved</td></tr>
+<tr><td>TIMING-18</td><td>Warning</td><td>69</td><td>69</td><td class='waived'>Waived</td></tr>
+<tr><td>TIMING-9</td><td>Warning</td><td>0</td><td>1</td><td class='new'>⚡ New — CDC Review Required</td></tr>
+<tr><td>SYNTH-6</td><td>Warning</td><td>16</td><td>16</td><td class='notsup'>✗ Not Supported (RTL change)</td></tr>
+<tr><th>Total</th><th></th><th>89</th><th>86</th><th>4 Critical Warnings resolved</th></tr>
+</table>
+<h2>Constraint Change: TIMING-6 / TIMING-7 Fix</h2>
+<div style='display:flex; gap:20px;'>
+<div style='flex:1'><h3>Before (bft_full.xdc)</h3>
+<div class='before'><pre>create_clock -period 10.000 -name wbClk [get_ports wbClk]
+create_clock -period 5.000 -name bftClk [get_ports bftClk]</pre></div></div>
+<div style='flex:1'><h3>After (constraints_after_fix.xdc)</h3>
+<div class='after'><pre>create_clock -period 10.000 -name wbClk [get_ports wbClk]
+create_clock -period 5.000 -name bftClk [get_ports bftClk]
+
+# TIMING-6/7 Fix: asynchronous clock groups
+set_clock_groups -asynchronous -name async_bftClk_wbClk \
+    -group [get_clocks bftClk] \
+    -group [get_clocks wbClk]</pre></div></div>
+</div>
+<h2>Waiver Change</h2>
+<div style='display:flex; gap:20px;'>
+<div style='flex:1'><h3>Before (waivers.rpt)</h3>
+<div class='before'><pre>No waivers found.</pre></div></div>
+<div style='flex:1'><h3>After (waivers_after_fix.rpt)</h3>
+<div class='after'><pre>--------------------------------
+3. REPORT DETAILS (METHODOLOGY)
+--------------------------------
+Rule       Severity          Description                     Total Vios  Remaining Vios  Waived Vios  Used Waivers  Set Waivers
+---------  ----------------  -------------------------------  ----------  --------------  -----------  ------------  -----------
+TIMING-18  Critical Warning  Missing input or output delay    0           0               0            0             1</pre></div></div>
+</div>
+<p><i>(create_waiver -type METHODOLOGY -of_objects [get_methodology_violations TIMING-18#1] -user &lt;user&gt; -description {&lt;username&gt; &lt;date&gt; "External I/O delay budgets are unknown"} -objects [get_ports {reset wbDataForInput wbInputData[*]}] — the -user/-description do not appear in report_waivers' table, so they live here and in the aspect table above, not in the artifact text.)</i></p>
+<h2>Remaining Actions</h2>
+<table>
+<tr><th>Check ID</th><th>Count</th><th>Action</th></tr>
+<tr><td>TIMING-18</td><td>69</td><td>Add set_input_delay / set_output_delay constraints based on external interface spec, or use set_false_path for asynchronous ports</td></tr>
+<tr><td>TIMING-9</td><td>1</td><td>Run report_cdc to verify CDC synchronizer implementation on all crossing paths</td></tr>
+<tr><td>SYNTH-6</td><td>16</td><td>Add output pipeline registers to BRAM instances to allow output register merging (RTL change required)</td></tr>
+</table>
+<h2>Constraint File Diff</h2>
+<div style='display:flex; gap:20px;'>
+<div style='flex:1'><h3>Before (constraints.xdc)</h3>
+<div class='before'><pre>####################################################################################
+# Constraints from file : 'bft_full.xdc'
+####################################################################################
+
+create_clock -period 10.000 -name wbClk [get_ports wbClk]
+create_clock -period 5.000 -name bftClk [get_ports bftClk]</pre></div></div>
+<div style='flex:1'><h3>After (constraints_after_fix.xdc)</h3>
+<div class='after'><pre>####################################################################################
+# Constraints from file : 'bft_full.xdc'
+####################################################################################
+
+create_clock -period 10.000 -name wbClk [get_ports wbClk]
+create_clock -period 5.000 -name bftClk [get_ports bftClk]
+
+<span class='add'># TIMING-6 / TIMING-7 Fix: Declare bftClk and wbClk as asynchronous clock groups</span><span class='add'>set_clock_groups -asynchronous -name async_bftClk_wbClk \
+    -group [get_clocks bftClk] \
+    -group [get_clocks wbClk]</span></pre></div></div>
+</div>
+<p><b>Diff Summary:</b> constraints.xdc to constraints_after_fix.xdc, 5 lines added, 0 removed. Added one set_clock_groups constraint for TIMING-6 and TIMING-7 so bftClk and wbClk are asynchronous.</p>
+<h2>Waiver File Diff</h2>
+<div style='display:flex; gap:20px;'>
+<div style='flex:1'><h3>Before (waivers.rpt)</h3>
+<div class='before'><pre><span class='del'>No waivers found.</span></pre></div></div>
+<div style='flex:1'><h3>After (waivers_after_fix.rpt)</h3>
+<div class='after'><pre><span class='add'>--------------------------------
+3. REPORT DETAILS (METHODOLOGY)
+--------------------------------
+Rule       Severity          Description                     Total Vios  Remaining Vios  Waived Vios  Used Waivers  Set Waivers
+---------  ----------------  -------------------------------  ----------  --------------  -----------  ------------  -----------
+TIMING-18  Critical Warning  Missing input or output delay    0           0               0            0             1</span></pre></div></div>
+</div>
+<p><b>Diff Summary:</b> waivers.rpt to waivers_after_fix.rpt, 6 lines added, 1 removed. Waived TIMING-18 (create_waiver -type METHODOLOGY -of_objects [get_methodology_violations TIMING-18#1] -user &lt;user&gt; -description {&lt;username&gt; &lt;date&gt; "External I/O delay budgets are unknown"} -objects [get_ports {reset wbDataForInput wbInputData[*]}]) on the 69 ports that have no I/O delay, because the external interface timing is not known.</p>
+</body></html>

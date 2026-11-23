@@ -1,0 +1,21 @@
+{
+  "schema_version": { "major": "1", "minor": "0", "patch": "0" },
+  "aiecompiler_options": {
+    "broadcast_enable_core": "false",
+    "graph_iterator_event": "false",
+    "enable_multi_layer": "false",
+    "xlopt": "1"
+  },
+  "TileMapping": {
+    "AIEKernelToTileMapping": [
+      { "graph": "fir_graph", "tile": "aie", "column": "24", "row": "0", "schedule": "0", "function": "fir_graph.fir_stage0" },
+      { "graph": "fir_graph", "tile": "aie", "column": "25", "row": "0", "schedule": "0", "function": "fir_graph.fir_stage1" }
+    ]
+  },
+  "PLIOs": {
+    "DataIn1":  { "name": "DataIn1",  "logical_name": "DataIn1",  "shim_column": "24", "slaveOrMaster": "0", "streamId": "0" },
+    "DataOut1": { "name": "DataOut1", "logical_name": "DataOut1", "shim_column": "25", "slaveOrMaster": "1", "streamId": "0" }
+  },
+  "GMIOs": {},
+  "EventGraphs": {}
+}

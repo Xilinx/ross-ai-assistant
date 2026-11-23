@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
 
 | Property | Type | Description |
 |----------|------|-------------|
-| STATUS.CORE_STATUS | string | IDLE, ARMED, WAITING_FOR_TRIGGER, TRIGGER_CAPTURED, FULL |
+| STATUS.CORE_STATUS | string | IDLE, WAITING FOR TRIGGER, PRE-TRIGGER CAPTURE, POST-TRIGGER CAPTURE, FULL, STOPPED |
 | STATUS.SAMPLE_COUNT | int | Number of samples captured so far |
 | STATUS.IS_TRIGGER_AT_STARTUP | bool | Trigger-at-startup configured? |
 
@@ -75,8 +75,11 @@ Format: `<operator><width>'<radix><value>`
 | `F` | Falling edge (1→0) |
 | `B` | Both edges (any transition) |
 | `N` | No transition (stable) |
-| `L` | Opposite of R |
-| `S` | Opposite of F |
+
+These are binary digits, one per probe bit, so a bus can mix them:
+`eq2'bXR` is a rising edge on bit 0 with bit 1 ignored. *(Source:
+UG908 "ILA Probe Compare Value Settings" lists `X`, `R`, `F`, `B` and `N` as
+binary value characters with no width limit.)*
 
 **Examples:**
 - `eq1'b1` — probe equals 1
@@ -96,7 +99,7 @@ chipscope-mcp's `chipscope_ila_core(action="arm", trigger_state_machine=<program
 
 ### Grammar
 
-Reconciled from two sources that disagree in three places (see inline notes
+Reconciled from two sources that disagree in four places (see inline notes
 below the block): the official
 [Vivado UG908 "Trigger State Machine Language Grammar"](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Trigger-State-Machine-Language-Grammar)
 page, and chipscope-mcp's internal chipscopy LLM trigger-generation prompt
@@ -168,6 +171,10 @@ to end of line is ignored.
 - UG908's `<probe_name>` omits `.` from the allowed charset; chipscopy's
   internal grammar includes it. The wider (chipscopy) charset is used here
   so a hierarchical probe name containing `.` is not misread as invalid.
+- UG908's grammar page lets `<boolean_logic_op>` be `&&` or `||` at every
+  join, and lets `<binary_digit>` use `R`/`F`/`B`/`N` at any width. UG908's
+  prose pages narrow both. See "All probe comparisons in one condition use
+  one operator" and "Edge values on a multi-bit probe" below.
 
 ### Rules that actually cause rejections
 
@@ -212,6 +219,28 @@ grammar's own structural constraints. Each rule names its source.
   `prompt_builder.py`, and UG908's "Counter Conditions" page — see the
   grammar-reconciliation note above for why this differs from UG908's raw
   grammar page.)*
+- **All probe comparisons in one condition use one operator**, all `&&` or
+  all `||`. Parentheses do not change this:
+  `((a == 1'b1) && (b == 1'b1)) || (c == 1'b1)` is rejected like the flat
+  form. The probe group can join one counter comparison with either
+  operator: `((a == 1'b1) || (b == 1'b1)) && ($counter0 == 16'u23)` is
+  valid. For "A and B, or C", give each side its own branch with the same
+  action:
+  ```
+  state s0:
+  if ((a == 1'b1) && (b == 1'b1)) then
+    trigger;
+  elseif (c == 1'b1) then
+    trigger;
+  else
+    goto s0;
+  endif
+  ```
+  Vivado reports `Different boolean logic operators used for probe
+  comparisons`; chipscope-mcp reports `Different logic operator are not
+  allowed between probe match comparisons`. *(Source: UG908 "Combined Debug
+  Probe and Counter Conditions": "All debug probe comparisons must be
+  combined together using the same "||" (OR) or "&&" (AND) operators.")*
 - **Each counter has exactly one comparator** — a given `$counterN` can
   appear in a counter condition only once in the whole program. *(Source:
   UG908 "Counter Conditions" page.)* **Each PROBE port has a compile-time
@@ -237,6 +266,33 @@ grammar's own structural constraints. Each rule names its source.
   some bits matter: `(sig == 3'bX11)` over
   `((sig == 3'b011) || (sig == 3'b111))`. *(Source: chipscopy
   `prompt_builder.py`, stated explicitly with a BAD/GOOD example pair.)*
+
+### Edge values on a multi-bit probe
+
+UG908's "Debug Probe Conditions" page says `R`, `F`, `B` and `N` are "Valid
+only for 1-bit probes" in a TSM condition. Neither compiler enforces that:
+Vivado and chipscope-mcp both accept per-bit edge digits on a bus, such as
+`my_bus == 8'bRRRRRRRR` (every bit rises in the same cycle), or any mix of
+edge, level and `X` digits, one per bit. On a VPK120 with Vivado 2026.1, a
+trigger with `R` in bit 0 of a 32-bit counter bus and `X` in every other
+bit fired on bit 0's rising edge.
+
+- On a 1-bit probe, write the edge directly, such as `abc == 1'bR`. That is
+  the form UG908 documents.
+- To trigger on an edge of one bit of a bus, use one state with `R` (or
+  `F`) in that bit's place and `X` in every other place, which Vivado 2026.2
+  accepts: a rise on bit 4 of a 32-bit probe is
+  `32'bXXXXXXXXXXXXXXXXXXXXXXXXXXXRXXXX`. Do not build the edge from level
+  values in two states (the bit is 0, then the bit is 1). That form is easy
+  to get wrong and can miss the rise.
+- A binary value needs one digit per probe bit. On an 8-bit probe,
+  `my_bus == 8'bR` is rejected for its width, not because `R` is on a bus.
+  Vivado reports `Invalid constant bit width`; chipscope-mcp reports
+  `"my_bus" has bit width:8 and cannot be assigned value "R" which has bit
+  width:1.`
+- If you write per-bit edges on a bus, tell the user that UG908 documents
+  edges for 1-bit probes only, and check the capture for the edge you
+  expected.
 
 ### Optional: enumerated compare values
 
@@ -393,6 +449,9 @@ rule here — treat it as an open question if it resurfaces, not as
 - [UG908 "Counters"](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Counters) / [UG908 "Counter Conditions"](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Counter-Conditions)
 - [UG908 "Flags"](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Flags)
 - [UG908 "Debug Probe Conditions"](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Debug-Probe-Conditions)
+- [UG908 "Combined Debug Probe and Counter Conditions"](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Combined-Debug-Probe-and-Counter-Conditions)
+- [UG908 "ILA Probe Compare Value Settings"](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/ILA-Probe-Compare-Value-Settings)
+- chipscopy's TSM compiler (`chipscopy/api/ila/tsm/ila_tsm_checker.py`), which chipscope-mcp uses for `trigger_state_machine`
 - [UG908 "Advanced Trigger"](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Advanced-Trigger)
 - chipscope-mcp's internal chipscopy LLM trigger-generation prompt template (`chipscopy_llm/prompt_builder.py`)
 - chipscope-mcp `tests/mcp/test_mcp_ila.py::test_advanced_trigger_state_machine` (hardware-proven)
@@ -427,14 +486,16 @@ rule here — treat it as an open question if it resurfaces, not as
 | `run_hw_ila -compile_only $ila` | Compile-check TSM without arming |
 | `run_hw_ila -file <path> $ila` | Export trigger config for startup |
 | `wait_on_hw_ila $ila` | Block until capture complete |
-| `upload_hw_ila_data $ila` | Pull captured data from device |
-| `write_hw_ila_data -csv_file <file> $data` | Export as CSV |
-| `write_hw_ila_data -vcd_file <file> $data` | Export as VCD |
-| `write_hw_ila_data <file> $data` | Export as native .ila |
+| `set ila_data [upload_hw_ila_data $ila]` | Pull captured data from device and keep the returned object. If the capture is still running, this stops it and uploads the windows already filled; if none has filled, it cancels the capture and returns nothing. There is no `stop_hw_ila`, `cancel_hw_ila` or `abort_hw_ila` command; this upload is the stop |
+| `write_hw_ila_data -csv_file <file> $ila_data` | Export as CSV |
+| `write_hw_ila_data -vcd_file <file> $ila_data` | Export as VCD |
+| `write_hw_ila_data <file> $ila_data` | Export as native .ila |
 | `read_hw_ila_data <file>` | Load previously saved .ila file |
 | `list_hw_samples $probe` | List sample values for a probe |
 | `create_hw_probe -map {...} <name> $ila` | Create custom probe from physical bits |
 | `reset_hw_ila $ila` | Reset all CONTROL properties to defaults |
+
+`$ila_data` is the object returned by the single `upload_hw_ila_data` after the capture. Do not upload again: a second upload can return an empty string, and `write_hw_ila_data` then writes `current_hw_ila_data`, which may be a different ILA or an older capture. An empty result means the capture failed. Add `-force` to overwrite an existing file.
 
 ## report_data.json Schema
 
@@ -456,7 +517,7 @@ rule here — treat it as an open question if it resurfaces, not as
       "trigger_compare": "eq1'b1", "port": 3 }
   ],
   "capture": {
-    "status": "TRIGGER_CAPTURED", "sample_count": 1024,
+    "status": "FULL", "sample_count": 1024,
     "export_file": "capture_data.csv", "export_format": "csv"
   },
   "observations": ["axi_arvalid asserted at sample 512", "..."],

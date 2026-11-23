@@ -22,55 +22,34 @@ This skill captures how to trace a clock tree from an output pin back to where t
 ### 1. Trace using timing arcs 
 **Preferred:** Trace using timing arcs is preferred inside Vivado
 
+The tracing proc is `methodology_check::trace_clock_back_to_source` (source:
+[<skill_dir>/scripts/run_methodology_setup.tcl](../scripts/run_methodology_setup.tcl)). It is loaded in Step 1 by
+sourcing that same file, so **do not source it and do not copy the proc body**. Just call it with its
+namespace-qualified name (the unqualified name `trace_clock_back_to_source` does not exist).
+
 **Example 1:** Tracing back to pins without a timing arc or port from an output pin
 ```tcl
-proc trace_clock_back_to_source {pin} {
-    set debug 1
-    set pin [get_pins $pin]
-    if {[get_property DIRECTION $pin] eq "OUT"} {
-        set output_pins $pin
-        if {$debug==1} {puts "-D: Starting trace from output pin $output_pins"}
-    } else {
-        set output_pins [get_pins -leaf -of [get_nets -of $pin] -filter {DIRECTION==OUT}]
-        if {[llength $output_pins] == 0} {return [list $pin pin]}
-    }
-    
-    set visited_pins {}
-    set max_visits 5
-    set pin_visit_count [dict create]
-    
-    while {1} {
-        if {[llength [set arcs [get_timing_arcs -filter {TYPE=="Reg Clk to Q"||TYPE=="combinational"} -to $output_pins]]] == 0} {return [list $output_pins pin]}
-        
-        # Check if pin has been visited too many times
-        if {[dict exists $pin_visit_count $output_pins]} {
-            set count [dict get $pin_visit_count $output_pins]
-            if {$count >= $max_visits} {return [list $output_pin pin]}
-            dict set pin_visit_count $output_pins [expr {$count + 1}]
-        } else {
-            dict set pin_visit_count $output_pins 1
-        }
-        
-        set input_pins [get_pins [get_property FROM_PIN $arcs]]
-        set net [get_nets -parent -of $input_pins]
-        set output_pins [get_pins -leaf -filter {DIRECTION==OUT} -of $net]
-        if {[llength $output_pins] == 0} {
-            if {[llength [set ports [get_ports -of $net]]] > 0} {return [list $ports port]}
-        }
-    }
-}
-
 set output_pin [get_pins ios_0/mmcm_0/CLKOUT2]
-set sp [trace_clock_back_to_source $output_pin]
-
+lassign [methodology_check::trace_clock_back_to_source $output_pin] objs type
+# $type is "port" or "pin"; $objs is the port / pin object(s) where the clock should be defined
 ```
+
+**Arguments:** one pin (an output pin, or an input pin which is resolved to the net's driver).
+
+**Returns:** a 2-element list `{<objects> port|pin}`:
+* `port` - the trace ended at a top-level port
+* `pin` - the trace ended at an output pin with no timing arc (or hit the visit limit)
+
+The design must be open. Prints a `-D:` debug line for the start pin.
 
 ### DO:
 ✅ Consider there could be multiple timing arcs per pin 
 ✅ Consider there could be multiple clocks per pin
+✅ Call it as `methodology_check::trace_clock_back_to_source`
 
 ### DO NOT:
-❌ Run indefinitely in a loop. Break after iterating on the same object
+❌ Run indefinitely in a loop. The proc stops after visiting the same object 5 times
+❌ Redefine or copy the proc into the session; use the loaded one
 
 ## References
 

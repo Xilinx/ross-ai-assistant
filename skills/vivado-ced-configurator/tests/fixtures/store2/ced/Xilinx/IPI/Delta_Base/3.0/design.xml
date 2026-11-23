@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ExampleDesign>
+  <Vendor>xilinx.com</Vendor>
+  <Library>design</Library>
+  <Name>delta_base</Name>
+  <DisplayName>Delta Common Platform</DisplayName>
+  <Description>Common platform base design with no PL.</Description>
+  <Version>3.0</Version>
+  <Design>init.tcl</Design>
+</ExampleDesign>

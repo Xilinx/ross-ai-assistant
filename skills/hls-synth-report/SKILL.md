@@ -3,6 +3,7 @@ name: hls-synth-report
 description: 'Get Vitis HLS synthesis report information (synth report, pragma report, and filtered synthesis log) for a given HLS component.'
 license: MIT
 metadata:
+  stage: beta
   author: "Alex Li"
   version: "1.0.0"
 ---

@@ -1,0 +1,310 @@
+{
+ "_source": "cedcfg::frequency_source on Vivado 2026.1: ced-gen_H3 saved design (ZCU102, ps_e) and a processing_system7 on xc7z045 with FPGA0=50, FPGA1=100",
+ "pins": {
+  "ps_e/pl_clk0": {
+   "pin_mhz": "100",
+   "matches": [
+    {
+     "key": "PSU__CRF_APB__TOPSW_LSBUS_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRF_APB__TOPSW_LSBUS_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__CAN0_REF_CTRL__ACT_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__CAN0_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__CAN1_REF_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__CAN1_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__I2C0_REF_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__I2C0_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__I2C1_REF_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__I2C1_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__LPD_LSBUS_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__LPD_LSBUS_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__NAND_REF_CTRL__ACT_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__NAND_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__PL0_REF_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__PL0_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__PL1_REF_CTRL__ACT_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__PL1_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__PL2_REF_CTRL__ACT_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__PL2_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__PL3_REF_CTRL__ACT_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__PL3_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__CRL_APB__TIMESTAMP_REF_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__TIMESTAMP_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__UART0_REF_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__UART0_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__UART1_REF_CTRL__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__CRL_APB__UART1_REF_CTRL__FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__FPD_SLCR__WDT1__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__FPD_SLCR__WDT1__FREQMHZ",
+     "value": "100.000000",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__IOU_SLCR__TTC0__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__IOU_SLCR__TTC0__FREQMHZ",
+     "value": "100.000000",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__IOU_SLCR__TTC1__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__IOU_SLCR__TTC1__FREQMHZ",
+     "value": "100.000000",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__IOU_SLCR__TTC2__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__IOU_SLCR__TTC2__FREQMHZ",
+     "value": "100.000000",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__IOU_SLCR__TTC3__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__IOU_SLCR__TTC3__FREQMHZ",
+     "value": "100.000000",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__IOU_SLCR__WDT0__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__IOU_SLCR__WDT0__FREQMHZ",
+     "value": "100.000000",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__LPD_SLCR__CSUPMU__ACT_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PSU__LPD_SLCR__CSUPMU__FREQMHZ",
+     "value": "100.000000",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PSU__PCIE__REF_CLK_FREQ",
+     "value": "100",
+     "value_src": "USER"
+    }
+   ]
+  },
+  "processing_system7_0/FCLK_CLK0": {
+   "pin_mhz": "50",
+   "matches": [
+    {
+     "key": "PCW_ACT_FPGA0_PERIPHERAL_FREQMHZ",
+     "value": "50.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PCW_ACT_I2C_PERIPHERAL_FREQMHZ",
+     "value": "50",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PCW_ACT_TTC_PERIPHERAL_FREQMHZ",
+     "value": "50",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PCW_CLK0_FREQ",
+     "value": "50000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PCW_FPGA0_PERIPHERAL_FREQMHZ",
+     "value": "50",
+     "value_src": "USER"
+    },
+    {
+     "key": "PCW_FPGA2_PERIPHERAL_FREQMHZ",
+     "value": "50",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PCW_FPGA3_PERIPHERAL_FREQMHZ",
+     "value": "50",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PCW_TTC_PERIPHERAL_FREQMHZ",
+     "value": "50",
+     "value_src": "DEFAULT"
+    }
+   ]
+  },
+  "processing_system7_0/FCLK_CLK1": {
+   "pin_mhz": "100",
+   "matches": [
+    {
+     "key": "PCW_ACT_FPGA1_PERIPHERAL_FREQMHZ",
+     "value": "100.000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PCW_CAN_PERIPHERAL_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PCW_CLK1_FREQ",
+     "value": "100000000",
+     "value_src": "USER"
+    },
+    {
+     "key": "PCW_FPGA1_PERIPHERAL_FREQMHZ",
+     "value": "100",
+     "value_src": "USER"
+    },
+    {
+     "key": "PCW_SDIO_PERIPHERAL_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PCW_SMC_PERIPHERAL_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    },
+    {
+     "key": "PCW_UART_PERIPHERAL_FREQMHZ",
+     "value": "100",
+     "value_src": "DEFAULT"
+    }
+   ]
+  }
+ }
+}

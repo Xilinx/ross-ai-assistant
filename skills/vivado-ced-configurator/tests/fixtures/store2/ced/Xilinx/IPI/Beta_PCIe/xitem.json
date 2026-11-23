@@ -1,0 +1,19 @@
+{
+  "config": {
+    "items": [
+      {
+        "infra": {
+          "name": "beta_pcie",
+          "display": "Beta PCIe Endpoint",
+          "revision": "2.0",
+          "description": "PCIe QDMA endpoint design",
+          "category": "PCIe",
+          "is_active": true,
+          "search-keywords": ["pcie", "qdma", "endpoint"]
+        }
+      }
+    ]
+  },
+  "_major": 1,
+  "_minor": 0
+}

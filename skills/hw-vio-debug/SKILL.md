@@ -9,7 +9,7 @@ description: >-
 license: MIT
 compatibility: Requires Vivado 2026.1+, hardware with a VIO core, and access to either vivado-mcp or chipscope-mcp.
 metadata:
-  version: "1.2.3"
+  version: "1.2.4"
   stage: beta
 ---
 
@@ -86,26 +86,31 @@ foreach vio [get_hw_vios] {
   puts "  === INPUT PROBES ==="
   foreach p [get_hw_probes -of_objects $vio -filter {TYPE == vio_input}] {
     refresh_hw_vio $vio
-    puts "  IN:$p VALUE:[get_property INPUT_VALUE $p] ACTIVITY:[get_property ACTIVITY_VALUE $p]"
+    puts "  IN:$p WIDTH:[get_property WIDTH $p] RADIX:[get_property INPUT_VALUE_RADIX $p] VALUE:[get_property INPUT_VALUE $p] ACTIVITY:[get_property ACTIVITY_VALUE $p]"
   }
   puts "  === OUTPUT PROBES ==="
+  # A plain refresh_hw_vio reads inputs only; OUTPUT_VALUE can read blank until this runs
+  refresh_hw_vio -update_output_values $vio
   foreach p [get_hw_probes -of_objects $vio -filter {TYPE == vio_output}] {
-    puts "  OUT:$p VALUE:[get_property OUTPUT_VALUE $p]"
+    puts "  OUT:$p WIDTH:[get_property WIDTH $p] RADIX:[get_property OUTPUT_VALUE_RADIX $p] VALUE:[get_property OUTPUT_VALUE $p]"
   }
 }
 ```
 
 **No VIO found** → STOP. Guide: "No VIO cores detected. Ensure the device was programmed with a bitstream containing VIO cores and the correct .ltx probes file is associated."
 
-**⚠️ After programming or reprogramming,** VIO output probe software values may retain stale values from the previous session. Always sync before driving outputs:
+**A blank VIO Dashboard is not "no VIO found".** The VIO Dashboard starts out empty until probes are added to it (UG908). Check `get_hw_vios` instead. Hardware window right-click menu names on a VIO core: **Refresh Input and Output Values from VIO Core** (`refresh_hw_vio -update_output_values`), **Commit VIO Core Outputs** (`commit_hw_vio`), **Reset VIO Core Outputs** (`reset_hw_vio_outputs`), **Open Dashboard**.
+
+**⚠️ After programming or reprogramming,** VIO output probe software values can read blank or keep stale values from the previous session, and a plain `refresh_hw_vio` reads inputs only. Always sync before reading `OUTPUT_VALUE` or driving outputs, by reading the hardware values into `OUTPUT_VALUE`:
 ```tcl
 refresh_hw_vio -update_output_values [get_hw_vios hw_vio_1]
 ```
-or reset all outputs to design-time initial values:
-```tcl
-reset_hw_vio_outputs [get_hw_vios hw_vio_1]
-```
-This ensures the software state matches hardware, so that subsequent `set_property OUTPUT_VALUE` + `commit_hw_vio` creates proper signal transitions (e.g., 0→1 edges for pulse-triggered designs).
+This makes the software state match hardware, so that subsequent `set_property OUTPUT_VALUE` + `commit_hw_vio` creates proper signal transitions (e.g., 0→1 edges for pulse-triggered designs).
+The sync does not protect a commit: the first `commit_hw_vio` after it can still send the previous values, so check every commit (Step 3).
+
+If the core shows "Outputs out-of-sync", UG908 gives two fixes: the refresh above, which keeps what the hardware drives, or `commit_hw_vio [get_hw_vios hw_vio_1]`, which drives your `OUTPUT_VALUE` settings to the hardware. Commit only when those settings are what you want: right after programming they can be stale.
+
+**`reset_hw_vio_outputs` is not a sync.** It drives the hardware outputs to their design-time initial values. UG835 says it does not update `OUTPUT_VALUE`, and UG908 says it leaves the core "Outputs out-of-sync". Do not rely on it to update `OUTPUT_VALUE`. After a reset, run `refresh_hw_vio -update_output_values` before reading `OUTPUT_VALUE` or driving outputs.
 
 ### Step 2: Read Input Values
 
@@ -118,16 +123,42 @@ foreach p [get_hw_probes -of_objects [get_hw_vios hw_vio_1] -filter {TYPE == vio
 
 ### Step 3: Drive Output Values
 
-Map user's NL request to probe + value:
+Map user's NL request to probe + value. Set, commit, then read back and check:
 
 ```tcl
-set_property OUTPUT_VALUE 1 [get_hw_probes <probe_name> -of_objects [get_hw_vios hw_vio_1]]
-commit_hw_vio [get_hw_vios hw_vio_1]
+set vio [get_hw_vios hw_vio_1]
+set p [get_hw_probes <probe_name> -of_objects $vio]
+set_property OUTPUT_VALUE 1 $p
+commit_hw_vio $vio
+refresh_hw_vio -update_output_values $vio
+if {![string equal -nocase [get_property OUTPUT_VALUE $p] 1]} {
+  set_property OUTPUT_VALUE 1 $p
+  commit_hw_vio $vio
+  refresh_hw_vio -update_output_values $vio
+}
+puts "$p OUTPUT_VALUE:[get_property OUTPUT_VALUE $p]"
 ```
 
-**Reset all outputs** to initial values:
+**Check every commit.** `commit_hw_vio` can send the previous values and still return no error (Vivado CR-1288058). Vivado's first background refresh can overwrite `OUTPUT_VALUE` between your `set_property` and the commit, even right after the sync. On a VCK190, a first write held open 1 s after the sync sent the previous values in 38 of 40 fresh sessions, and one more set and commit fixed 19 of 19. So after every `commit_hw_vio`, run `refresh_hw_vio -update_output_values` and compare each probe you set. Compare ignoring letter case; in `UNSIGNED` or `SIGNED`, compare as numbers. Vivado lowercases `HEX` letters; `UNSIGNED` drops leading zeros. If one differs, set it again and commit once more. If it still differs, stop and report the probe, the value you set, and the value read back.
+
+**Bus (multi-bit) probes:** `OUTPUT_VALUE` and `INPUT_VALUE` are strings in the probe's radix (`OUTPUT_VALUE_RADIX` or `INPUT_VALUE_RADIX`), not decimal numbers. On the Vivado Tcl path, the default is `BINARY` on a 1-bit probe and `HEX` on a wider one. In `HEX` or `BINARY`, write the full width, one `BINARY` digit per bit or one `HEX` digit per 4 bits: decimal 16 is `00000010` on a 32-bit `HEX` probe (`10` on an 8-bit one). A shorter string is rejected (`[Designutils 20-1474]`) and the probe keeps its previous value. To write a decimal number, set the radix to `UNSIGNED` (or `SIGNED`) first:
+
+```tcl
+set vio [get_hw_vios hw_vio_1]
+set p [get_hw_probes <bus_probe_name> -of_objects $vio]
+set_property OUTPUT_VALUE_RADIX UNSIGNED $p
+set_property OUTPUT_VALUE 16 $p
+commit_hw_vio $vio
+refresh_hw_vio -update_output_values $vio
+puts "$p OUTPUT_VALUE:[get_property OUTPUT_VALUE $p]"
+```
+
+Then check the read-back and re-commit once as above.
+
+**Reset all outputs** to initial values, then read them back (the reset leaves the core out-of-sync):
 ```tcl
 reset_hw_vio_outputs [get_hw_vios hw_vio_1]
+refresh_hw_vio -update_output_values [get_hw_vios hw_vio_1]
 ```
 
 **Clear activity detectors:**
@@ -167,7 +198,8 @@ file tool creates missing parent directories, so do not shell out to `mkdir`
 |-------|---------|--------|
 | No VIO cores | `get_hw_vios` empty | Check: bitstream has debug cores? .ltx file associated? |
 | No hw_server | `get_hw_servers` empty | Guide: `connect_hw_server -url localhost:3121` |
-| VIO out-of-sync | Status shows "Outputs out-of-sync" | Run: `refresh_hw_vio -update_output_values [get_hw_vios]` |
+| VIO out-of-sync | Status shows "Outputs out-of-sync" (after programming, after `reset_hw_vio_outputs`, or another Vivado wrote the outputs) | Keep what the hardware drives: `refresh_hw_vio -update_output_values [get_hw_vios]`. Or drive your `OUTPUT_VALUE` settings, only when they are what you want: `commit_hw_vio [get_hw_vios]`. A reset does not fix it. |
+| Commit did not take | `commit_hw_vio` returns no error, but the read-back shows the previous value | Known Vivado issue CR-1288058. Compare ignoring letter case; in `UNSIGNED` or `SIGNED`, compare as numbers. Vivado lowercases `HEX` letters; `UNSIGNED` drops leading zeros. Set the value again, commit once more, and read back. If it still differs, stop and report the probe, the value set and the value read. |
 | Design stalls after a chipscope-mcp write | Write succeeded and readback matches, but inputs stop changing | Partial write. Write every output of the VIO in one call (see [Chipscope-mcp Fallback](#chipscope-mcp-fallback)) |
 
 ---
@@ -176,7 +208,7 @@ file tool creates missing parent directories, so do not shell out to `mkdir`
 
 **"What is the VIO reset signal?"** → Discover VIO → `refresh_hw_vio` → read `INPUT_VALUE` of reset probe → report value + activity.
 
-**"Assert reset for 1 cycle"** → `set_property OUTPUT_VALUE 1` on reset probe → `commit_hw_vio` → `set_property OUTPUT_VALUE 0` → `commit_hw_vio`.
+**"Pulse reset"** → `set_property OUTPUT_VALUE 1` on reset probe → `commit_hw_vio` → read back and check (Step 3) → `set_property OUTPUT_VALUE 0` → `commit_hw_vio` → read back and check. Check both commits. One `commit_hw_vio` takes about 60 to 190 ms (measured on a VCK190), and a 1-then-0 pulse over two commits stays high about 160 to 200 ms, longer with the read-back between them. That is many thousands of clock cycles, never one cycle. A one-cycle strobe needs an edge detector in the design.
 
 ---
 
@@ -195,6 +227,8 @@ chipscope_scan(action="scan", ltx_path="<path-to-design>.ltx")
 chipscope_vio(action="read", vio_name="<vio-name>")
 ```
 
+chipscope-mcp reports each probe's width (from its bus indices) and plain integer values but no radix. If asked for a radix, say it is not available through chipscope-mcp.
+
 **VIO — drive outputs: ALWAYS write every output probe of the VIO in one `write` call.**
 
 Some chipscope-mcp versions write only the probes you name. After programming, a write that names only some outputs can leave the VIO's other outputs driving wrong values and stall the design. The tool still returns success, and the readback shows the value you asked for. Writing every output in one call is correct on every version, with or without the fix.
@@ -212,7 +246,7 @@ Some chipscope-mcp versions write only the probes you name. After programming, a
    chipscope_vio(action="write", vio_name="<vio-name>",
                  probe_values={"<out1>": <current>, "<out2>": <new>, ...})
    ```
-4. Confirm the change through an **input** probe the output drives (value moving, direction, activity). Do not use the write `readback` as proof.
+4. Confirm the change through an **input** probe the output drives (value moving, direction, activity). Do not use the `readback` field that `write` returns as proof: it shows the value you asked for. (On the Vivado MCP path, the Step 3 read-back after each commit is the check.)
 
 - A pulse (assert, then deassert) is two `write` calls, each with every output.
 - `action="ports_write"` has the same problem. If you use it, pass every `probe_out<N>` port.

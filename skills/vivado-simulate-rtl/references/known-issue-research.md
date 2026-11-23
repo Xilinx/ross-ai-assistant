@@ -5,6 +5,11 @@ SPDX-License-Identifier: MIT
 
 # Known-Issue Research
 
+<!-- Methodology ask with no design attached: do not write the report by hand.
+Run `S advise known-issue --out outputs/<case>/report.md --request "<ask>" --contract --backend XSim`,
+do what its `next` says (for example vivado_doc_search), add findings with `--append`, and end
+with its contract JSON. -->
+
 Turn a reproducible failure into a documented cause and a verified workaround
 before calling it an unfixable tool defect. Classification alone leaves the
 user blocked.

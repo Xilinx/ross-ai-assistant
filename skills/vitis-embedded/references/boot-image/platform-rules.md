@@ -46,7 +46,7 @@ Same as Versal plus grey keys are valid (not deprecated): `efuse_gry_key`, `bbra
 
 Bracket-style `[keysrc_encryption]` values: `bbram_red_key`, `efuse_red_key`, `efuse_blk_key`, `efuse_gry_key`, `bh_blk_key`, `bh_gry_key`, `kup_key`
 
-Note: `opt_key` is NOT a keysrc — it is a `[fsbl_config]` feature. `OPERATIONAL_KEY` does not exist as a BIF enum.
+Note: `opt_key` is NOT a keysrc — it is a `[fsbl_config]` feature (optional key for block-0 decryption, ZynqMP, encrypted bootloader only). `OPERATIONAL_KEY` does not exist as a BIF enum.
 
 ### Zynq
 

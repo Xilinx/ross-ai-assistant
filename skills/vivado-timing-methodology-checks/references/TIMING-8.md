@@ -10,8 +10,6 @@ SPDX-License-Identifier: MIT
 
 - **Check ID**: TIMING-8
 - **Severity**: Critical Warning
-- **Group**: 1
-- **Priority**: 1
 - **Hierarchy Name**: Timing.Bad Practice
 - **First Release**: 2013.3
 
@@ -278,24 +276,10 @@ create_clock -period 7.500 -name clk2 [get_pins MMCM/CLKOUT1]  # Wrong period!
 # First define primary input clock
 create_clock -period 10.000 -name clk_in [get_ports CLK_IN]
 
-# Define generated clocks with correct multiply/divide
-create_generated_clock -name clk1 \
-    -source [get_pins MMCM/CLKIN1] \
-    -master_clock clk_in \
-    -multiply_by 1 \
-    [get_pins MMCM/CLKOUT0]
-
-create_generated_clock -name clk2 \
-    -source [get_pins MMCM/CLKIN1] \
-    -master_clock clk_in \
-    -multiply_by 4 -divide_by 3 \
-    [get_pins MMCM/CLKOUT1]
 ```
 
 **DO:**
-✅ Use `create_generated_clock` for PLL/MMCM outputs
-✅ Match multiply/divide factors to actual hardware configuration
-✅ Verify periods match expected hardware behavior
+✅ Let vivado auto derive generated clocks
 
 **DO NOT:**
 ❌ Create primary clocks on PLL outputs with arbitrary periods
@@ -341,9 +325,8 @@ create_waiver -type METHODOLOGY -id {TIMING-8} \
 ```
 
 ### DON'T:
-❌ Ignore TIMING-8 without verifying CDC implementation
 ❌ Apply asynchronous constraints without confirming clock independence
-❌ Use `set_clock_groups -asynchronous` to hide synchronous timing failures
+❌ Use `set_clock_groups -asynchronous` to hide synchronous timing failures unless case 1 or case 4
 ❌ Leave clocks without any relationship constraint when paths exist
 
 
@@ -436,25 +419,8 @@ set_clock_groups -asynchronous \
 
 ### CDC Implementation Verification
 
-**Clock Crossing Summary:**
-- Paths from clk_100MHz → clk_133MHz: 15 signals
-- Paths from clk_133MHz → clk_100MHz: 8 signals
-- Total crossings: 23 signals
-
-**CDC Protection:**
-
-| Signal Group | Count | CDC Type | Stages | Status |
-|-------------|-------|----------|--------|--------|
-| PCIe status → DDR ctrl | 8 | XPM_CDC_SINGLE | 2-FF | ✅ Safe |
-| PCIe data → DDR ctrl | 6 | XPM_CDC_ARRAY_SINGLE | 2-FF | ✅ Safe |
-| PCIe valid → DDR ctrl | 1 | XPM_CDC_SINGLE | 3-FF | ✅ Safe |
-| DDR status → PCIe | 5 | XPM_CDC_SINGLE | 2-FF | ✅ Safe |
-| DDR valid → PCIe | 3 | XPM_CDC_GRAY | Gray + 2-FF | ✅ Safe |
-
-**MTBF Analysis:**
-- All synchronizers: MTBF > 1000 years
-- Synchronizer depth: 2-3 stages per AMD recommendations
-- Gray coding used for multi-bit counters
+Ask user to implement next step: Run `report_cdc` to carefully ensure timing paths between clock domains has the required synchronizer circuits.
+This is **very important** when Case 1 resolution is applied
 
 ### Verification Results
 

@@ -4,6 +4,7 @@ description: 'Get Vitis HLS implementation report information (post-route clock,
 license: MIT
 argument-hint: "[<component_location — path to the HLS component directory containing vitis-comp.json>]"
 metadata:
+  stage: beta
   author: "Alex Li"
   version: "1.0.0"
 ---

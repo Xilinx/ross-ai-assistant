@@ -77,22 +77,24 @@ proc either (its `gets stdin` can't reach the human) — use
 set preserve_selection [build_preserve_selection $sel_ips $sel_bds $cache_dir]
 ```
 
-- `sel_ips` — list of IP names to preserve (already chosen, e.g. by an AI
-  agent that asked the human directly in conversation)
+- `sel_ips` — list of IP names to preserve (when preservation was explicitly
+  requested, as chosen with the user)
 - `sel_bds` — list of BD names to preserve
 - `cache_dir` — absolute path to a remote cache directory OUTSIDE the
   project, to store the preserved `.srcs`/`.gen` (per 2026-09-29 methodology
   feedback, only a remote/external cache is supported)
 
 Stdin-free equivalent of `prompt_preserve_outputs`, for callers that cannot
-block on a real tty. Validates the given names against
+block on a real tty. Use an empty selection as the default when preservation
+was not requested; ask for names and a cache path only when the user explicitly
+requests preservation. Validates the given names against
 `list_preservable_outputs` the same way the interactive path does, and
 validates `cache_dir` the same way `prompt_preserve_outputs` does (absolute,
 non-empty, not nested under the project); an empty/fully-invalid IP/BD
 selection OR an invalid `cache_dir` returns `{enabled 0 ips {} bds {}
 cache_dir {}}`. The intended flow: call `list_preservable_outputs` yourself,
-ask the human which (if any) to preserve AND for the cache directory path,
-then call this proc with their answers. Returns `{enabled 0|1, ips {name
+then call this proc with the explicit selection (or empty selection). Returns
+`{enabled 0|1, ips {name
 ...}, bds {name ...}, cache_dir <absolute path>}`, same shape as
 `prompt_preserve_outputs`.
 

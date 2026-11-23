@@ -24,7 +24,7 @@ Check whether **`runVitisPython` is in your available tool set**:
 - **Present** → **in-console mode.** Use this file as written.
 - **Absent** → **headless mode**, which is a fully supported path, not a blocker:
   1. Read [`app/headless.md`](app/headless.md) for the `vitis -s` wrapper.
-  2. Locate the CLI (`which vitis`, `$XILINX_VITIS`).
+  2. Locate the Vitis CLI (see SKILL.md "Finding Vitis headlessly").
   3. Run each recipe below through `vitis -s`, supplying the `create_client()` /
      `set_workspace()` / `vitis.dispose()` that the IDE would otherwise provide.
 
@@ -48,7 +48,10 @@ wrong answer, not a correct refusal — the skill fully supports headless.
 - A **BUILT** platform `.xpfm` (export `.buildstatus == SUCCESS`, compiled BSP present) —
   "created" is not enough; an app on a created-but-unbuilt platform links against absent
   artifacts. If the platform is **missing or only created-but-unbuilt**, **offer to build it
-  (ask + approve) then continue** — do not dead-end (see *Chaining*).
+  (ask + approve) then continue** — do not dead-end (see *Chaining*). **Exception:** when the
+  same request asks to create the platform and then the app, and asks for no build, create the
+  app on the just-created platform without stopping, report both as created (not built), and
+  offer the build afterwards.
 - **Platform in another workspace?** A platform created in the *current* workspace resolves
   automatically; one from another workspace (or a shipped/custom location) must first be
   registered — `client.add_platform_repos('<platform workspace>/<plat>/export')` — then passed
@@ -80,6 +83,8 @@ dedicated agent console and returns captured stdout/stderr. As with the platform
 - [ ] 1. Parse request -> name, platform, os, template, domain, sysroot, sources; note whether the user asked to BUILD
 - [ ] 2. Resolve the platform (a BUILT .xpfm). If missing OR created-but-unbuilt, offer to build it
          (ask + approve; load the platform flow references/platform.md) — don't hand-author a platform — then continue.
+         If the same request asked to create the platform and then the app (no build), create the app on it
+         without stopping; offer the build afterwards.
 - [ ] 2.5 If the template needs a BSP library (e.g. lwip_echo_server -> lwip220), check the domain's
          libs and offer to add it + rebuild the platform (ask + approve) BEFORE step 3 — see below.
 - [ ] 3. CREATE the app (create_app_component). Report it (created, unbuilt).
@@ -104,10 +109,12 @@ from the running session. Pick a new `name`, build/extend the existing one
 An app lands on one of the **platform's domains**, so `os` only "takes" if the platform
 actually **has** a domain for that OS. Asking for `os="standalone"` on a **Linux-only**
 platform yields a **Linux** app (and needs a sysroot), because there is no standalone
-domain. Detect this, warn (`OS MISMATCH`), and key sysroot handling off the *resolved* OS.
-To get the OS you want, target a platform that has that domain — or add one with
-`vitis-embedded` (`platform.add_domain(...)`). Pass `domain=` explicitly
-when the platform has **multiple** domains.
+domain. Detect this and **warn `OS MISMATCH` and stop — do not modify the platform.** Tell the
+user the platform has no `<os>` domain and offer two fixes: (a) target a platform that already
+has that domain, or (b) add one with `platform.add_domain(...)` and rebuild — **only on explicit
+approval**, noting it permanently changes a possibly shared platform. **Never add a domain or
+rebuild silently, and never report "success" on a mismatch.** Key sysroot handling off the
+*resolved* OS, and pass `domain=` explicitly when the platform has **multiple** domains.
 
 ### Embedded Accel platforms reject baremetal templates (2026.2)
 
@@ -241,11 +248,11 @@ This skill is one hop in `platform → app → boot-image → target`. Full cont
   missing OR only created-but-unbuilt, **REQUIRED SUB-SKILL:** load and follow
   `vitis-embedded` and **offer to build it (ask + approve)** — do **not** improvise a
   platform from memory — then continue. Do not dead-end.
-- **Produces:** `<workspace>/<app>/build/**/<app>.elf` (+ `build/.buildstatus = hw=SUCCESS`) —
+- **Produces:** `<workspace>/<app>/build/<app>.elf` (seen on 2026.2) (+ `build/.buildstatus = hw=SUCCESS`) —
   **only after a build**; a created-only app has no `.elf` yet.
 - **Downstream:** offer `vitis-embedded` next (a **shell** Bootgen skill; hand off the
   **`.elf` PATH**, not the live `app`). If the app is only created-but-unbuilt, boot-image will
-  offer to build it first. Programming and on-target debug are optional follow-on work.
+  offer to build it first. Then `hw-xsdb-debug`.
 - **Gate:** the `.elf` exists only after a build — build (or offer to build) before packaging.
 
 ## Reporting to the user (keep it brief)
