@@ -23,7 +23,7 @@ Check whether **`runVitisPython` is in your available tool set**:
 - **Present** → **in-console mode.** Use this file as written.
 - **Absent** → **headless mode**, which is a fully supported path, not a blocker:
   1. Read [`platform/headless.md`](platform/headless.md) for the `vitis -s` wrapper.
-  2. Locate the CLI (`which vitis`, `$XILINX_VITIS`).
+  2. Locate the Vitis CLI (see SKILL.md "Finding Vitis headlessly").
   3. Run each recipe below through `vitis -s`, supplying the `create_client()` /
      `set_workspace()` / `vitis.dispose()` that the IDE would otherwise provide.
 
@@ -106,12 +106,13 @@ raises `ALREADY_EXISTS` (or a component dir with that name is present), either *
 | Parameter | Required | Notes |
 |-----------|----------|-------|
 | `name` | Y | platform component name |
-| `hw_design` | Y | board shortcut (e.g. `vek385`) or path to `.xsa` |
+| `hw_design` | Y | board shortcut (e.g. `vek385_revb`) or path to `.xsa`. Shortcuts are the `.xsa` names in `$XILINX_VITIS/data/embeddedsw/lib/fixed_hwplatforms/`; if one is rejected (`Invalid XSA path`), list that folder and use a name from it. `vek385` and `vek385_revb` are the same VEK385 board: use the one the install ships (`vek385` on 2025.2/2026.1, `vek385_revb` on 2026.2+) without asking |
 | `os` | N (standalone) | `standalone` / `linux` / `freertos` |
 | `cpu` | N (auto) | **exact** core name (e.g. `cortexa78_0`, `psu_cortexa53_0`) |
 | `domain_name` | N (auto) | defaults to `f"{os}_{cpu}"` |
 | `generate_dtb` | N (linux→True) | device tree; required for Linux |
-| `no_boot_bsp`, `fsbl_target`, `pmufw_Elf`, `is_pmufw_req` | N | boot components (ZynqMP/Zynq) |
+| `is_pmufw_req` | ZynqMP: pass `True` | builds the PMU firmware from source (`zynqmp_pmufw` boot domain). The default `False` creates no PMUFW, and only a generic prebuilt `sw/qemu/pmufw.elf` exists |
+| `no_boot_bsp`, `fsbl_target`, `pmufw_Elf` | N | boot components (ZynqMP/Zynq) |
 | `template`, `desc`, `architecture`, `compiler` | N | forwarded to the API |
 | `advanced_options` (DTS), `emu_design`, `rp_info_args` (DFX) | N | see `platform/platform_api.md` |
 | extra domains | N | `platform.add_domain(cpu=.., os=.., name=..)` after create |
@@ -133,13 +134,15 @@ See [`platform/platform_api.md`](platform/platform_api.md) for the full
 ### Picking the CPU (catalog first, live fallback)
 
 - **Board shortcut** → look up `cpu`/`os` in [`platform/board_catalog.md`](platform/board_catalog.md)
-  and pass it verbatim — instant, no live query (e.g. vek385 standalone → `cortexa78_0`, linux
+  and pass it verbatim — instant, no live query (e.g. vek385_revb standalone → `cortexa78_0`, linux
   → `cortexa78`; zcu102 → `psu_cortexa53_0`; vck190/vek280 → `psv_cortexa72_0`).
 - **Custom `.xsa`** or a board not in the catalog → query live:
 
 ```python
-proc = client.get_processor_os_list(xsa="/path/to/design.xsa")   # xsa-first also resolves board shortcuts
-print(proc.os_processors)   # pick an app core: indexed (e.g. *_0) for standalone/freertos, cluster for linux
+procs = client.get_processor_os_list(xsa="/path/to/design.xsa")   # xsa= needs a path to an existing .xsa file
+print(procs)   # each OS with its processors; pick an app core: indexed (e.g. *_0) for standalone/freertos, cluster for linux
+# 2026.2 returns an object: procs.os_processors[i].os / .cpuInstance. Later releases return a list of
+# {'os': ..., 'processors': [...]} dicts, so print it rather than assume one shape.
 ```
 
 - Always pass the user's explicit core **verbatim** if given (bare `cortexa78_N` on Versal Gen2,
@@ -150,9 +153,9 @@ print(proc.os_processors)   # pick an app core: indexed (e.g. *_0) for standalon
 Run as `runVitisPython` calls. Steps can be one call or several (state persists).
 
 ```python
-# CREATE (default) — vek385 baremetal on cortexa78_0. No imports/client/workspace/dispose.
+# CREATE (default) — vek385_revb baremetal on cortexa78_0 (the 2026.2 name; 2025.2/2026.1 ship it as vek385). No imports/client/workspace/dispose.
 platform = client.create_platform_component(
-    name="vek385_plat", hw_design="vek385", os="standalone",
+    name="vek385_plat", hw_design="vek385_revb", os="standalone",
     cpu="cortexa78_0", domain_name="standalone_cortexa78_0")
 platform.report()              # created (unbuilt): XSA/hw, domains, OS/CPU, boot components
 ```
@@ -219,7 +222,9 @@ State persists, so these are plain method calls on a component you fetch with
 | Custom Linux DTB | `platform.get_domain(d).set_dtb("<dtb>")` / `.recompile_dtb()` (Linux) |
 
 **Boot-BSP is device-specific:** Versal (`psv_/psx_`, `cortexa78`) has **no** boot BSP (boots via
-PLM) — `generate/remove_boot_bsp` error. ZynqMP/Zynq (`psu_`/`ps7_`) create FSBL/PMUFW by default.
+PLM) — `generate/remove_boot_bsp` error. ZynqMP/Zynq (`psu_`/`ps7_`) create the FSBL by default; ZynqMP creates
+the PMUFW (`zynqmp_pmufw` domain, `export/<plat>/sw/boot/pmufw.elf`) **only with `is_pmufw_req=True`** — always pass it
+for ZynqMP, because without it the only `pmufw.elf` is the generic prebuilt QEMU copy, not built for the design.
 
 ### Configure the domain (post-create): libraries, OS/proc settings, DTB
 

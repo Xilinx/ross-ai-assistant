@@ -90,7 +90,8 @@ Required evidence:
 Action: report the tool, version, step and reproduction command. Do not edit
 RTL or Vivado-generated files to force a PASS; a workaround may be tried only
 in a separate scratch directory, labeled as diagnostic, and never produces the
-reported verdict.
+reported verdict. Put that directory under `outputs/<case>/scratch/`, outside
+the project's `.sim` tree, so no copy sits beside the generated files.
 
 ## Stage-specific checks
 
@@ -143,7 +144,9 @@ A timing verdict needs the simulator's own annotation-success message: XSim
 `[XSIM 43-3452] SDF backannotation was successful`, Questa/ModelSim
 `(vsim-3587) SDF Backannotation Successfully Completed`, VCS
 `SDF annotation begin` followed by `SDF annotation end` (not
-`SDF annotation aborted`), Xcelium `Annotation completed successfully`. Some
+`SDF annotation aborted`) in the elaborate log; the simv runtime line
+`Doing SDF annotation ...... Done` also prints after an abort and proves
+nothing. Xcelium `Annotation completed successfully`. Some
 simulators give up on an SDF with only warnings and still run the netlist
 with zero delay: Xcelium `*W,SDFCNC ... skipping annotation`, and VCS aborts
 annotation after repeated `SDFCOM_NNTC` negative setup/hold errors unless

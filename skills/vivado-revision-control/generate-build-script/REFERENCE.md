@@ -200,11 +200,37 @@ independent bug.
 
 **Do not** reintroduce a per-child `generate_target` call in Step 7, or
 otherwise reorder `generate_build_script`'s BD sourcing, to try to fix this —
-that path is exhausted. A real fix requires either (a) Xilinx fixing
-`write_bd_tcl`'s handling of this pattern, or (b) the skill detecting
-Monitor-mode BDC boundary interfaces at export time and special-casing them
-(documenting a manual "Set Up Debug" wizard reconnect instead of relying on
-Tcl replay).
+that path is exhausted. The exporter detects BDs with Monitor-mode interfaces
+and copies their native `.bd` file instead of generating a Tcl script.
+Other BDs continue to use `write_bd_tcl` as before.
+
+**Detection** (`_rc_has_monitor_bd_intf`) looks in three places, because the
+interface shows up differently on each side of the container:
+
+- Monitor interface **pins** at the current level (original check);
+- Monitor interface **ports** on the BD itself — a BDC child such as
+  `debug_hier` exposes `SLOT_0_AXI` as a port, never as a pin;
+- Monitor pins directly on a **`hier` cell** — the parent (`design_1`) sees
+  `debug_hier/SLOT_0_AXI` one level down. Only `hier` cells are inspected, so
+  a Monitor slot on an ordinary IP nested in a hierarchy does not trigger it.
+
+**Export:** `Sources/BD/<bd>.bd` plus the BD's `ip/<inst>/` folders under
+`Sources/BD/ip/` (the `.bd` references its IPs by relative path; without them
+it opens with missing IPs). Re-exporting into an existing folder is safe.
+
+**Rebuild** (generated `build.tcl`, still in child-before-parent order):
+
+1. copy the `.bd` and its `ip/` folders into the new project's own
+   `<proj>.srcs/sources_1/bd/<bd>/` and `add_files` it from there. Adding it
+   in place fails with a project/sub-design overlap error (`filemgmt 20-1381`)
+   when `build.tcl` is sourced from inside `RevisionControl`;
+2. `upgrade_ip` any locked IPs before `open_bd_design`. A native `.bd` keeps
+   the IP revisions it was saved with; if the Vivado build doing the rebuild
+   has a newer IP catalog they load locked and `validate_bd_design` /
+   `generate_target` fail with `BD 5-336`. Replayed BDs don't have this
+   problem because their IPs are recreated at current revisions;
+3. `open_bd_design`, `validate_bd_design`, `save_bd_design`, and
+   `generate_target all` for BDC children.
 
 ## Known Limitation: NoC Memory-Controller PHY IP Missing `.elf`/Simulation Outputs
 
@@ -234,7 +260,7 @@ install) generates its simulation BFM output by copying numbered
 `map_read_<N>.sv` / `pinout_<N>.sv` files from the Vivado install's own
 `data/ip/xilinx/noc_mc_ddr5_phy_v1_0/hdl/bfm/PINOUT/` directory. On the
 install this was diagnosed against
-(`2026.2`, `/proj/xbuilds/CustTA_plus/9999.0_2026_0724_2226plus/...`), several
+(`2026.2`, `<VIVADO_INSTALL_DIR>/...`), several
 indices are missing from that directory entirely (confirmed by direct
 filesystem inspection: `pinout_14.sv` and `pinout_19.sv`/`map_read_19.sv` do
 not exist, while neighboring indices do) — so **any** attempt to generate

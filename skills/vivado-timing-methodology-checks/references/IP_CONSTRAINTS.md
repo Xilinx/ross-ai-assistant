@@ -8,55 +8,22 @@ IP constraints are important because users can not easily edit them.
 They are also scoped. Searching for hierarchy names needs to account for this.
 
 ## Identifying IP constraints
-There are a few ways to confirm a file is from an IP and not a user source.
+Read `constraints_profile.json` (`./methodology_results/tmp/`) — the single source of truth for IP vs
+user RTL, produced in Step 1 by `<skill_dir>/scripts/run_methodology_setup.tcl` (via its
+`methodology_check::profile_constraints` proc).
 
-### Scoping
-IP constraints will have their own constraints file.
-IP constraint files are scoped to an instance using `current_instance <hierarchy>`
-Ignore `current_instance -quiet` where no hierarchy is specified.
+* Per constraint: `constraints["<id>"]["is_ip"]` and `["ip_instance"]` (the IP hierarchy it is scoped to).
+  The ID is the "constraint position" in the methodology message.
+* Per hierarchy: the top-level `ip_instances` list.
 
-In constraints.xdc this will have a header section and a current_instance defined inside the section
-```xdc
-# The next 3 lines are the header
-####################################################################################
-# Constraints from file : 'hwtest_harness_top_clk_wizard_0_0.xdc'
-####################################################################################
-
-# The next line is NOT the current instance definition
-current_instance -quiet
-# The next line IS the current instance definition
-current_instance hwtest_harness_top_i/Clock_Gen/clk_wizard_0/inst
-create_clock -period 3.000 [get_ports -scoped_to_current_instance clk_in1]
-set_input_jitter [get_clocks -of_objects [get_ports -scoped_to_current_instance clk_in1]] 0.100
-
+```json
+{"ip_instances": ["hwtest_harness_top_i/Clock_Gen/clk_wizard_0/inst"]}
 ```
 
-### Hierarchy
-Another way of telling if a cell is an IP is to look at the hierarchy:
-```
-hwtest_harness_top_i/Clock_Gen/clk_wizard_0/inst/clock_primitive_inst/MMCME5_inst
-```
-`clk_wizard_0` is the default name of the IP instance
-`inst` is the hierarchy wrapper of the IP when genertated in Verilog
-`u1` is the hierarchy wrapper of the IP when genertated in VHDL
-`clock_primitive_inst` is next wrapper level in the clocking wizard IP
-
-### Compile Order
-IP runs run OOC will have their own fileset.
-Run `report_compile_order`
-
-```
-# The following has fileset clk_wizard_0
-# The constraints files are scoped to ref and scoped to cells
-Constraint evaluation order for 'synthesis' with fileset 'clk_wizard_0':
-Index  File Name               Used_In       Scoped_To_Ref  Scoped_To_Cells  Processing_Order  Out_Of_Context  Full Path Name
------  ----------------------  ------------  -------------  ---------------  ----------------  --------------  ----------------------------------------------------------------------------------
-1      clk_wizard_0_ooc.xdc    Synth & Impl  clk_wizard_0   inst             EARLY             yes             c:/Temp/project_28/project_28.gen/sources_1/ip/clk_wizard_0/clk_wizard_0_ooc.xdc
-2      clk_wizard_0_board.xdc  Synth & Impl  clk_wizard_0   inst             EARLY                             c:/Temp/project_28/project_28.gen/sources_1/ip/clk_wizard_0/clk_wizard_0_board.xdc
-3      clk_wizard_0.xdc        Synth & Impl  clk_wizard_0   inst             EARLY                             c:/Temp/project_28/project_28.gen/sources_1/ip/clk_wizard_0/clk_wizard_0.xdc
-4      clk_wizard_0_late.xdc   Synth & Impl  clk_wizard_0   inst             LATE                              c:/Temp/project_28/project_28.gen/sources_1/ip/clk_wizard_0/clk_wizard_0_late.xdc
-```
-
+A hierarchy is IP **iff** it equals, or is nested under (`"<entry>/"`), one of the
+listed `ip_instances`. Any hierarchy not matched that way is user RTL. A constraint is IP when its
+`scope` (the `current_instance` in effect) is such a hierarchy. The rule: the last path segment
+of the `current_instance` is `inst` (Verilog IP) or `U0` (VHDL IP).
 
 ## IP Specific Resolutions
 
@@ -71,3 +38,4 @@ create_ip -name clk_wizard -vendor xilinx.com -library ip -version 1.0 -module_n
 set_property CONFIG.PRIM_SOURCE {No_buffer} [get_ips clk_wizard_0]
 
 ```
+

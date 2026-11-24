@@ -2,9 +2,11 @@
 name: hls-stencil-pattern
 description: 'Analyze whether stencil pattern optimization can be applied to a given C/C++ code snippet in Vitis HLS. Keywords: stencil, HLS, pragma, array_stencil, window, optimization'
 license: MIT
+compatibility: Requires Vitis 2026.1+
 metadata:
-  author: "Alex Li, Yuxin Wang"
-  version: "1.0.0"
+  stage: beta
+  author: "Long Li, Yuxin Wang"
+  version: "1.0.1"
 ---
 <!--
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.

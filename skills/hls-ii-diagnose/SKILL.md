@@ -4,6 +4,7 @@ description: 'Diagnose the root cause of an II (initiation interval) violation i
 license: MIT
 argument-hint: <component_location> [loop-or-function-label]
 metadata:
+  stage: beta
   author: "Zayn He"
   version: "1.0.0"
 ---

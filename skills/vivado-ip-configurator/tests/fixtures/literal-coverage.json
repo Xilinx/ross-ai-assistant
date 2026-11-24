@@ -1,0 +1,1832 @@
+[
+ {
+  "source": "eval-r46/cacd6878/ip-configurator-test-kit_26",
+  "task": "Versal NoC configured as an integrated LPDDR5/DDR5 memory controller for the C0/C1 DRAM: 4 memory controllers (NUM_MC), 1 memory-controller port (NUM_MCP), 2 inter-NoC slave (NSI) ports, no AXI slave/master ports and no AXI clocks (NUM_CLKS), using discrete memory components, LPDDR5 controller type, 32-bit per-MC data width, LPDDR5X-8533 speed grade.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_NUM_MCP": "1",
+   "CONFIG.NUM_NSI": "2",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_DATA_WIDTH": "32",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_SPEED_GRADE": "LPDDR5X-8533",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_SI": "0",
+   "CONFIG.NUM_CLKS": "0",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_DEVICE_TYPE": "Components",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_CONTROLLERTYPE": "LPDDR5_SDRAM"
+  },
+  "expected_unaccounted": [
+   "C0",
+   "C1",
+   "4 memory"
+  ],
+  "expected_rows": [
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "DDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "C0",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "C1",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "LPDDR5X-8533",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "4 memory",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "1 memory",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r65-core/84f1cf17/ip-configurator-test-kit_29",
+  "task": "Configure the Versal Gen2 processing system as a PCIe Gen4 x2 endpoint on the MDB5 GT quad (shared with 10GbE): port type endpoint, PERST on PS_MIO_3, device ID 0x9038, subsystem vendor ID 0x10ee, independent 32-bit memory BAR2 enabled at 256 MB and BAR3 enabled at 128 MB.",
+  "identity": "Versal Gen2 processing system xilinx.com:ip:ps_wizard:1.0",
+  "written": {
+   "CONFIG.MMI_CONFIG.MDB5_GT": "PCIe0_x2_10GbE",
+   "CONFIG.MMI_CONFIG.PCIE0_LINK_SPEED": "16.0_GT/s",
+   "CONFIG.MMI_CONFIG.PCIE0_OVERRIDE_MAX_LINK_WIDTH": "X2",
+   "CONFIG.MMI_CONFIG.MMI_PCIE0_PORT_TYPE": "PCIe_Endpoint_Express_Device",
+   "CONFIG.MMI_CONFIG.MMI_PCIE0_PERST": "PS_MIO_3",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_DEV_ID": "0x9038",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_SUBSYS_VEN_ID": "0x10EE",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_64BIT": "0",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_SCALE": "MegaBytes",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_EN": "1",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_SIZE": "256",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_EN": "1",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_SCALE": "MegaBytes",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_SIZE": "128",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_TYPE": "Memory"
+  },
+  "expected_unaccounted": [
+   "Gen4",
+   "32-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "0x9038",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "0x10ee",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "Gen2",
+    "kind": "token",
+    "accounted": "identity"
+   },
+   {
+    "text": "Gen4",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "x2",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "MDB5",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "PS_MIO_3",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "BAR2",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "BAR3",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "10GbE",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "256 MB",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128 MB",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r53-core/9e2971b4/ip-configurator-test-kit_18",
+  "task": "Processor System Reset block for the 100 MHz control domain (default configuration, active-low aux reset).",
+  "identity": "Processor System Reset xilinx.com:ip:proc_sys_reset:5.0",
+  "written": {
+   "CONFIG.C_AUX_RESET_HIGH": "0"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "B0/710d363e/ip-configurator-test-kit_24",
+  "task": "Versal NoC for the VCU video codec: 4 AXI slave ports, no AXI master ports, 2 inter-NoC master (NMI) ports, 5 clocks, 128-bit data width.",
+  "identity": " xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_SI": "4",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_NMI": "2",
+   "CONFIG.NUM_CLKS": "5",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_CONTROLLERTYPE": "NA"
+  },
+  "expected_unaccounted": [
+   "128-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "4 AXI",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "5 clocks",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128-bit",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "T1/e8d6300d/ip-configurator-test-kit_10",
+  "task": "Concat block that merges 22 interrupt sources into one interrupt vector.",
+  "identity": "Concat Block xilinx.com:ip:xlconcat:2.1",
+  "written": {
+   "CONFIG.NUM_PORTS": "22"
+  },
+  "expected_unaccounted": [
+   "one"
+  ],
+  "expected_rows": [
+   {
+    "text": "22 interrupt",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "one",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r66-core/45a2e2a8/ip-configurator-test-kit_08",
+  "task": "AXI UART Lite for the Ryzen<->Versal sideband console, clocked from the ~100 MHz AXI clock (99.999 MHz).",
+  "identity": "AXI UART Lite xilinx.com:ip:axi_uartlite:2.0",
+  "written": {
+   "CONFIG.C_S_AXI_ACLK_FREQ_HZ_d": "99.999"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "99.999 MHz",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r67-target-a/54353fe7/ip-configurator-test-kit_03",
+  "task": "24-bit AXI GPIO for auto-IOB board control: output default 0x00024042, tri-state default 0x00000F00.",
+  "identity": "axi_gpio xilinx.com:ip:axi_gpio:2.0",
+  "written": {
+   "CONFIG.C_GPIO_WIDTH": "24",
+   "CONFIG.C_ALL_OUTPUTS": "1",
+   "CONFIG.C_TRI_DEFAULT": "0xFFFFFFFF"
+  },
+  "expected_unaccounted": [
+   "0x00024042",
+   "0x00000F00"
+  ],
+  "expected_rows": [
+   {
+    "text": "0x00024042",
+    "kind": "hex",
+    "accounted": null
+   },
+   {
+    "text": "0x00000F00",
+    "kind": "hex",
+    "accounted": null
+   },
+   {
+    "text": "24-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r26/63ad5d07/ip-configurator-test-kit_10",
+  "task": "Concat block that merges 22 interrupt sources into one interrupt vector.",
+  "identity": "Concat xilinx.com:ip:xlconcat:2.1",
+  "written": {
+   "CONFIG.NUM_PORTS": "22"
+  },
+  "expected_unaccounted": [
+   "one"
+  ],
+  "expected_rows": [
+   {
+    "text": "22 interrupt",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "one",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "B0/4c032e78/ip-configurator-test-kit_24",
+  "task": "Versal NoC for the VCU video codec: 4 AXI slave ports, no AXI master ports, 2 inter-NoC master (NMI) ports, 5 clocks, 128-bit data width.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_SI": "4",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_NMI": "2",
+   "CONFIG.NUM_CLKS": "5"
+  },
+  "expected_unaccounted": [
+   "128-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "4 AXI",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "5 clocks",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128-bit",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r36/92f1bb0f/ip-configurator-test-kit_24",
+  "task": "Versal NoC for the VCU video codec: 4 AXI slave ports, no AXI master ports, 2 inter-NoC master (NMI) ports, 5 clocks, 128-bit data width.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_SI": "4",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_NMI": "2",
+   "CONFIG.NUM_CLKS": "5"
+  },
+  "expected_unaccounted": [
+   "128-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "4 AXI",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "5 clocks",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128-bit",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r37/0022e2ca/ip-configurator-test-kit_24",
+  "task": "Versal NoC for the VCU video codec: 4 AXI slave ports, no AXI master ports, 2 inter-NoC master (NMI) ports, 5 clocks, 128-bit data width.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_SI": "4",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_NMI": "2",
+   "CONFIG.NUM_CLKS": "5"
+  },
+  "expected_unaccounted": [
+   "128-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "4 AXI",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "5 clocks",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128-bit",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r66-core/45a2e2a8/ip-configurator-test-kit_18",
+  "task": "Processor System Reset block for the 100 MHz control domain (default configuration, active-low aux reset).",
+  "identity": "Processor System Reset xilinx.com:ip:proc_sys_reset:5.0",
+  "written": {
+   "CONFIG.C_AUX_RESET_HIGH": "0"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "B0/4c032e78/ip-configurator-test-kit_18",
+  "task": "Processor System Reset block for the 100 MHz control domain (default configuration, active-low aux reset).",
+  "identity": "Processor System Reset xilinx.com:ip:proc_sys_reset:5.0",
+  "written": {
+   "CONFIG.C_AUX_RESET_HIGH": "0"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "B0/4c032e78/ip-configurator-test-kit_26",
+  "task": "Versal NoC configured as an integrated LPDDR5/DDR5 memory controller for the C0/C1 DRAM: 4 memory controllers (NUM_MC), 1 memory-controller port (NUM_MCP), 2 inter-NoC slave (NSI) ports, no AXI slave/master ports and no AXI clocks (NUM_CLKS), using discrete memory components, LPDDR5 controller type, 32-bit per-MC data width, LPDDR5X-8533 speed grade.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_NUM_MC": "4",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_NUM_MCP": "1",
+   "CONFIG.NUM_NSI": "2",
+   "CONFIG.NUM_SI": "0",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_CLKS": "0",
+   "CONFIG.MC_NAME": "discrete",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_CONTROLLERTYPE": "LPDDR5_SDRAM",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_DATA_WIDTH": "32",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_SPEED_GRADE": "LPDDR5X-8533"
+  },
+  "expected_unaccounted": [
+   "C0",
+   "C1"
+  ],
+  "expected_rows": [
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "DDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "C0",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "C1",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "LPDDR5X-8533",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "4 memory",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "1 memory",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r54-core/d2830c3e/ip-configurator-test-kit_18",
+  "task": "Processor System Reset block for the 100 MHz control domain (default configuration, active-low aux reset).",
+  "identity": "Processor System Reset xilinx.com:ip:proc_sys_reset:5.0",
+  "written": {
+   "CONFIG.C_AUX_RESET_HIGH": "0"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r54-core/d2830c3e/ip-configurator-test-kit_10",
+  "task": "Concat block that merges 22 interrupt sources into one interrupt vector.",
+  "identity": "Interrupt Controller xilinx.com:ip:xlconcat:2.1",
+  "written": {
+   "CONFIG.NUM_PORTS": "22"
+  },
+  "expected_unaccounted": [
+   "one"
+  ],
+  "expected_rows": [
+   {
+    "text": "22 interrupt",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "one",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "B0/710d363e/ip-configurator-test-kit_18",
+  "task": "Processor System Reset block for the 100 MHz control domain (default configuration, active-low aux reset).",
+  "identity": "Processor System Reset xilinx.com:ip:proc_sys_reset:5.0",
+  "written": {
+   "CONFIG.C_AUX_RESET_HIGH": "0"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r66-core/45a2e2a8/ip-configurator-test-kit_26",
+  "task": "Versal NoC configured as an integrated LPDDR5/DDR5 memory controller for the C0/C1 DRAM: 4 memory controllers (NUM_MC), 1 memory-controller port (NUM_MCP), 2 inter-NoC slave (NSI) ports, no AXI slave/master ports and no AXI clocks (NUM_CLKS), using discrete memory components, LPDDR5 controller type, 32-bit per-MC data width, LPDDR5X-8533 speed grade.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_NSI": "2",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_CLKS": "1",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_CONTROLLERTYPE": "NA"
+  },
+  "expected_unaccounted": [
+   "LPDDR5",
+   "DDR5",
+   "C0",
+   "C1",
+   "LPDDR5",
+   "LPDDR5X-8533",
+   "4 memory",
+   "32-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "DDR5",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "C0",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "C1",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "LPDDR5X-8533",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "4 memory",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "1 memory",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r34/6e1d2431/ip-configurator-test-kit_08",
+  "task": "AXI UART Lite for the Ryzen<->Versal sideband console, clocked from the ~100 MHz AXI clock (99.999 MHz).",
+  "identity": "axi_uartlite xilinx.com:ip:axi_uartlite:2.0",
+  "written": {
+   "CONFIG.C_S_AXI_ACLK_FREQ_HZ_d": "99.999"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "99.999 MHz",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r64-core/55eb3d9b/ip-configurator-test-kit_24",
+  "task": "Versal NoC for the VCU video codec: 4 AXI slave ports, no AXI master ports, 2 inter-NoC master (NMI) ports, 5 clocks, 128-bit data width.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_SI": "4",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_NMI": "2",
+   "CONFIG.NUM_CLKS": "5"
+  },
+  "expected_unaccounted": [
+   "128-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "4 AXI",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "5 clocks",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128-bit",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r54-core/d2830c3e/ip-configurator-test-kit_11",
+  "task": "AXI IIC controller (default configuration) for a camera-module I2C control bus.",
+  "identity": "AXI IIC xilinx.com:ip:axi_iic:2.1",
+  "written": {
+   "CONFIG.C_DEFAULT_VALUE": "0x00"
+  },
+  "expected_unaccounted": [
+   "I2C"
+  ],
+  "expected_rows": [
+   {
+    "text": "I2C",
+    "kind": "token",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r34/6e1d2431/ip-configurator-test-kit_26",
+  "task": "Versal NoC configured as an integrated LPDDR5/DDR5 memory controller for the C0/C1 DRAM: 4 memory controllers (NUM_MC), 1 memory-controller port (NUM_MCP), 2 inter-NoC slave (NSI) ports, no AXI slave/master ports and no AXI clocks (NUM_CLKS), using discrete memory components, LPDDR5 controller type, 32-bit per-MC data width, LPDDR5X-8533 speed grade.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_NUM_MC": "4",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_NUM_MCP": "1",
+   "CONFIG.NUM_NSI": "2",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_SI": "0",
+   "CONFIG.NUM_CLKS": "0",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_DATA_WIDTH": "32",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_CONTROLLERTYPE": "LPDDR5_SDRAM",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_SPEED_GRADE": "LPDDR5X-8533"
+  },
+  "expected_unaccounted": [
+   "C0",
+   "C1"
+  ],
+  "expected_rows": [
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "DDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "C0",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "C1",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "LPDDR5X-8533",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "4 memory",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "1 memory",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r53-core/9e2971b4/ip-configurator-test-kit_31",
+  "task": "Enable the hardened CAN-FD controllers on the Versal Gen2 processing system for the ADAS safety path: enable CAN-FD 1 (on PMC_MIO_44:45) and CAN-FD 3 (on PMC_MIO_40:41), keep CAN-FD 0 and CAN-FD 2 disabled.",
+  "identity": " xilinx.com:ip:ps_wizard:1.0",
+  "written": {
+   "CONFIG.PS11_CONFIG.PS_CAN1_CLK": "ENABLE 1 IO PMC_MIO_44:45",
+   "CONFIG.PS11_CONFIG.PS_CAN1_PERIPHERAL": "ENABLE 1 IO PMC_MIO_44:45 IO_TYPE MIO",
+   "CONFIG.PS11_CONFIG.PS_CAN3_CLK": "ENABLE 1 IO PMC_MIO_40:41",
+   "CONFIG.PS11_CONFIG.PS_CAN3_PERIPHERAL": "ENABLE 1 IO PMC_MIO_40:41 IO_TYPE MIO",
+   "CONFIG.PS11_CONFIG.PS_CAN0_CLK": "ENABLE 0 IO PMC_MIO_0",
+   "CONFIG.PS11_CONFIG.PS_CAN0_PERIPHERAL": "ENABLE 0 IO PMC_MIO_8:9 IO_TYPE MIO",
+   "CONFIG.PS11_CONFIG.PS_CAN2_CLK": "ENABLE 0 IO PMC_MIO_0",
+   "CONFIG.PS11_CONFIG.PS_CAN2_PERIPHERAL": "ENABLE 0 IO PMC_MIO_30:31 IO_TYPE MIO"
+  },
+  "expected_unaccounted": [
+   "Gen2"
+  ],
+  "expected_rows": [
+   {
+    "text": "Gen2",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "PMC_MIO_44:45",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "PMC_MIO_40:41",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "1",
+    "kind": "number",
+    "accounted": "identity"
+   },
+   {
+    "text": "3",
+    "kind": "number",
+    "accounted": "index"
+   },
+   {
+    "text": "0 and",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 disabled",
+    "kind": "number",
+    "accounted": "index"
+   }
+  ]
+ },
+ {
+  "source": "eval-r64-core/55eb3d9b/ip-configurator-test-kit_29",
+  "task": "Configure the Versal Gen2 processing system as a PCIe Gen4 x2 endpoint on the MDB5 GT quad (shared with 10GbE): port type endpoint, PERST on PS_MIO_3, device ID 0x9038, subsystem vendor ID 0x10ee, independent 32-bit memory BAR2 enabled at 256 MB and BAR3 enabled at 128 MB.",
+  "identity": "Versal Gen2 processing system xilinx.com:ip:ps_wizard:1.0",
+  "written": {
+   "CONFIG.MMI_CONFIG.MDB5_GT": "PCIe0_x2_10GbE",
+   "CONFIG.MMI_CONFIG.PCIE0_LINK_SPEED": "16.0_GT/s",
+   "CONFIG.MMI_CONFIG.PCIE0_OVERRIDE_MAX_LINK_WIDTH": "X2",
+   "CONFIG.MMI_CONFIG.MMI_PCIE0_PORT_TYPE": "PCIe_Endpoint_Express_Device",
+   "CONFIG.MMI_CONFIG.MMI_PCIE0_PERST": "PS_MIO_3",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_DEV_ID": "0x9038",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_SUBSYS_VEN_ID": "0x10EE",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_EN": "1",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_SIZE": "256",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_TYPE": "Memory",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_EN": "1",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_SIZE": "128",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_TYPE": "Memory",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_SCALE": "MegaBytes",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_SCALE": "MegaBytes",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_64BIT": "0"
+  },
+  "expected_unaccounted": [
+   "Gen4",
+   "32-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "0x9038",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "0x10ee",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "Gen2",
+    "kind": "token",
+    "accounted": "identity"
+   },
+   {
+    "text": "Gen4",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "x2",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "MDB5",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "PS_MIO_3",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "BAR2",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "BAR3",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "10GbE",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "256 MB",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128 MB",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "B0/79de3bc7/ip-configurator-test-kit_18",
+  "task": "Processor System Reset block for the 100 MHz control domain (default configuration, active-low aux reset).",
+  "identity": "Processor System Reset xilinx.com:ip:proc_sys_reset:5.0",
+  "written": {
+   "CONFIG.C_AUX_RESET_HIGH": "0"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r66-core/45a2e2a8/ip-configurator-test-kit_24",
+  "task": "Versal NoC for the VCU video codec: 4 AXI slave ports, no AXI master ports, 2 inter-NoC master (NMI) ports, 5 clocks, 128-bit data width.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_SI": "4",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_NMI": "2",
+   "CONFIG.NUM_CLKS": "5",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_CONTROLLERTYPE": "NA"
+  },
+  "expected_unaccounted": [
+   "128-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "4 AXI",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "5 clocks",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128-bit",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r46/cacd6878/ip-configurator-test-kit_18",
+  "task": "Processor System Reset block for the 100 MHz control domain (default configuration, active-low aux reset).",
+  "identity": "Processor System Reset xilinx.com:ip:proc_sys_reset:5.0",
+  "written": {
+   "CONFIG.C_AUX_RESET_HIGH": "0"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r57-core/e912d7f2/ip-configurator-test-kit_08",
+  "task": "AXI UART Lite for the Ryzen<->Versal sideband console, clocked from the ~100 MHz AXI clock (99.999 MHz).",
+  "identity": "axi_uartlite xilinx.com:ip:axi_uartlite:2.0",
+  "written": {
+   "CONFIG.C_S_AXI_ACLK_FREQ_HZ_d": "99.999"
+  },
+  "expected_unaccounted": [
+   "100 MHz"
+  ],
+  "expected_rows": [
+   {
+    "text": "100 MHz",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "99.999 MHz",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r34/6e1d2431/ip-configurator-test-kit_29",
+  "task": "Configure the Versal Gen2 processing system as a PCIe Gen4 x2 endpoint on the MDB5 GT quad (shared with 10GbE): port type endpoint, PERST on PS_MIO_3, device ID 0x9038, subsystem vendor ID 0x10ee, independent 32-bit memory BAR2 enabled at 256 MB and BAR3 enabled at 128 MB.",
+  "identity": "Versal Gen2 processing system xilinx.com:ip:ps_wizard:1.0",
+  "written": {
+   "CONFIG.MMI_CONFIG.MDB5_GT": "PCIe0_x2_10GbE",
+   "CONFIG.MMI_CONFIG.PCIE0_LINK_SPEED": "16.0_GT/s",
+   "CONFIG.MMI_CONFIG.MMI_PCIE0_PORT_TYPE": "PCIe_Endpoint_Express_Device",
+   "CONFIG.MMI_CONFIG.MMI_PCIE0_PERST": "PS_MIO_3",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_DEV_ID": "0x9038",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_SUBSYS_VEN_ID": "0x10ee",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_64BIT": "0",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_SCALE": "MegaBytes",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_EN": "1",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR2_SIZE": "256",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_EN": "1",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_SCALE": "MegaBytes",
+   "CONFIG.MMI_CONFIG.PCIE0_PF0_BAR3_SIZE": "128"
+  },
+  "expected_unaccounted": [
+   "Gen4",
+   "32-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "0x9038",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "0x10ee",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "Gen2",
+    "kind": "token",
+    "accounted": "identity"
+   },
+   {
+    "text": "Gen4",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "x2",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "MDB5",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "PS_MIO_3",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "BAR2",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "BAR3",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "10GbE",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "256 MB",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "128 MB",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r57-core/e912d7f2/ip-configurator-test-kit_26",
+  "task": "Versal NoC configured as an integrated LPDDR5/DDR5 memory controller for the C0/C1 DRAM: 4 memory controllers (NUM_MC), 1 memory-controller port (NUM_MCP), 2 inter-NoC slave (NSI) ports, no AXI slave/master ports and no AXI clocks (NUM_CLKS), using discrete memory components, LPDDR5 controller type, 32-bit per-MC data width, LPDDR5X-8533 speed grade.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_NSI": "2",
+   "CONFIG.NUM_MI": "0",
+   "CONFIG.NUM_SI": "0",
+   "CONFIG.NUM_CLKS": "0",
+   "CONFIG.DDRMC5_CONFIG.DDRMC5_CONTROLLERTYPE": "NA"
+  },
+  "expected_unaccounted": [
+   "LPDDR5",
+   "DDR5",
+   "C0",
+   "C1",
+   "LPDDR5",
+   "LPDDR5X-8533",
+   "4 memory",
+   "1 memory",
+   "32-bit"
+  ],
+  "expected_rows": [
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "DDR5",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "C0",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "C1",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "LPDDR5",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "LPDDR5X-8533",
+    "kind": "token",
+    "accounted": null
+   },
+   {
+    "text": "4 memory",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "1 memory",
+    "kind": "number",
+    "accounted": null
+   },
+   {
+    "text": "2 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": null
+   }
+  ]
+ },
+ {
+  "source": "eval-r56-core/f4410beb/ip-configurator-test-kit_04",
+  "task": "Reset-control AXI GPIO: all outputs, 32-bit, power-on default value 0xFFFFFFFF so every reset line is deasserted high.",
+  "identity": "AXI GPIO xilinx.com:ip:axi_gpio:2.0",
+  "written": {
+   "CONFIG.C_ALL_OUTPUTS": "1",
+   "CONFIG.C_GPIO_WIDTH": "32",
+   "CONFIG.C_TRI_DEFAULT": "0xFFFFFFFF",
+   "CONFIG.C_DOUT_DEFAULT": "0xFFFFFFFF"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "0xFFFFFFFF",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r56-core/f4410beb/ip-configurator-test-kit_09",
+  "task": "AXI4-Stream Data FIFO with a depth of 128 for the audio sample path.",
+  "identity": "AXI4-Stream Data FIFO xilinx.com:ip:axis_data_fifo:2.0",
+  "written": {
+   "CONFIG.FIFO_DEPTH": "128"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "AXI4-Stream",
+    "kind": "token",
+    "accounted": "identity"
+   },
+   {
+    "text": "128 for",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r37/0022e2ca/ip-configurator-test-kit_03",
+  "task": "24-bit AXI GPIO for auto-IOB board control: output default 0x00024042, tri-state default 0x00000F00.",
+  "identity": "axi_gpio xilinx.com:ip:axi_gpio:2.0",
+  "written": {
+   "CONFIG.C_GPIO_WIDTH": "24",
+   "CONFIG.C_DOUT_DEFAULT": "0x00024042",
+   "CONFIG.C_TRI_DEFAULT": "0x00000F00"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "0x00024042",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "0x00000F00",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "24-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "B0/710d363e/ip-configurator-test-kit_25",
+  "task": "Versal NoC aggregator for the ISP datapath: 3 AXI slave ports, 3 AXI master ports, 3 inter-NoC master (NMI) and 3 inter-NoC slave (NSI) ports, 6 clocks.",
+  "identity": "Versal NoC xilinx.com:ip:axi_noc2:1.1",
+  "written": {
+   "CONFIG.NUM_SI": "3",
+   "CONFIG.NUM_MI": "3",
+   "CONFIG.NUM_NMI": "3",
+   "CONFIG.NUM_NSI": "3",
+   "CONFIG.NUM_CLKS": "6"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "3 AXI",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "3 AXI",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "3 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "3 inter",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "6 clocks",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r65-core/84f1cf17/ip-configurator-test-kit_22",
+  "task": "Hardened ISP subsystem for the perception preprocessing path: enable 3 tiles, 12-bit basic data format on the ISP0 cores, ISP core clocks at ~600 MHz, and 4 live inputs on tile 2's ISP0.",
+  "identity": "isp_subsystem xilinx.com:ip:visp_ss:2.0",
+  "written": {
+   "CONFIG.C_TILE0_ENABLE": "true",
+   "CONFIG.C_TILE1_ENABLE": "true",
+   "CONFIG.C_TILE2_ENABLE": "true",
+   "CONFIG.C_TILE0_ISP0_BASIC_DATA_FORMAT": "12",
+   "CONFIG.C_TILE1_ISP0_BASIC_DATA_FORMAT": "12",
+   "CONFIG.C_TILE2_ISP0_BASIC_DATA_FORMAT": "12",
+   "CONFIG.C_TILE0_ISP0_CORE_CLK": "600",
+   "CONFIG.C_TILE1_ISP0_CORE_CLK": "600",
+   "CONFIG.C_TILE2_ISP0_CORE_CLK": "600",
+   "CONFIG.C_TILE2_ISP0_IO_TYPE": "2",
+   "CONFIG.C_TILE2_ISP0_LIVE_INPUTS": "4"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "ISP0",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "ISP0",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "3 tiles",
+    "kind": "number",
+    "accounted": "count"
+   },
+   {
+    "text": "12-bit",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "600 MHz",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "4 live",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2",
+    "kind": "number",
+    "accounted": "identity"
+   }
+  ]
+ },
+ {
+  "source": "B0/79de3bc7/ip-configurator-test-kit_20",
+  "task": "MIPI CSI-2 RX subsystem for a GMSL camera bridged via C-PHY: 3 lanes, 4 pixels per clock, RAW12, all virtual channels, 4096-deep line buffer, user-data-type filtering on, ISP bridge enabled, register interface on, D-PHY line rate 1500 Mbps, SupportLevel 1.",
+  "identity": "mipi_csi2_rx_subsystem xilinx.com:ip:mipi_csi2_rx_subsystem:6.0",
+  "written": {
+   "CONFIG.CMN_NUM_LANES": "3",
+   "CONFIG.CMN_NUM_PIXELS": "4",
+   "CONFIG.CMN_PXL_FORMAT": "RAW12",
+   "CONFIG.CMN_VC": "All",
+   "CONFIG.CSI_BUF_DEPTH": "4096",
+   "CONFIG.C_CSI_FILTER_USERDATATYPE": "true",
+   "CONFIG.C_SPRT_ISP_BRIDGE": "true",
+   "CONFIG.CSI_CONTROLLER_REG_IF": "true",
+   "CONFIG.DPY_LINE_RATE": "1500",
+   "CONFIG.C_PHY_MODE": "CPHY",
+   "CONFIG.SupportLevel": "1",
+   "CONFIG.DPY_EN_REG_IF": "true"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "CSI-2",
+    "kind": "token",
+    "accounted": "identity"
+   },
+   {
+    "text": "RAW12",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "3 lanes",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "4 pixels",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "4096-deep",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "1500 Mbps",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "1",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r46/cacd6878/ip-configurator-test-kit_21",
+  "task": "MIPI CSI-2 RX subsystem over D-PHY for a 4-lane camera: 4 active lanes, 4 pixels per clock, RAW12, all virtual channels, 4096 buffer depth, active-lanes detection and user-data-type filtering enabled, ISP bridge on, register interface on, 1500 Mbps line rate, SupportLevel 0.",
+  "identity": "mipi_csi2_rx_subsystem xilinx.com:ip:mipi_csi2_rx_subsystem:6.0",
+  "written": {
+   "CONFIG.CMN_NUM_LANES": "4",
+   "CONFIG.C_CSI_EN_ACTIVELANES": "true",
+   "CONFIG.CMN_NUM_PIXELS": "4",
+   "CONFIG.CMN_PXL_FORMAT": "RAW12",
+   "CONFIG.CMN_VC": "All",
+   "CONFIG.CSI_BUF_DEPTH": "4096",
+   "CONFIG.C_CSI_FILTER_USERDATATYPE": "true",
+   "CONFIG.C_SPRT_ISP_BRIDGE": "true",
+   "CONFIG.CSI_CONTROLLER_REG_IF": "true",
+   "CONFIG.DPY_LINE_RATE": "1500",
+   "CONFIG.SupportLevel": "0",
+   "CONFIG.DPY_EN_REG_IF": "true",
+   "CONFIG.C_PHY_MODE": "DPHY"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "CSI-2",
+    "kind": "token",
+    "accounted": "identity"
+   },
+   {
+    "text": "RAW12",
+    "kind": "token",
+    "accounted": "value"
+   },
+   {
+    "text": "4-lane",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "4 active",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "4 pixels",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "4096 buffer",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "1500 Mbps",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "0",
+    "kind": "number",
+    "accounted": "identity"
+   }
+  ]
+ },
+ {
+  "source": "eval-r45/ff724b50/ip-configurator-test-kit_14",
+  "task": "SmartConnect with 1 slave port fanning out to 4 master ports.",
+  "identity": "SmartConnect xilinx.com:ip:smartconnect:1.0",
+  "written": {
+   "CONFIG.NUM_SI": "1",
+   "CONFIG.NUM_MI": "4"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "1 slave",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "4 master",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "T1/e8d6300d/ip-configurator-test-kit_01",
+  "task": "Configure an AXI GPIO as a 2-bit, all-outputs port to drive the auto-IOB MSI-X enable lines.",
+  "identity": "axi_gpio xilinx.com:ip:axi_gpio:2.0",
+  "written": {
+   "CONFIG.C_GPIO_WIDTH": "2",
+   "CONFIG.C_ALL_OUTPUTS": "1"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "2-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r32/145cdcbb/ip-configurator-test-kit_19",
+  "task": "I2S receiver for the in-cabin audio capture path (default configuration).",
+  "identity": "I2S xilinx.com:ip:i2s_receiver:1.0",
+  "written": {
+   "CONFIG.C_IS_MASTER": "1",
+   "CONFIG.C_DWIDTH": "24",
+   "CONFIG.C_NUM_CHANNELS": "2",
+   "CONFIG.C_32BIT_LR": "0"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "I2S",
+    "kind": "token",
+    "accounted": "identity"
+   }
+  ]
+ },
+ {
+  "source": "eval-r37/0022e2ca/ip-configurator-test-kit_17",
+  "task": "MMI/display clocking wizard generating three outputs at 74.25 MHz, 148.5 MHz and 22.5792 MHz (HDMI pixel/link and audio) with an active-low reset.",
+  "identity": "MMI/display clocking wizard xilinx.com:ip:clkx5_wiz:1.0",
+  "written": {
+   "CONFIG.USE_RESET": "true",
+   "CONFIG.RESET_TYPE": "ACTIVE_LOW",
+   "CONFIG.CLKOUT_REQUESTED_OUT_FREQUENCY": "74.250,148.500,22.5792,100.000,100.000,100.000,100.000",
+   "CONFIG.CLKOUT_USED": "true,true,true,false,false,false,false"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "74.25 MHz",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "148.5 MHz",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "22.5792 MHz",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "three",
+    "kind": "number",
+    "accounted": "count"
+   }
+  ]
+ },
+ {
+  "source": "T1/e8d6300d/ip-configurator-test-kit_06",
+  "task": "AXI BRAM Controller in single-port mode for the boot-ROM mailbox.",
+  "identity": "axi_bram_ctrl xilinx.com:ip:axi_bram_ctrl:4.1",
+  "written": {
+   "CONFIG.SINGLE_PORT_BRAM": "1"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "single",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r46/cacd6878/ip-configurator-test-kit_09",
+  "task": "AXI4-Stream Data FIFO with a depth of 128 for the audio sample path.",
+  "identity": "AXI4-Stream Data FIFO xilinx.com:ip:axis_data_fifo:2.0",
+  "written": {
+   "CONFIG.FIFO_DEPTH": "128"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "AXI4-Stream",
+    "kind": "token",
+    "accounted": "identity"
+   },
+   {
+    "text": "128 for",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "B0/4c032e78/ip-configurator-test-kit_07",
+  "task": "Embedded Memory Generator backed by BRAM primitives for the mailbox RAM.",
+  "identity": "Block Memory Generator xilinx.com:ip:emb_mem_gen:1.0",
+  "written": {
+   "CONFIG.MEMORY_TYPE": "Single_Port_RAM"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": []
+ },
+ {
+  "source": "eval-r56-core/f4410beb/ip-configurator-test-kit_01",
+  "task": "Configure an AXI GPIO as a 2-bit, all-outputs port to drive the auto-IOB MSI-X enable lines.",
+  "identity": "AXI GPIO xilinx.com:ip:axi_gpio:2.0",
+  "written": {
+   "CONFIG.C_GPIO_WIDTH": "2",
+   "CONFIG.C_ALL_OUTPUTS": "1"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "2-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r67-target-a/54353fe7/ip-configurator-test-kit_02",
+  "task": "Single-bit AXI GPIO to drive the camera sensor-hub reset line.",
+  "identity": "AXI GPIO xilinx.com:ip:axi_gpio:2.0",
+  "written": {
+   "CONFIG.C_GPIO_WIDTH": "1",
+   "CONFIG.C_ALL_OUTPUTS": "1"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "Single",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r46/cacd6878/ip-configurator-test-kit_22",
+  "task": "Hardened ISP subsystem for the perception preprocessing path: enable 3 tiles, 12-bit basic data format on the ISP0 cores, ISP core clocks at ~600 MHz, and 4 live inputs on tile 2's ISP0.",
+  "identity": "isp_subsystem xilinx.com:ip:visp_ss:2.0",
+  "written": {
+   "CONFIG.C_TILE0_ENABLE": "true",
+   "CONFIG.C_TILE1_ENABLE": "true",
+   "CONFIG.C_TILE2_ENABLE": "true",
+   "CONFIG.C_TILE0_ISP0_BASIC_DATA_FORMAT": "12",
+   "CONFIG.C_TILE1_ISP0_BASIC_DATA_FORMAT": "12",
+   "CONFIG.C_TILE2_ISP0_BASIC_DATA_FORMAT": "12",
+   "CONFIG.C_TILE0_ISP0_CORE_CLK": "600",
+   "CONFIG.C_TILE1_ISP0_CORE_CLK": "600",
+   "CONFIG.C_TILE2_ISP0_CORE_CLK": "600",
+   "CONFIG.C_TILE2_ISP0_IO_TYPE": "2",
+   "CONFIG.C_TILE2_ISP0_LIVE_INPUTS": "4"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "ISP0",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "ISP0",
+    "kind": "token",
+    "accounted": "key"
+   },
+   {
+    "text": "3 tiles",
+    "kind": "number",
+    "accounted": "count"
+   },
+   {
+    "text": "12-bit",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "600 MHz",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "4 live",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "2",
+    "kind": "number",
+    "accounted": "identity"
+   }
+  ]
+ },
+ {
+  "source": "eval-r34/6e1d2431/ip-configurator-test-kit_15",
+  "task": "Single-clock SmartConnect routing 1 slave to 15 master ports for the auto-IOB peripheral block.",
+  "identity": "SmartConnect xilinx.com:ip:smartconnect:1.0",
+  "written": {
+   "CONFIG.NUM_CLKS": "1",
+   "CONFIG.NUM_SI": "1",
+   "CONFIG.NUM_MI": "15"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "1 slave",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "15 master",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "Single",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r53-core/9e2971b4/ip-configurator-test-kit_16",
+  "task": "Versal clocking wizard producing 100, 200 and 250 MHz outputs (data-path clocks) with an active-low reset, and the locked and reset signals exposed.",
+  "identity": "versal_clocking_wizard xilinx.com:ip:clkx5_wiz:1.0",
+  "written": {
+   "CONFIG.CLKOUT_REQUESTED_OUT_FREQUENCY": "100,200,250,100.000,100.000,100.000,100.000",
+   "CONFIG.RESET_TYPE": "ACTIVE_LOW",
+   "CONFIG.USE_RESET": "true",
+   "CONFIG.USE_LOCKED": "true",
+   "CONFIG.CLKOUT_USED": "true,true,true,false,false,false,false"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "100",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "200 and",
+    "kind": "number",
+    "accounted": "value"
+   },
+   {
+    "text": "250 MHz",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ },
+ {
+  "source": "eval-r66-core/45a2e2a8/ip-configurator-test-kit_04",
+  "task": "Reset-control AXI GPIO: all outputs, 32-bit, power-on default value 0xFFFFFFFF so every reset line is deasserted high.",
+  "identity": "AXI GPIO xilinx.com:ip:axi_gpio:2.0",
+  "written": {
+   "CONFIG.C_ALL_OUTPUTS": "1",
+   "CONFIG.C_GPIO_WIDTH": "32",
+   "CONFIG.C_TRI_DEFAULT": "0xFFFFFFFF",
+   "CONFIG.C_DOUT_DEFAULT": "0xFFFFFFFF"
+  },
+  "expected_unaccounted": [],
+  "expected_rows": [
+   {
+    "text": "0xFFFFFFFF",
+    "kind": "hex",
+    "accounted": "value"
+   },
+   {
+    "text": "32-bit",
+    "kind": "number",
+    "accounted": "value"
+   }
+  ]
+ }
+]

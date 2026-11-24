@@ -10,8 +10,6 @@ SPDX-License-Identifier: MIT
 
 - **Check ID**: TIMING-6
 - **Severity**: Critical Warning
-- **Group**: 1
-- **Priority**: 1
 - **Hierarchy Name**: Timing.Bad Practice
 - **First Release**: 2013.3
 
@@ -107,7 +105,7 @@ report_clock_interaction -delay_type min_max -file ./tmp/clock_interaction.rpt
 
 Run the suggested timing report to see the actual data paths:
 ```tcl
-report_timing -from [get_clocks <clk1>] -to [get_clocks <clk2>] -max_paths 10 -file ./tmp/cross_clock_paths.rpt
+report_timing -from [get_clocks <clk1>] -to [get_clocks <clk2>] -file ./tmp/cross_clock_paths.rpt
 ```
 
 Analyze the report:
@@ -119,18 +117,20 @@ Analyze the report:
 
 Ask these questions:
 
-**Q1: Are these clocks from independent sources?**
-- Different input ports → **Asynchronous**
-- Different PLLs/MMCMs → **Asynchronous** (usually)
-- Same PLL, different outputs → **Synchronous** (usually)
+**Q1: Is the design OOC?**
+- Do not resolve this when the design is OOC
 
-**Q2: Are the periods related?**
-- Exact multiple (e.g., 100MHz and 200MHz) → **Synchronous**
+**Q2: Are these clocks from independent sources?**
+- Different input ports → **Asynchronous - possible undefined external relationship**
+- Definition is on a pin → **Poorly defined constraint. Constraint fix can sometimes resolve. Resolve TIMING-1 to TIMING-5 first** 
+
+**Q3: Are the periods related?**
+- Exact multiple (e.g., 100MHz and 200MHz) → **Might be synchronous externally**
 - Irrational relationship (e.g., 100MHz and 133MHz) → **Asynchronous**
 
-**Q3: Does the design have CDC circuitry?**
+**Q4: Does the design have CDC circuitry?**
 - 2-FF synchronizers present → **Asynchronous**
-- Direct register-to-register → **Synchronous** (or design bug)
+- Direct register-to-register → **Might be Synchronous** (or design bug)
 
 #### Step 3: Apply Resolution
 
@@ -145,42 +145,33 @@ set_clock_groups -asynchronous \
     -group [get_clocks <clk2>]
 ```
 
+Provide alternative `set_max_delay -datapath_only` constraints
+```tcl
+# datapath_only constraints
+set_max_delay -datapath_only -from [get_clocks <clk1>] -to [get_clocks <clk2>]
+set_max_delay -datapath_only -from [get_clocks <clk2>] -to [get_clocks <clk1>]
+```
+
 **DO:**
-✅ Verify CDC synchronizers exist on all crossing paths
-✅ Use `set_max_delay -datapath_only` for asynchronous paths if needed
 ✅ Document why these clocks are asynchronous
+✅ Flag a warning that this will hide timing failures between related clocks from the user. 
+✅ When setting `set_clock_groups` recommend that a user runs `report_cdc` after to verify cross clock paths
+✅ Use `report_clock_interaction` to capture how many paths will now no longer be timed between the specfied clocks. Capture both directions and add it, break it out for setup and hold.
 
-**DO NOT:**
-❌ Mark clocks as asynchronous without verifying CDC circuits
-❌ Use this to hide timing failures between related clocks
 
 
-**CASE 2: Synchronous Clocks - Fix Clock Definitions**
-- **Type**: User Resolution
+**CASE 2: Fix Clock Definitions**
+- **Type**: Auto Resolution
 - **When**: Clocks should share a common primary but don't due to incorrect constraints
 
-```tcl
-# Example: Both clocks should derive from same PLL
-# Instead of separate create_clock commands, use create_generated_clock
+Resolve using TIMING-1, TIMING-2, TIMING-3.
 
-# BEFORE (causes TIMING-6):
-create_clock -period 10 -name clk1 [get_pins PLL/CLKOUT0]
-create_clock -period 20 -name clk2 [get_pins PLL/CLKOUT1]
-
-# AFTER (no TIMING-6):
-create_clock -period 10 -name clk_primary [get_ports CLK_IN]
-create_generated_clock -name clk1 -source [get_pins PLL/CLKIN] -master_clock clk_primary [get_pins PLL/CLKOUT0]
-create_generated_clock -name clk2 -source [get_pins PLL/CLKIN] -master_clock clk_primary [get_pins PLL/CLKOUT1]
-```
-
-**CASE 3: False Path Between Specific Crossings**
+**CASE 3: Might be synchronous**
 - **Type**: User Resolution
-- **When**: Most paths are valid but specific crossings are asynchronous
+- **When**: Clocks might have external relationship that is not seen by the tool
 
-```tcl
-# Set false path for specific control/status signals
-set_false_path -from [get_clocks clk1] -to [get_clocks clk2] -through [get_pins control_reg*/D]
-```
+Ask the user to define this relationship and give example constraints:
+**Show examples:**  https://docs.amd.com/r/en-US/ug906-vivado-design-analysis/TIMING-5-Invalid-Waveform-Redefinition-on-a-Clock-Tree
 
 **CASE 4: Create Waiver**
 - **Type**: User Resolution
@@ -205,9 +196,7 @@ create_waiver -type METHODOLOGY -id {TIMING-6} \
 * [ ] Methodology violation TIMING-6 is no longer present
 * [ ] Related TIMING-7 and TIMING-8 violations also resolved
 * [ ] `report_clock_interaction` shows proper clock relationships
-* [ ] CDC paths have appropriate synchronization circuits
 * [ ] Timing analysis properly includes or excludes clock domain crossings as intended
-* [ ] No new unresolved methodology warnings created
 
 **Verification Commands:**
 ```tcl

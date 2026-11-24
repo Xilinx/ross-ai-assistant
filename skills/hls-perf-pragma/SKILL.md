@@ -4,6 +4,7 @@ description: Vitis HLS Performance Pragma — calculate target_ti from a through
 license: MIT
 argument-hint: <throughput-target e.g. "140 FPS" | "500 Msps" | "1 GFLOPS" | "minimize II">
 metadata:
+  stage: beta
   author: "Sai Akhil Ayyagari"
   version: "1.0.0"
 ---

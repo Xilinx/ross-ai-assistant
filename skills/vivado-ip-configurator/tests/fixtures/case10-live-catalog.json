@@ -1,0 +1,9 @@
+{
+  "task": "Concat block that merges 22 interrupt sources into one interrupt vector",
+  "captured_from": "Vivado 2026.1 build 6511674 live catalog",
+  "candidates": [
+    {"vlnv": "xilinx.com:ip:axi_intc:4.1", "display_name": "AXI Interrupt Controller"},
+    {"vlnv": "xilinx.com:ip:xlconcat:2.1", "display_name": "Concat"},
+    {"vlnv": "xilinx.com:inline_hdl:ilconcat:1.0", "display_name": "Inline Concat"}
+  ]
+}

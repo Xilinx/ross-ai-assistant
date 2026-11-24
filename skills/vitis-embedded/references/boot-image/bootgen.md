@@ -90,7 +90,8 @@ the BIF and validates the image.
 
 ## Where boot components come from
 
-- **FSBL / PLM, PMUFW** — built by `vitis-embedded` (boot domain), or
+- **FSBL / PLM, PMUFW** — built by `vitis-embedded` in the platform's boot domains (PMUFW only when the ZynqMP
+  platform is created with `is_pmufw_req=True`; it is then `export/<plat>/sw/boot/pmufw.elf`), or
   templates `zynqmp_fsbl`, `zynqmp_pmufw`, `versal_plm` via `vitis-embedded`.
 - **Application ELFs** — built by `vitis-embedded`.
 - **Bitstream / design PDI** — from Vivado / the platform XSA.

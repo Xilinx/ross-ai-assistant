@@ -10,7 +10,7 @@ and repeats until your stop condition is met. It never modifies the model.
 
 The points in [Board access](index.md#board-access) apply to this workflow.
 For the manual procedure this workflow automates, see
-[the Vitis AI documentation](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/model_compilation/ep-options.html).
+[the Vitis AI documentation](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/model_compilation/ep-options.html).
 
 ## When to use
 
@@ -170,7 +170,7 @@ When it stops, it states which condition fired and the numbers behind it.
 | Argument | Required | Default | Description |
 | --- | --- | --- | --- |
 | `--model <path>` | Yes | none | ONNX model to optimize. |
-| `--device <device-id>` | No | none | Target device, such as `ve2-xc2ve3858`. If omitted, the workflow takes it from `--vitisai-config`, or asks. It never assumes a device. See [Model Compilation](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/model_compilation/compiling.html). |
+| `--device <device-id>` | No | none | Target device, such as `ve2-xc2ve3858`. If omitted, the workflow takes it from `--vitisai-config`, or asks. It never assumes a device. See [Model Compilation](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/model_compilation/compiling.html). |
 | `--vitisai-config <path>` | No | generated | An existing configuration to start from. See [Existing configuration](#existing-configuration). |
 | `--board` | No | off | Declares that a board run is available, which enables the inference time objective. Takes no value; configure the board connection as described in [Board access](index.md#board-access). |
 | `--work-dir <path>` | No | `./flag_opt_work` | Where iteration artifacts and the run record are written. |
@@ -214,7 +214,7 @@ These configuration fields are tuned:
 | `preferred_data_storage` | auto | Yes, when convolution or pooling operators dominate the model. |
 
 For the meaning and permitted values of each, see
-[Vitis AI EP Configuration File](https://vitisai.docs.amd.com/projects/gen2/en/latest/docs/model_compilation/ep-config-file.html).
+[Vitis AI EP Configuration File](https://vitisai.docs.amd.com/projects/advanced-micro-devices-63-gen2/en/latest/docs/model_compilation/ep-config-file.html).
 
 Alongside these, the workflow explores front-end compiler options(fe_args). These are a
 larger set than the configuration fields above, and the skill selects from them based

@@ -5,6 +5,11 @@ SPDX-License-Identifier: MIT
 
 # Cross-Simulator Arbitration
 
+<!-- Methodology ask with no design attached: do not write the report by hand.
+Run `S advise arbitration --out outputs/<case>/report.md --request "<ask>" --contract --backend XSim`,
+do what its `next` says (for example vivado_doc_search), add findings with `--append`, and end
+with its contract JSON. -->
+
 Decide whether a failure belongs to the design or to the simulator by running
 the same test on more than one backend. This is an additional experiment, not
 a backend substitution.

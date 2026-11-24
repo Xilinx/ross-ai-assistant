@@ -1,182 +1,405 @@
 # Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
-release_tag: 2026.10.1
-generated_at: '2026-10-23T15:51:37Z'
+release_tag: 2026.11.1
+generated_at: '2026-11-24T18:48:50Z'
 skills:
-- name: hls-architect
-  description: Convert input code to a multi-stage HLS dataflow, validate with the
-    other hls skills, then hand off to optimize.
-  path: skills/hls-architect
+- name: esw-gen-machine-conf
+  path: skills/esw-gen-machine-conf
+  description: Generate and validate a Yocto machine configuration from an existing
+    System Device Tree using gen-machine-conf parse-sdt, including machine naming,
+    templates, output/config locations, Kconfig controls, PL overlays, domains, multiconfig,
+    and local.conf updates. The SDT may be an unpacked directory, a local archive,
+    or a URL, which is passed to --hw-description verbatim. Use when the user asks
+    to run gen-machine-conf, convert an SDT directory, SDT tarball, or SDT download
+    URL into Yocto machine metadata, inspect its global or parse-sdt options, customize
+    generation, or validate generated output. Requires an already sourced Yocto environment;
+    use $esw-yocto-source-setup when it is not active.
   version: 1.0.0
+  stage: beta
+  content_sha256: 4e868341cdecd5c01bdb1069ab955d8d65fce42046104c83fbecf1ea32842f9a
+- name: esw-jtag-boot
+  path: skills/esw-jtag-boot
+  description: Load and run an AMD Embedded Development Framework (EDF) boot image
+    on a Versal, Versal Net (versal-net), Versal Gen 2 (versal-2ve-2vm), Zynq UltraScale+
+    MPSoC (zynqmp) or Zynq-7000 (zynq) board over JTAG through a local or remote hw_server,
+    without writing flash. On AMD evaluation boards the JTAG connection is the USB
+    cable to the board's JTAG/UART port. Use when the user asks to boot, run, test
+    or load a build on a board over JTAG, load boot.bin or a boot PDI with XSDB, prepare
+    a hardware boot command, or diagnose device programming failures. Use also when
+    reviewing JTAG helper logs or deciding whether IMAGE_DOWNLOADED or IMAGES_LOADED
+    proves that U-Boot or Linux booted. Also discovers companion Zynq/ZynqMP ELF files
+    from a supplied boot.bin path. Reports the exact commands used. To write the image
+    to flash use $esw-program-flash; for missing boot artifacts use $esw-yocto-build;
+    for emulation use $esw-runqemu.
+  version: 1.0.0
+  stage: beta
+  content_sha256: 9e07b2c87c210465589fe531c6bcc0ddd787a6f83736f71e7fd44ae8e661a158
+- name: esw-program-flash
+  path: skills/esw-program-flash
+  description: Write (flash) a boot image to the QSPI or OSPI flash on an AMD Zynq-7000,
+    ZynqMP, Versal or Versal Gen 2 board over its JTAG connection, using the Vitis
+    program_flash tool through a local or remote hw_server. On AMD evaluation boards
+    the JTAG connection is the USB cable to the board's JTAG/UART port. Use when the
+    user asks to flash, program, write or copy an image (.bin) to the board's flash,
+    or to make the board boot from its own flash. Use also when reviewing program_flash
+    logs or deciding whether Flash Operation Successful and verification prove that
+    Linux booted from flash. To run an image once over JTAG without writing flash,
+    use $esw-jtag-boot.
+  version: 1.0.0
+  stage: beta
+  content_sha256: 566fb23082d4f6c4b89afefcf1797824be49a01e976182668083fdad7eee2c7d
+- name: esw-runqemu
+  path: skills/esw-runqemu
+  description: Boot AMD EDF images in QEMU when validating WIC userspace without hardware,
+    pairing board boot artifacts with a common-machine rootfs, or troubleshooting
+    runqemu startup, serial console, and networking failures. Supports Yocto build
+    shells and the EDF SDK shipped with Vitis.
+  version: 1.0.0
+  stage: beta
+  content_sha256: df5df428fd802257e94f71c36fac9e1465da0f5f5145cb353097f2722bbb9cd0
+- name: esw-xsa-to-sdt
+  path: skills/esw-xsa-to-sdt
+  description: Generate a System Device Tree (SDT) from a Xilinx Support Archive (XSA)
+    for AMD Zynq, ZynqMP, Versal, Versal Gen 2, and Versal-Net platforms. SDTGen has
+    limited support for MicroBlaze and MicroBlaze V and does not generate Linux device
+    trees for either. Use when the user asks to generate an SDT, run sdtgen, or turn
+    an XSA exported by Vivado into a device tree. Produces the SDT directory consumed
+    by the downstream gen-machine-conf step. For a runtime device tree overlay (.dtbo)
+    to reload the PL, use /segcfg-petalinux-build or /segcfg-yocto-build instead.
+  version: 1.0.0
+  stage: beta
+  content_sha256: 08770c74f6a1a870e2ae8a2e988626cb085e6a984a6a6e3e4e7e5b18b626ca0f
+- name: esw-yocto-build
+  path: skills/esw-yocto-build
+  description: Run AMD EDF (Embedded Development Framework) Yocto/BitBake builds and
+    inspect or modify resulting WIC images, covering explicit target and MACHINE selection,
+    the common-machine rootfs versus board-machine boot-artifact split, multiconfig
+    targets, DISTRO overrides, long-running detached builds, WIC contents, and failure
+    triage. Use when the user asks to build, bitbake, or rebuild an EDF image, packagegroup-boot-artifacts,
+    boot.bin, OSPI/QSPI image, SDK or container target; inspect or modify a .wic/.wic.xz
+    image; check what EDF targets are available; or diagnose a failed EDF build. Requires
+    an already sourced Yocto environment; use $esw-yocto-source-setup when it is not
+    active, and $esw-gen-machine-conf to create a machine that does not exist yet.
+  version: 1.0.0
+  stage: beta
+  content_sha256: 618710ea0b271d5c32dea657f06fa30fc7874b6ab8d0f83a720ca83688e9921d
+- name: esw-yocto-source-setup
+  path: skills/esw-yocto-source-setup
+  description: Fetch and initialize a Yocto/OpenEmbedded build environment, including
+    AMD/Xilinx layer availability and the gen-machine-conf command. Use when the user
+    asks to get/clone Yocto sources, source edf-init-build-env, prepare a Yocto shell,
+    select or create a build directory, check required layers, or make gen-machine-conf
+    and bitbake available. Do not parse an SDT or generate a machine configuration;
+    hand that work to $esw-gen-machine-conf. Do not run bitbake; hand builds to $esw-yocto-build
+    in the same initialized shell.
+  version: 1.0.0
+  stage: beta
+  content_sha256: acfe9930610399a19ed8550724edf840400edc59780bf2ab5bfd9760dae38e7d
+- name: hls-architect
+  path: skills/hls-architect
+  description: HLS Design Architecture — convert input code to multi-stage HLS dataflow,
+    validate with hls* skills, then hand off to optimize.
+  version: 1.0.0
+  stage: beta
+  content_sha256: f2b9fdec05bea6d8f1de0d29975ad64348a2104e6adffbd1e8a460f8ef749675
 - name: hls-array-to-stream
+  path: skills/hls-array-to-stream
   description: 'Analyze whether a given C/C++ code snippet follows the recommended
     coding style for array-to-stream conversion in Vitis HLS. Keywords: array, stream,
     HLS, pragma, ap_fifo, axis, interface'
-  path: skills/hls-array-to-stream
-  version: 1.0.0
+  version: 1.0.1
+  stage: beta
+  content_sha256: 38a03e141aecf3ef6072c84a95fb4da028319241c19c0d753bb192fa6df6e00c
 - name: hls-burst-inference
+  path: skills/hls-burst-inference
   description: 'Analyze whether burst inference optimization can be applied to a given
     C/C++ code snippet in Vitis HLS. Keywords: burst, HLS, pragma, m_axi, AXI, memory,
     optimization'
-  path: skills/hls-burst-inference
-  version: 1.0.0
+  version: 1.0.1
+  stage: beta
+  content_sha256: 0ebd7cc980f7ada9c7e005d5a8879b9d4f446d4a3f9fc0ed27a31afd565f2bc8
 - name: hls-component-basic-info
+  path: skills/hls-component-basic-info
   description: Get Vitis HLS component basic informations for a given HLS component.
     The basic informations includes component name, source files, testbench files,
     include paths and top function
-  path: skills/hls-component-basic-info
   version: 1.0.0
+  stage: beta
+  content_sha256: c8b508ac9d66c393c54d57dd03903a76dce4df2fdf482cb12fe8c929890bac13
 - name: hls-cosim-report
-  description: Get Vitis HLS cosimulation report information for a given HLS component.
   path: skills/hls-cosim-report
+  description: Get Vitis HLS cosimulation report information for a given HLS component.
   version: 1.0.0
+  stage: beta
+  content_sha256: fb505dc90f77a6e533a5763d887e8b7a3072082bfd3988c653cf83f1b5e855fb
 - name: hls-dataflow
+  path: skills/hls-dataflow
   description: 'Analyze whether a given C/C++ code snippet contains a canonical dataflow
     region for Vitis HLS. Keywords: dataflow, HLS, pragma, canonical, stream, PIPO,
     hls::task'
-  path: skills/hls-dataflow
-  version: 1.0.0
+  version: 1.0.1
+  stage: beta
+  content_sha256: 3a9e242d09e74671ab4cb41f396eee74973ea418b17686eb43ef6378f4897742
 - name: hls-dataflow-infos
+  path: skills/hls-dataflow-infos
   description: Get Vitis HLS dataflow process/channel informations for a given HLS
     component.
-  path: skills/hls-dataflow-infos
   version: 1.0.0
+  stage: beta
+  content_sha256: 8b304b05efbc186f00f496d1da951c36f5dc7e720ca9f83abe47aeb7c7ed9431
 - name: hls-flattenable
-  description: Analyze whether a given C/C++ code snippet contains a flattenable loop
-    nest for Vitis HLS.
   path: skills/hls-flattenable
-  version: 1.0.0
+  description: 'Analyze whether a C/C++ loop nest is flattenable for Vitis HLS, and
+    rewrite a non-flattenable loop nest into a flattenable one. Use when the user
+    asks if loops can be flattened, wants to make/convert/restructure/fix a loop nest
+    so it flattens (or so the inner pipeline does not restart per outer iteration),
+    before adding LOOP_FLATTEN, or when HLS reports the nest was not flattened (HLS
+    200-957, 200-1991, 200-1992). Keywords: loop flatten, LOOP_FLATTEN, flattenable,
+    nested loop, loop nest, perfect loop nest, merge loops, collapse loops, rewind'
+  version: 1.0.1
+  stage: beta
+  content_sha256: a37897636107a0af8146e03412c9df382db5e53e1738c4731f0504182ac1d671
 - name: hls-ii-diagnose
+  path: skills/hls-ii-diagnose
   description: Diagnose the root cause of an II (initiation interval) violation in
     a synthesized Vitis HLS component, classify the bottleneck, and cite the supporting
     evidence — without modifying source or running flows.
-  path: skills/hls-ii-diagnose
   version: 1.0.0
+  stage: beta
+  content_sha256: 2c6b8e526b6a09685cad2c9f55dbd52032d400a02085106e30036b68bd6bf0b8
 - name: hls-impl-report
+  path: skills/hls-impl-report
   description: Get Vitis HLS implementation report information (post-route clock,
     resource utilization,Fail Fast table gives utilization percentages) for a given
     HLS component.
-  path: skills/hls-impl-report
   version: 1.0.0
+  stage: beta
+  content_sha256: 273ac3eef18887438818c7eb52b003841e1d9b89d3f77faa5e64e3d449c27f6d
 - name: hls-line-buffer
-  description: Fill the HLS line-buffer and window-buffer gap for stencil kernels,
-    including TOTAL_ITER drain and verification. Use when generated buffer code misses
-    the drain or the check.
   path: skills/hls-line-buffer
+  description: HLS line/window buffer for stencil kernels. The LLM generates the structure;
+    this skill fills the gap on TOTAL_ITER drain and verification.
   version: 1.0.0
+  stage: beta
+  content_sha256: f851d0ebe534cd1812c855a9de07376c6042cab664a433e4b82b1e7721916a30
 - name: hls-matlab-to-cpp
+  path: skills/hls-matlab-to-cpp
   description: Convert MATLAB sample-based code to plain C++ frame-based loops — analyze
     algorithm, generate C++ that compiles with g++, verify against MATLAB golden,
     then hand off to /hls-architect for HLS dataflow architecture.
-  path: skills/hls-matlab-to-cpp
   version: 1.0.0
+  stage: beta
+  content_sha256: 74f93547f51ae34f9d9e6e16535bed612d54b73b3a8bf03828e4d9734a5b7aef
 - name: hls-optimize
+  path: skills/hls-optimize
   description: Iteratively optimize the HLS kernel against a given criteria (e.g.
     minimize latency, reduce DSP usage, maximize throughput) by applying and measuring
     pragma and algorithmic changes.
-  path: skills/hls-optimize
-  version: 1.0.0
+  version: 1.0.2
+  stage: beta
+  content_sha256: 68f14fd0847de71f894779145195ec697aecbf0bee29ba764066cf66decad17d
 - name: hls-perf-pragma
+  path: skills/hls-perf-pragma
   description: Vitis HLS Performance Pragma — calculate target_ti from a throughput
     target, cascade through architecture and loops, and present the pragma placement
     table for user confirmation. Run this before placing any
-  path: skills/hls-perf-pragma
   version: 1.0.0
+  stage: beta
+  content_sha256: de9333f693b3970cfc719dfecd66f624be13b9de64d9cfd87a27ffecef610dac
 - name: hls-pipe-decomp
+  path: skills/hls-pipe-decomp
   description: 'Decompose a Vitis HLS pipelined region that accesses many streams
     into a linear chain of smaller sub-pipelines inside a dataflow region, to reduce
     pipeline-control complexity and improve timing. Keywords: pipeline, dataflow,
     stream, FIFO, timing, frequency, split pipeline, decompose'
-  path: skills/hls-pipe-decomp
-  version: 1.0.0
+  version: 1.0.1
+  stage: beta
+  content_sha256: 15d601911516214bba2cb039b5695c0b19494d0f422b6ac7610a9ed8c8674230
 - name: hls-pipeline
+  path: skills/hls-pipeline
   description: Guide users on how to apply pipeline pragma in C/C++ regions, analyze
     region validity for pipelining, and configure II, rewind, and style options
-  path: skills/hls-pipeline
-  version: 1.0.0
+  version: 1.0.1
+  stage: beta
+  content_sha256: 4dc21742bc82bd856bc006b414c46fcfc5eadf958092091e3805bfec1efc9c91
 - name: hls-pragma-scope
+  path: skills/hls-pragma-scope
   description: Defines HLS pragma scope rules. Must be referenced when analyzing HLS
     designs or generating any code for HLS designs to ensure pragmas are placed in
     the correct scope.
-  path: skills/hls-pragma-scope
   version: 1.0.0
+  stage: beta
+  content_sha256: e2008918b47ee775c3db305b4d88d5c5dd847781f87f501b3da92b29ad7645a3
 - name: hls-run-flow
+  path: skills/hls-run-flow
   description: Run HLS Flow including C Simulation (csim), C Synthesis (csynth), C/RTL
     Co-Simulation (cosim), Implementation (impl).
-  path: skills/hls-run-flow
-  version: 1.0.0
+  version: 1.0.1
+  stage: beta
+  content_sha256: 99997d12382b290a371fc67201488e08ff06e7e0e0ac9e2d50161a9f83761847
 - name: hls-stencil-pattern
+  path: skills/hls-stencil-pattern
   description: 'Analyze whether stencil pattern optimization can be applied to a given
     C/C++ code snippet in Vitis HLS. Keywords: stencil, HLS, pragma, array_stencil,
     window, optimization'
-  path: skills/hls-stencil-pattern
-  version: 1.0.0
+  version: 1.0.1
+  stage: beta
+  content_sha256: 667b1feb1ef68fff2742aa721d9d56166d4bd1f13c07adc568cfaf1909797a2b
 - name: hls-synth-report
+  path: skills/hls-synth-report
   description: Get Vitis HLS synthesis report information (synth report, pragma report,
     and filtered synthesis log) for a given HLS component.
-  path: skills/hls-synth-report
   version: 1.0.0
+  stage: beta
+  content_sha256: 93210b257a555a60be030d4cfeae5c93750afea0f4ef8208fa150e77832b2481
 - name: hls-synthesizable
-  description: Analyze whether user code is synthesizable for HLS
   path: skills/hls-synthesizable
-  version: 1.0.0
+  description: Analyze whether user code is synthesizable for HLS
+  version: 1.0.1
+  stage: beta
+  content_sha256: e1de647dee5b95fb4fb0e1658849c5680c10b139c88f71e74a64c41488cab70a
+- name: hw-ddrmc-debug
+  path: skills/hw-ddrmc-debug
+  description: 'Debug DDR memory controller (DDRMC) calibration and health on live
+    AMD Versal devices. Lists DDRMC controllers, reports per-stage calibration PASS/FAIL,
+    analyzes per-byte-lane calibration-window margins, renders margin/eye visualizations,
+    and diagnoses calibration failures. Primary path is Vivado MCP (get_hw_ddrmcs
+    / report_hw_ddrmc); ChipScoPy MCP (chipscope_ddr / chipscope_ddr_eye_scan) is
+    the fallback and the only path for a true 2D eye scan. Use when the user asks
+    to "check DDR calibration", "DDR status", "DDR health", "calibration failed",
+    "DDR margins", "DDR eye scan", "run DDR eye scan", "byte lane margins", "DDRMC
+    status", "memory calibration", "DDR window analysis", or "check DDR controller".
+
+    '
+  version: 1.3.0
+  stage: beta
+  content_sha256: e09fa0809d84010c35b83220cf8afad7692972fb15999dd5ecc2acb4163e7852
+- name: hw-ibert-gt-debug
+  path: skills/hw-ibert-gt-debug
+  description: 'Debug serial transceiver links and run eye/YK scans on live FPGA/SoC
+    devices via ChipScoPy MCP tools. Supports GTY/GTYP eye scans (BER heatmap) and
+    GTM YK scans (SNR waveform). Create and configure loopback or external links,
+    sweep TX/RX equalization, run 2D eye scans, and assess link margin. Produces inline
+    PNG visualizations and exportable scan data. Use when user asks to "run eye scan",
+    "check signal quality", "create IBERT link", "show eye diagram", "check BER",
+    "IBERT status", "GT link health", "tune TX emphasis", "run YK scan", "check SNR",
+    "IBERT loopback test", or "serial link debug".
+
+    '
+  version: 1.3.4
+  stage: beta
+  content_sha256: ef9a2f3f0a0554619717c7f4c953b217e1d21e3f445be5393e98c7747b57c305
 - name: hw-ila-debug
+  path: skills/hw-ila-debug
   description: Interact with ILA debug cores via vivado-mcp or chipscope-mcp. Discover
     cores, configure triggers, arm, capture, upload, export waveform data (CSV/VCD),
     and analyze results. ILA in vivado-mcp supports every device family supported
     by Vivado. chipscope-mcp supports Versal only. Use when user asks to "capture
     ILA data", "set ILA trigger", "trigger on signal", "export waveform", "arm ILA",
     or "trigger immediately".
-  path: skills/hw-ila-debug
-  version: 1.2.2
+  version: 1.2.4
+  stage: beta
+  content_sha256: cb84c8782b2c27ca1a283d0c7f677d978b3bfd8a2e5e937c2cd7b44cbcb14022
+- name: hw-noc-debug
+  path: skills/hw-noc-debug
+  description: 'Debug Versal NoC issues using chipscope-mcp and sysdbg_noc with Vivado
+    MCP for design correlation. Autonomous 3-step pipeline: connect-program-scan →
+    design-preparation → analysis-and-root-cause. Use when user mentions NoC errors,
+    AXI failures, decode errors, timeouts, SLVERR/DECERR, or unexplained hangs on
+    Versal.'
+  version: 1.1.0
+  stage: beta
+  content_sha256: 73bc9222225354ef04622340b59a8689dbf4facfb54261726c743d2a526336c2
+- name: hw-noc-perfmon
+  path: skills/hw-noc-perfmon
+  description: 'Debug Versal NoC performance issues using chipscope-mcp (chipscope_noc,
+    chipscope_noc_perfmon). Autonomous pipeline: connect-program-scan → collect user-supplied
+    NoC artifacts → site selection → single-shot monitor setup → live measurement/plotting
+    → analysis-and-correlation. Use when user mentions NoC, bandwidth, latency, QoS,
+    Best Effort, Isochronous, low latency, or unexplained bottlenecks/slow-downs on
+    Versal NoC designs.'
+  version: 3.0.0
+  stage: beta
+  content_sha256: abac85df74807f99c6894f55bdee7a8f2f33a056a63fe03ce7cc90159f752974
+- name: hw-pcie-link-debug
+  path: skills/hw-pcie-link-debug
+  description: 'Debug CPM5 PCIe link bring-up and link training on live AMD Versal
+    Premium devices via ChipScoPy MCP. Gates on a live CPM5 controller, reports LTSSM
+    link state / PHY-ready handshake / DPLL / sticky interrupts via sysdbg_analyze(subsystem=''cpm''),
+    reads the PCIe link-debug core''s LTSSM state transition graph via chipscope_pcie,
+    inspects PCIe configuration space via chipscope_memory, and delegates GT eye scans
+    to hw-ibert-gt-debug. Use when the user asks to "check PCIe link", "PCIe status",
+    "LTSSM state", "PCIe link training",   "PCIe config space", "PCIe speed", "PCIe
+    width", "PCIe link errors", "link degradation", "PCIe Gen3/Gen4/Gen5", "PCIe BAR",
+    "CPM5 PCIe", or "debug PCIe link failure".
+
+    '
+  version: 2.0.1
+  stage: beta
+  content_sha256: 8b9ed80b1f367ef95dbe341061905fe778caa7ac6eed93f0f0e010dfb968e290
 - name: hw-vio-debug
+  path: skills/hw-vio-debug
   description: Interact with VIO debug cores via vivado-mcp or chipscope-mcp. Read
     input probes, drive output probes, monitor activity, and reset outputs. vivado-mcp
     supports all device families. chipscope-mcp supports Versal only. Use when user
     asks to "read VIO inputs", "drive VIO output", "assert <signal> via VIO", "check
     signal activity", "what is the value of <signal>", or "monitor <probe>".
-  path: skills/hw-vio-debug
-  version: 1.2.3
+  version: 1.2.4
+  stage: beta
+  content_sha256: 74026428883afdb216be2ea0efa22f05858e01e85c2cc275b681495b59434477
 - name: segcfg-aie
+  path: skills/segcfg-aie
   description: Guide AI Engine (AIE) integration with Segmented Configuration. Use
     when designing or building a Versal design that includes AI Engines alongside
     Segmented Configuration, covering XSA export, PDI packaging, Vitis v++ hardware
     and emulation flows, and xclbin metadata.
-  path: skills/segcfg-aie
   version: 1.0.0
+  stage: beta
+  content_sha256: 2a116aac486b890747cab996b9103dce672a16688ce0cae5d1c03bb602420c78
 - name: segcfg-design-check
+  path: skills/segcfg-design-check
   description: Run Segmented Configuration DRCs and pr_verify design verification
     checks. Use when validating a design for IO bank conflicts, clocking issues, DDRMC
     sharing violations, or when comparing routed checkpoints for PL reload compatibility.
-  path: skills/segcfg-design-check
   version: 1.0.0
+  stage: beta
+  content_sha256: fc89771e021d3cce1651df439c09ebadd55710a367c9b7caf67e7bbf9ed9bd1e
 - name: segcfg-design-considerations
+  path: skills/segcfg-design-considerations
   description: Understand Segmented Configuration design constraints for IO banks,
     CPM/PCIe use cases, and Gen 2 device-specific features (VCU, ISP, ASU, DPDC, 10GbE).
     Use before finalizing a design that straddles PS and PL domains.
-  path: skills/segcfg-design-considerations
   version: 1.0.0
+  stage: beta
+  content_sha256: 7786ba715484caf863112de21a8be4bc5a31a880146b1e7d8c34dbbfcfee8b0b
 - name: segcfg-dfx
+  path: skills/segcfg-dfx
   description: Explain how Segmented Configuration interacts with Dynamic Function
     eXchange (DFX) on AMD Versal devices. Use this if someone asks about using DFX
     with Segmented Configuration.
-  path: skills/segcfg-dfx
   version: 1.0.0
+  stage: beta
+  content_sha256: d901b8b532fb07e117ed5c9ad6be8eee6742022518878ba9bbec93af204ed67d
 - name: segcfg-hw-manager
+  path: skills/segcfg-hw-manager
   description: Program Versal hardware using Vivado Hardware Manager in Segmented
     Configuration mode. Use when programming boot.pdi and pld.pdi through the Vivado
     GUI, programming configuration flash memory, or enabling the segmented configuration
     dialog for first-generation Versal devices.
-  path: skills/segcfg-hw-manager
   version: 1.0.0
+  stage: beta
+  content_sha256: 52cbad11f73fceddc703284b296264ef390dc98bcd9ce0ceaf1a6ffeb4c69f5b
 - name: segcfg-overview
+  path: skills/segcfg-overview
   description: Explain Segmented Configuration concepts for AMD Versal devices — what
     it is, why it exists, the two-phase boot model, supported device families, and
     how it compares to standard boot. Use this if someone asks what Segmented Configuration
     is, how it works, or whether it applies to their device.
-  path: skills/segcfg-overview
   version: 1.0.0
+  stage: beta
+  content_sha256: f3b7a234553a2e60dc46fa7fab4d8b3c382994df3b33c7f40dee8135387de796
 - name: segcfg-pl-reload
+  path: skills/segcfg-pl-reload
   description: 'Guides the Versal Segmented Configuration PL reload workflow for creating
     and validating multiple independently compiled `pld.pdi` variants while keeping
     `boot.pdi` fixed. Use when a user asks how to set up a golden PL reload design,
@@ -185,9 +408,11 @@ skills:
     or debug `unique_id` / `parent_unique_id` mismatches rejected by PLM.
 
     '
-  path: skills/segcfg-pl-reload
   version: 1.0.0
+  stage: beta
+  content_sha256: bf9d800517d47406cd2306258efd3819158629d7e3459e234ef94b18deb93118
 - name: vai-aie-compiler-oriented-optimizations
+  path: skills/vai-aie-compiler-oriented-optimizations
   description: Performance optimization guide for custom AIE kernel development with
     Peano. Covers restrict pointers, DM bank annotations, loop pragmas, loop hints,
     software pipelining (pre-RA vs post-RA), loop versioning, function structure,
@@ -198,9 +423,11 @@ skills:
     AIE kernel C++ code for throughput, when diagnosing pipelining failures or high
     II, or when interpreting build-log warnings and missed-opportunity remarks from
     the AIE backend.
-  path: skills/vai-aie-compiler-oriented-optimizations
   version: 6.3.0
+  stage: beta
+  content_sha256: 6ccfd10f878a5df941aaa47ba3368f0e6591829da8bfb7a3e1548b60b357176f
 - name: vai-aie-kernel-development
+  path: skills/vai-aie-kernel-development
   description: Comprehensive AIE kernel development guide covering architecture-level
     optimization techniques, result analysis, and compiler-independent patterns. Covers
     loop splitting for register pressure, in-place updates, signedness optimization,
@@ -210,60 +437,76 @@ skills:
     math-pattern to API lookup). For Peano compiler-specific pragmas, loop hints,
     software pipelining details, and optimization remarks, see the vai-aie-compiler-oriented-optimizations
     skill.
-  path: skills/vai-aie-kernel-development
   version: 6.3.0
+  stage: beta
+  content_sha256: ea787ba411ba7a3d64618f574722b3cd6cbc25d6b895244086284253b17ac6de
 - name: vai-custom-op
+  path: skills/vai-custom-op
   description: Orchestrate multi-agent parallel development of multiple custom AIE
     operators for VAIML. Handles workspace partitioning, spawning worker agents, relaying
     insights between workers, gating integration on verified results, and serializing
     the final model stitching. Use when developing 2+ custom ops in parallel, when
     coordinating multi-agent custom op work, or when integrating multiple validated
     custom ops into a single model.
-  path: skills/vai-custom-op
   version: 6.3.0
+  stage: beta
+  content_sha256: 5983b69e4fa9eeea5cbc5873982161538ad92f476d420c8a879626867a0cd2a1
 - name: vai-custom-op-candidates
-  description: Find customOperator optimization chains and their ONNX node boundaries
   path: skills/vai-custom-op-candidates
+  description: Find customOperator optimization chains and their ONNX node boundaries
   version: 6.3.0
+  stage: beta
+  content_sha256: 7d3ac633c92b9fd4c8ba0bf710dcf25db8f567e6f382166165a430b8339d3eb9
 - name: vai-custom-op-implementation
+  path: skills/vai-custom-op-implementation
   description: 'End-to-end custom AIE operator development for VAIML: extract a subgraph
     from an ONNX model, develop a custom kernel and tiling, validate with x86sim against
     a CPU reference, and re-integrate the custom op back into the full model. Use
     when the user wants to create a custom op, write a kernel, define tiling, compile
     for AIE, simulate with x86sim, or integrate a custom op into a model.'
-  path: skills/vai-custom-op-implementation
   version: 6.3.0
+  stage: beta
+  content_sha256: 0cf9cd212e78bfd3cf365fa98f8dc153d4b4de7ff0ee0a4e6e1d3b38683969f1
 - name: vai-dequantize-model
+  path: skills/vai-dequantize-model
   description: Strip quantization from an ONNX model to produce a non-quantized (float)
     version suitable for re-quantization. Removes QDQ pairs, Extended QDQ operators,
     and BFP quantization nodes while preserving the computational graph structure.
     Supports legacy QDQ (vint8), Extended QDQ (EQDQ/bf16/fp16), and MX6/BFP quantization.
-  path: skills/vai-dequantize-model
   version: 6.3.0
+  stage: beta
+  content_sha256: 9c0e0d9d2e8e066710ab8c7224e46506d127ae85bc2ce215a3a720ae0fd7b1a6
 - name: vai-fe-args
+  path: skills/vai-fe-args
   description: Determine the correct fe_args and vaiml_config flags for a mixed-precision
     ONNX model based on its quantization pattern. Analyzes model structure to identify
     island topology, quantization types, and required compiler features. Targets single
     NPU partition (embedded Telluride scenario).
-  path: skills/vai-fe-args
   version: 6.3.0
+  stage: beta
+  content_sha256: b26b0e70b829bccda85c562dc9991d8168111da9640c8d892f32f9fe49111591
 - name: vai-ffn-quantization
+  path: skills/vai-ffn-quantization
   description: 'Identify and quantize Feed-Forward Network (FFN) layers in ONNX models.
     An FFN is any MatMul+Add (weight+bias) linear layer: MLP projections, attention
     QKV projections, attention output projections, and classifier heads. This skill
     detects all FFN patterns, groups them into blocks, and applies per-layer INT8
     quantization.'
-  path: skills/vai-ffn-quantization
   version: 6.3.0
+  stage: beta
+  content_sha256: f425ec681e252aff1271493f7856142d33fbc6e23df769c9cc9c853b8e169ed4
 - name: vai-flag-configuration
+  path: skills/vai-flag-configuration
   description: Iteratively improve the VAIML compilation configuration for an ONNX
     model. Analyzes the model and the flag catalog, proposes a non-default vitisai_config.json,
     compiles it, validates NPU offload (and board inference time when available),
     and loops until the user's stop condition is met. Use when the user wants to tune
     compiler flags, improve NPU offloading, or reduce inference time for a model.
-  path: skills/vai-flag-configuration
   version: 6.3.0
+  stage: beta
+  content_sha256: b1cc0676c552dac8c5edceb8ff454d15661a2d0d06c02a00ac03a95edecda600
 - name: vai-partition-analysis
+  path: skills/vai-partition-analysis
   description: Inspect the result of a VAIML compilation of a mixed-precision ONNX
     model and reduce the number of NPU partitions toward a single partition. Parses
     the compiler operation statistics (matched kernels / templated graphs), the partition
@@ -273,15 +516,19 @@ skills:
     patching; when the partition break originates from quantization, it proposes Quark
     configuration changes instead. Every proposed change is followed by a re-compilation
     to evaluate the result.
-  path: skills/vai-partition-analysis
   version: 6.3.0
+  stage: beta
+  content_sha256: eebb4d6e06a6e20f8850564dc07d324c067ebea87d5bbca7db0271994597e8b2
 - name: vai-peak-bandwidth-analysis
+  path: skills/vai-peak-bandwidth-analysis
   description: From L3 DDR DMA-channel profiling, judge compute- vs memory-bound execution
     and recommend tiling / QoS changes, focused on the channels and operators with
     the most backpressure/starvation stall
-  path: skills/vai-peak-bandwidth-analysis
   version: 6.3.0
+  stage: beta
+  content_sha256: 304e834975083796e097809dcee335766a1abf58248b70109c73a07bf28c5957
 - name: vai-perf-analysis
+  path: skills/vai-perf-analysis
   description: Analyze performance of VAIML compiled models. Uses the AI Analyzer
     SDK to extract detailed timing, operator metrics, and performance summaries, then
     answers any question about model performance -- layer timing, custom op cost,
@@ -291,18 +538,108 @@ skills:
     environment such as the official Vitis AI Docker container. Use when the user
     wants to analyze model performance, find slow layers, compare compilation runs,
     understand custom op overhead, or generate a performance report.
-  path: skills/vai-perf-analysis
   version: 6.3.0
+  stage: beta
+  content_sha256: 5218224fc3ea9fa21be1c2003d8bff4a0f029f849c7892ecc3e77d5d6c09c133
 - name: vai-quantization-guide
+  path: skills/vai-quantization-guide
   description: Master orchestrator for mixed-precision ONNX model quantization targeting
     AMD NPU (Strix/Telluride). Guides users through quantization strategy selection,
     accuracy validation, compiler flag configuration, and board execution. Supports
     full bf16, full vint8, hybrid BF16/VINT8 configurations, and edge quantization
     in runtime. Specialized quantization methods are provided as optional plugin skills
     discovered at runtime.
-  path: skills/vai-quantization-guide
   version: 6.3.0
+  stage: beta
+  content_sha256: 6c3c892090e7cdecf0b7ef76ce9e2430cdc769b8c5686dabe79dd2d5de0b0a7c
+- name: vitis-aie
+  path: skills/vitis-aie
+  description: Create and build a Vitis AI Engine (AIE) component/graph — inside the
+    Vitis Unified IDE's AI agent via the `runVitisPython` tool against the live `client`,
+    or HEADLESS on any host via `vitis -s`. Use whenever the user asks to create or
+    build an AIE / AI Engine component, kernel, or graph (from a shipped example or
+    custom sources); a missing `runVitisPython` tool is never a reason to decline
+    — detect the mode and continue headless. Create-only by default; the build (`comp.build(target=x86sim|hw)`)
+    runs only when the user asks. Running the simulators (`x86simulator` / `aiesimulator`)
+    is out of scope for this skill.
+  version: 1.0.6
+  stage: beta
+  content_sha256: 0f32dee37bceb7319df546a82ec213dc34c8d1e105e8d56aeb8d2d1301b639b0
+- name: vitis-aie-int8-mac
+  path: skills/vitis-aie-int8-mac
+  description: Configure the AIE int8xint8 vector MAC intrinsics (mul8/mac8, mul16/mac16)
+    for a target algorithm. Use when choosing or debugging xstart/xoffsets/xstep/xsquare
+    and zstart/zoffsets/zstep/zsquare, when a lane is reading the wrong buffer element,
+    when deciding between mul8 and mul16, when mapping a FIR/beamformer/matrix operation
+    onto AIE int8 MACs, or when an aiecompiler "must be a multiple of" chess_error
+    appears. AIE only - these intrinsics do not exist on AIE-ML or AIE-MLv2. Not for
+    the `aie::mul`/`aie::mac` API or other AIE API questions.
+  version: 1.0.1
+  stage: beta
+  content_sha256: 91892ad98e0c2b1b0122bbb370a1a394d3691bc9d6f6a333f0f8211833b03599
+- name: vitis-aie-profile
+  path: skills/vitis-aie-profile
+  description: 'Guides AIE profiling and event trace from compile time to runtime
+    on Versal / AI Engine designs. Covers counters-vs-trace decisions, v++ event-trace
+    flags, trace compile-failure recovery, and xrt.ini [AIE_profile_settings] and
+    [AIE_trace_settings] for tile-scoped capture. Answers questions like "What is
+    the latency of my AIE kernel?", "Where and when are my data transfers stalling?",
+    "What is the average throughput/bandwidth on my PLIO or GMIO port?", and "Are
+    my AIE kernels overlapping in time?" Interprets aie_profile.csv, aie_trace outputs,
+    and Vitis Analyzer timelines. For PL or host-only profiling, use vitis-pl-profile
+    or vitis-host-profile. Load it before answering even if it seems familiar: it
+    holds version-checked metric names and documented stall fixes general knowledge
+    gets wrong. Not for general Vitis work without a profiling or trace question (e.g.
+    HLS or ADF code, SD-card images, platforms). The Versal `v++ --package` step is
+    in scope when the xclbin must carry AIE profile or trace metadata.'
+  version: 1.0.1
+  stage: beta
+  content_sha256: 3fbf4803f4618578275cec754f145e734e84c6cef97bb3f727b96ea9406faaed
+- name: vitis-aie-simulation
+  path: skills/vitis-aie-simulation
+  description: 'Runs aiesimulator on an already-compiled AIE (AI Engine) hw build
+    (Work directory): gathers and checks inputs, launches aiesimulator, compares against
+    golden files, and reports the outcome. Simulation only; it does not compile the
+    graph. Use when the user wants to simulate a compiled AIE graph in a Vitis/Versal
+    flow.
+
+    '
+  version: 1.2.0
+  stage: beta
+  content_sha256: c5dbf46d20ea64819b43eb27413b6c06b3ca79741af854e6963086a0cc4bd9f4
+- name: vitis-classic-migration
+  path: skills/vitis-classic-migration
+  description: Migrates Vitis Classic 2023.2, 2024.1 and 2024.2 embedded workspaces
+    and XSCT Tcl project scripts to Vitis Unified IDE 2026.2 components that build
+    and debug, with no Classic IDE or XSCT needed afterwards. Carries over embedded
+    platforms (XSA, domains, BSP libraries and user-set BSP parameters), user edits
+    to BSP source files (drivers, libraries, OS) via a local software repository,
+    embedded apps with their C/C++ build settings and sources, and system projects.
+    Reports every unsupported setting with guidance, and verifies the result setting
+    by setting (verify_migration.py) plus a build and a launch.json debug-readiness
+    check. Accelerated projects are reported as not supported. Use when the user mentions
+    Vitis Classic, `vitis --classic`, XSCT scripts (setws, platform create, app create,
+    bsp config), "Export Workspace to Unified IDE", migrate.py, .sdkproject/.prj/.sprj/platform.spr
+    files, or asks to migrate, port, convert or upgrade an old Vitis/SDK project to
+    the Unified IDE.
+  version: 1.4.0
+  stage: beta
+  content_sha256: b51005564715af3e72c7ad71db12419148743afc4a39ab1bf282775a7a4159a0
+- name: vitis-create-aie-kernel
+  path: skills/vitis-create-aie-kernel
+  description: 'Write a new AI Engine (AIE) kernel and its ADF graph from a plain-English
+    description: kernel header and source with a vectorized AIE API implementation,
+    aie.cfg, floorplan constraints, graph, test application and Makefile, then build,
+    check in x86sim against a golden model and self-review against UG1079 coding practice.
+    Covers single- and multi-kernel graphs (pipelines, cascade, tiled matrix multiply,
+    widget chains) for AIE (VCK190) and AIE-ML (VEK280). Also creates or updates any
+    one of those files on its own. Use for custom AIE functionality, not for instantiating
+    DSP Library IP.'
+  version: 1.0.0
+  stage: beta
+  content_sha256: 2fad5baa7ef731fc1e503e1d473e8ff4e23f64f4ae989e7eb24a15773e6994cc
 - name: vitis-embedded
+  path: skills/vitis-embedded
   description: Build the Vitis embedded software lifecycle end to end — create an
     embedded hardware platform, create a standalone/FreeRTOS/Linux application on
     that platform, and package a bootable image (BOOT.BIN / PDI via Bootgen). Works
@@ -314,22 +651,189 @@ skills:
     detect the mode and continue headless. Each step is create-only by default; build/package
     runs only when the user asks. Load the reference for the step in play — `references/platform.md`,
     `references/app.md`, or `references/boot-image.md`.
-  path: skills/vitis-embedded
-  version: 1.0.2
-- name: vivado-ip-configurator
-  description: 'Use this skill for configuring ANY Vivado IP block via natural language.
-    Trigger whenever the user asks to configure, customize, parameterize, or set up
-    an IP core — including AXI peripherals, processing systems (Zynq PS, Versal CIPS),
-    memory controllers, DSP blocks, clocking, resets, DMA, interconnects, or any IP
-    with CONFIG.* properties. Also trigger when the user provides a high-level description
-    of desired IP behavior and expects the correct set_property -dict to be generated.
-    This skill uses a two-tier approach: Tier 1 builds the configuration from documentation,
-    Tier 2 recovers from errors using Vivado''s own feedback.
+  version: 1.1.0
+  stage: beta
+  content_sha256: 23d66deab4076cc0ea645c7924275d7565b7e643b76dacef924378e11c37c278
+- name: vitis-functional-sim
+  path: skills/vitis-functional-sim
+  description: 'Generate Python, MATLAB or C++ functional verification test scripts
+    for AMD Versal hardware implementations using VFS (Vitis Functional Simulation).
+    Supports HLS kernels, AI Engine graphs (including packet switching), LogiCORE
+    IPs (xFFT, FIR Compiler), Versal RF Hard IPs (vrfFFT, vrfChannelizer, vrfADC,
+    vrfDAC), Poly Block IPs (pbChannelizer, pbArbResampler), the Versal LDPC decoder
+    (versalLDPC), and multi-component chained pipelines. Use when: user wants to functionally
+    verify their implementation, build a test framework, simulate their kernel in
+    Python/MATLAB/C++, compare against a reference model, create a VFS testbench,
+    or functionally simulate their design. VFS is functional x86 simulation. For cycle-approximate
+    PLIO handshaking between PL kernels and an AI Engine graph with an RTL testbench,
+    use Vitis Subsystem Simulation instead.'
+  version: 1.0.0
+  stage: beta
+  content_sha256: af69f5bee459728139a349aa5415148a993928e0fa82340a7d01022cc025b599
+- name: vitis-hardware-emulation
+  path: skills/vitis-hardware-emulation
+  description: 'Runs hardware emulation (hw_emu) on an already-built Versal AIE +
+    PL design: gathers inputs, runs pre-emulation DRC checks, stages the QEMU boot
+    image and the run artifacts, launches the QEMU-based emulation, and reports the
+    outcome. Emulation only; it does not compile, link, package, or cross-compile
+    anything. Invoke with /vitis-hardware-emulation [path/to/hwemu_inputs.md]. The
+    optional argument is a filled inputs file (see scripts/hwemu_inputs.template.md)
+    for a non-interactive run; omit it to be prompted.
 
     '
+  version: 3.0.0
+  stage: beta
+  content_sha256: ace6ad1c1cbb1b7af1bca44b5355778f82f9938c7ceb58a7b75db1fb7b8667b6
+- name: vitis-host-profile
+  path: skills/vitis-host-profile
+  description: 'Guides host-side XDP profiling via xrt.ini [Debug] flags (opencl_trace,
+    native_xrt_trace, lop_trace, host_trace) and interpretation of host trace CSVs
+    (native_trace.csv, opencl_trace.csv, user_events.csv). Inspects host code to select
+    the correct API-family trace flags and answers performance questions from profiling
+    output. Use when users ask about host-to-device transfer time (H2D/D2H), kernel
+    parallel execution, or host/device pipelining and idle time. For PL kernel instrumentation
+    or AIE tile profiling, use vitis-pl-profile or vitis-aie-profile instead. Load
+    it before answering even if the answer seems familiar: it holds version-checked
+    flag names and guardrails that general knowledge gets wrong. Not for general Vitis
+    development without a profiling or trace question (e.g. writing HLS or ADF code,
+    packaging, creating platforms).'
+  version: 1.0.0
+  stage: beta
+  content_sha256: e525084e658ae2c9b07b5f1c6533ed560c36f5fa38c4715037e80dcc2b7af9ae
+- name: vitis-pl-profile
+  path: skills/vitis-pl-profile
+  description: 'Guides PL profiling and trace from compile time through runtime on
+    Vitis / XRT designs. Covers v++ --profile.data, --profile.exec, --profile.stall,
+    and --profile.trace_memory to instrument xclbin debug_ip_layout, xrt.ini device_trace
+    and stall_trace flags, and interpretation of device_trace CSVs and summary.csv.
+    Answers questions such as "Can the pipelining between my PL kernels work better?",
+    "Are my PL kernels receiving and sending the right amount of data?", or "My system
+    is hanging, which PL kernel could be the problem?" Inspects xclbin via xclbinutil
+    before recommending runtime ini. For AIE or host-only profiling, use vitis-aie-profile
+    or vitis-host-profile instead. Load it before answering even if the answer seems
+    familiar: it holds version-checked option names, hw vs hw_emu rules, and documented
+    stall resolutions that general knowledge gets wrong. Not for general Vitis development
+    without a profiling or trace question (e.g. writing HLS or ADF code, packaging,
+    creating platforms).'
+  version: 1.0.0
+  stage: beta
+  content_sha256: 4cf04ef8ba2ea38f8b1b191318e428a547411a2557cb3b6aa55a9e80838f98db
+- name: vitis-platform
+  path: skills/vitis-platform
+  description: Annotate an open, validated Vivado block design with Vitis platform
+    (PFM) properties. Discover and set PFM.CLOCK, PFM.AXI_PORT, PFM.IRQ and PFM.AXIS_PORT
+    with the ::vitis::pfm commands, and set the platform identity. Use for "add PFM
+    properties", "annotate this block design for Vitis" or "make this block design
+    a Vitis platform". It does not build or change the design and does not export
+    the XSA.
+  version: 1.1.0
+  stage: beta
+  content_sha256: df7d31c7a9edc848521ee0ca98a390d0a47e6f3c19eeb34b46c012cc14b4e79d
+- name: vitis-system
+  path: skills/vitis-system
+  description: Compose a Vitis system — V++ link AIE + HLS components into a fixed
+    XSA/VMA/VSS (the integration step), then package the binary containers into a
+    deployable image such as an SD-card image, BOOT.BIN, or XCLBIN (the system step).
+    Works INSIDE the Vitis Unified IDE's AI agent via the `runVitisPython` tool against
+    the live `client`, or HEADLESS on any host via `vitis -s`. Use whenever the user
+    asks to create an integration or system project, V++ link kernels to the AI Engine,
+    wire AIE + HLS components together, or produce/package a deployable image. Compose-only
+    by default; the V++ link and the build+package run only when the user asks. Load
+    the reference for the step in play — `references/integration.md` (link) or `references/system.md`
+    (package).
+  version: 1.0.12
+  stage: beta
+  content_sha256: 5b9109e86ae88c951fdc05dafc543c154adec95e021ac1723defb5cd331c9b9e
+- name: vitis-vss-simulation
+  path: skills/vitis-vss-simulation
+  description: 'A skill to help running VSS (Vitis Subsystem) simulation for AIE +
+    PL designs. Invoke with /vitis-vss-simulation [path/to/vss_inputs.md]. The optional
+    argument is a filled inputs file (see scripts/vss_inputs.template.md) for a non-interactive
+    run; omit it to be prompted.
+
+    '
+  version: 1.3.0
+  stage: beta
+  content_sha256: a6b142a0cfa8dc779187d68fd0f73bc9bb9a0ea4002e1c16fd8c41afcbcd5c1d
+- name: vivado-ced-configurator
+  path: skills/vivado-ced-configurator
+  description: Find and configure a Vivado Configurable Example Design (CED) from
+    the live XilinxCEDStore for a natural-language request, in two phases with user
+    approval before IP-level changes. Use when the user asks for an example design,
+    preset or reference design on a board or part (Zynq, MPSoC, MicroBlaze, Versal,
+    Kria, PCIe/CPM, DMA, extensible platform), optionally with settings inside it.
+  version: 1.1.0
+  stage: beta
+  content_sha256: c4e89ab86d0069d64da0efec08848e09bf50f5d89219796a207b5dec60328f0e
+- name: vivado-convert-flat-to-dfx
+  path: skills/vivado-convert-flat-to-dfx
+  description: 'Convert a flat Vivado design to a DFX-ready project for a supported
+    UltraScale+ or Versal part. The user supplies only the module instance name(s);
+    detect Project/Non-Project mode, exact part/family, and whether each selected
+    module is RTL or BD/BDC. Validate RP boundaries, convert selected modules, create
+    the required DFX configuration structure, migrate timing and physical constraints
+    into new static/RM-scoped XDCs without modifying source XDCs, and for Versal convert
+    affected Modular NoC paths to an INI boundary and validate ownership. Do not create
+    pblocks, implement, or run pr_verify. Use when asked to convert a flat Vivado
+    design to DFX.
+
+    '
+  version: 1.0.0
+  stage: beta
+  content_sha256: 5f0a41785370b8f0fdfa015e65a341e7ef550e978ba2b344dcd87e88336e78bb
+- name: vivado-ip-configurator
   path: skills/vivado-ip-configurator
-  version: 0.2.0
+  description: Use for any request to add, insert, instantiate, create, configure,
+    customize, modify, change, enable, disable, update or set parameters of a Vivado
+    IP core or block-design cell, even when this skill is not named and even when
+    the request says to use the Vivado MCP directly - including AXI GPIO, UART Lite/16550,
+    timer, IIC, SPI, interrupt controller, BRAM controller and embedded memory, FIFOs,
+    MicroBlaze and MicroBlaze V, Zynq and Versal processing systems (CIPS, PS Wizard),
+    clocking wizards, resets, NoC and DDR/LPDDR memory controllers, DMA/CDMA, SmartConnect
+    and interconnects, MIPI, video, ISP, VCU and AI Engine IP. Load it before the
+    first Vivado tool call; it drives Vivado through the MCP itself, so configuring
+    the IP with hand-written Tcl skips its legal-value reads and verification. Works
+    one cell per prompt in an open block design, so a design can be built up over
+    many prompts.
+  version: 1.0.3
+  stage: beta
+  content_sha256: dcdecfc49e4cc064479df794c662122d6d6578b5bf9a60af39571cd0e4ea0112
+- name: vivado-ipi-assembler
+  path: skills/vivado-ipi-assembler
+  description: 'Use this skill to ASSEMBLE a full Vivado IP-Integrator block design
+    from a system specification — not just configure one IP, but create + configure
+    MULTIPLE cells and then CONNECT them, build clock/reset domains, assign the address
+    map, and validate the result. Trigger whenever the user wants to "build the block
+    design", "assemble the system", "wire up the IPs", "stand up the Versal design",
+    turn a spec/diagram/manifest into a working BD, or connect/clock/address/validate
+    an existing multi-cell design. This skill depends on and orchestrates the vivado-ip-configurator
+    skill (ipcfg::*) for the per-cell work and adds the assembly layer (ipiasm::*).
+    It is AUTOMATION-FIRST: apply_bd_automation is always tried before manual wiring.
+
+    '
+  version: 1.0.0
+  stage: beta
+  content_sha256: 8216785a36f8c45bd560e80acd3a9ab26d1589b3f472a91196f9dab22d257e36
+- name: vivado-netlist-debug-insert
+  path: skills/vivado-netlist-debug-insert
+  description: Insert ILA debug cores into an open synthesized Vivado design on the
+    nets the user names, check that the capture memory (block RAM) fits the device,
+    and report what it inserted. It picks each core's clock from the signals and keeps
+    the default capture depth of 1024 samples unless the user names one; with a design
+    open it lists marked nets, top-level modules, clocks and debug cores, not every
+    net. It saves only to a path the user names, and runs no opt_design, place or
+    route of its own. Versal DFX designs are handled per configuration; UltraScale+
+    DFX designs are handled on Vivado 2026.2 when no debug exists yet, else get a
+    blocker report. It also gives read-only advice on ILA timing in a routed design.
+    Use when asked to add an ILA post-synthesis, how ILA insertion works or what to
+    give it, instrument a checkpoint, probe nets or registers on a DCP, or insert
+    debug cores into the netlist without editing RTL. Does not insert VIO, JTAG-to-AXI
+    Master, IBERT or System ILA.
+  version: 1.0.1
+  stage: beta
+  content_sha256: 221e684c8f46698df3cc8eebd8b081eb69604f1527b4b6168297cddb3b7937a6
 - name: vivado-revision-control
+  path: skills/vivado-revision-control
   description: 'Comprehensive Vivado project revision control strategies for standard,
     DFX (Partial Reconfiguration), IPI Block Design Container, and Segmented Configuration
     projects. Includes automated tools for project type detection, source analysis,
@@ -341,50 +845,71 @@ skills:
     for my FPGA design".
 
     '
-  path: skills/vivado-revision-control
-  version: 1.0.1
+  version: 1.0.2
+  stage: beta
+  content_sha256: 2a32adee65e1ea6491dfc9ad38f120a0bfe29192ac96c2dd7a89c3ffa57ec602
 - name: vivado-rtl-elaboration-analysis
+  path: skills/vivado-rtl-elaboration-analysis
   description: 'Analyze Vivado Oasys synthesis elaboration errors, critical warnings,
     and warnings from synthesis logs and provide actionable RTL code fixes. Log analysis
     is the primary mode; an active Vivado session is secondary. Inspect the user''s
     actual RTL at every reported file and line before proposing a fix.
 
     '
-  path: skills/vivado-rtl-elaboration-analysis
   version: 1.0.0
+  stage: beta
+  content_sha256: 072f82d002f3827f2eacbff6907566517c43ea92952cda82b579318b0ae4ce2a
 - name: vivado-rtl-lint
+  path: skills/vivado-rtl-lint
   description: Run Vivado's RTL linter to detect design issues before synthesis. Use
     when user asks to "lint RTL", "check HDL code", "run linter", "find RTL issues",
     or "check design quality". This skill ONLY analyzes the report generated by the
     RTL linter command.
-  path: skills/vivado-rtl-lint
   version: 1.0.0
+  stage: beta
+  content_sha256: e8875c3040c235ddf03ef62edcfdd759d2128401b8c912626587483aca741a26
 - name: vivado-simulate-rtl
-  description: Runs and diagnoses FPGA RTL simulations through Vivado using XSim,
-    Questa, ModelSim, VCS, Xcelium, Riviera-PRO, or Active-HDL; supports approval-gated
-    interactive repair; creates self-checking testbenches; runs UVM and seeded regressions;
-    closes XSim code and functional coverage; verifies assertions; and captures SAIF
-    or VCD activity. Use when users ask to simulate HDL, interpret or triage existing
-    simulation logs (including Questa, VCS, Xcelium, or other third-party compile,
-    elaboration, or run logs, and simulator crash or tool-defect reports), debug or
-    repair RTL from waveform evidence, run gate-level or timing simulation, measure
-    coverage, run random regression, analyze power activity, or generate portable
-    stimulus.
   path: skills/vivado-simulate-rtl
-  version: 1.0.1
-- name: vivado-timing-methodology-checks
-  description: 'Runs 55+ timing methodology checks (UG906) on synthesized FPGA designs
-    to identify timing violations and generate actionable RTL/XDC fixes. Make sure
-    to use this skill whenever user mentions: "timing methodology", "methodology checks",
-    "methodology report", "report_methodology", "UG906", "fix timing issues", "resolve
-    methodology", "timing violations", "methodology violations", "clock violations",
-    or any specific check IDs (TIMING-1 through TIMING-57). Use when user asks "how
-    do I fix", "resolve", "waive", or "understand" any methodology check, warning,
-    or violation. Also use when debugging timing problems after synthesis/implementation,
-    interpreting methodology violation reports, or when user provides violation IDs
-    like "TIMING-1#1". Use even if user just says "I have methodology violations"
-    or "my design has timing warnings".
+  description: Load this skill first, before reading any log, source or project, for
+    every FPGA or HDL simulation task, question or customer escalation involving Vivado,
+    XSim (xvlog, xelab, xsim), Questa, ModelSim, VCS, Xcelium, Riviera-PRO or Active-HDL,
+    including diagnosing already-recorded compile, elaborate or simulate logs; its
+    scripts do each flow in one call. Covers running or debugging a testbench or simulation
+    set (sim_1), proving PASS/FAIL, the first failure, approval-gated RTL repair,
+    timing/SDF and gate-level runs, UVM, seeded regression and replay, assertions,
+    code and functional coverage closure, SAIF/VCD, portable stimulus; checking whether
+    a simulator, license, compiled library or host/OS/release is supported; simulator
+    crashes and CR/Jira triage of recorded runs (design or tool bug, workaround);
+    and methodology (release bisect, headless waveforms, speed, minimal reproducers,
+    cross-simulator disagreement, host library failures, adding a backend).
+  version: 1.1.1
+  stage: beta
+  content_sha256: 3579b0132be27782d0f8da5bce2f5bdff10fe87bbedfb4015ba7fb389c900226
+- name: vivado-spec-generator
+  path: skills/vivado-spec-generator
+  description: 'Convert a natural-language AMD Adaptive SoC or FPGA system request
+    into a structured DesignSpec JSON before implementation. Use when a user describes
+    a board design, block design, PS/PL/AIE system, external device, Linux-visible
+    peripheral, data path, memory path, interrupt, fixed address, clock, or reset
+    requirement in prose and another skill needs an implementation-ready spec.
 
     '
+  version: 1.0.0
+  stage: beta
+  content_sha256: ffc94663bc24b29587b473ec4a4ff702f3b4185797844372d512313f1aec8a93
+- name: vivado-timing-methodology-checks
   path: skills/vivado-timing-methodology-checks
-  version: 2.0.0
+  description: Resolve Vivado timing methodology violations on synthesized or implemented
+    designs and generate XDC fixes or waivers. Use when the user mentions report_methodology,
+    timing methodology, methodology violations or checks, a TIMING-<n> ID (e.g. TIMING-1#1),
+    or asks to report, fix, resolve, waive or understand timing methodology warnings.
+    Non-TIMING IDs (SYNTH-*, DRC-*, etc.) are reported as Not Supported.
+  version: 2.0.2
+  stage: beta
+  content_sha256: 4507f662c9c990b025b831b233aceb40075cb8815f1d31224cc5714d211e054e
+source_revision: 78ed9ae2eb3904952dc2ef80c9211fa227b9c11a
+channel: public
+evaluation_date: '2026-11-24'
+policy_limitations:
+- DSV approval/waiver enforcement is not implemented
+- Deprecated skills are not automatically removed after three months

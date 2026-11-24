@@ -75,8 +75,14 @@ The app object is a `HostComponent`. Its methods come from three classes:
 - `app.get_config_info(key)` — describe a build-config key.
 
 **Client-level (session) helpers:**
-- `client.get_template('EMBD_APP', '<name>')` / `get_templates('EMBD_APP')` —
-  resolve / list templates.
+- `client.get_templates('EMBD_APP')` — returns a list of the exact template names (37 on 2026.2); use it to pick a name.
+- `client.get_template('EMBD_APP', '<pattern>')` — **not an exact-name lookup.** `<pattern>` is a
+  regex searched against template names and the **first** match in sorted order is returned.
+  In 2026.2, `get_template('EMBD_APP', 'hello_world')`
+  returns `freertos_hello_world`, and `lwip_echo_server` and the other `lwip_*` names likewise
+  return their `freertos_` siblings. Anchor the pattern to get the exact template:
+  `get_template('EMBD_APP', '^hello_world$')` → `hello_world` (verified on 2026.2). Always check
+  that the returned name is the baremetal vs FreeRTOS template you intended before creating the app.
 - `client.get_component(name)` / `list_components()` / `delete_component(name)` /
   `clone_component(name, new_name)` — manage existing components.
 - `client.create_static_library_component(name, platform, domain=None, template=None)`
@@ -106,10 +112,18 @@ Firmware/boot (special): `zynq_fsbl`, `zynqmp_fsbl`, `zynqmp_pmufw`,
 
 ## Common build-setting keys (`set_app_config`)
 
-- `USER_COMPILE_WARNINGS_AS_ERRORS` (TRUE/FALSE)
+- `USER_COMPILE_WARNINGS_AS_ERRORS` — pass the **flag text** (`'-Werror'`), not `TRUE`/`FALSE`.
+  On 2026.2 the value is pasted onto the compiler command line, so `'TRUE'`/`'FALSE'` fail every
+  source file with "TRUE: linker input file not found". All 17 `boolean`-typed keys
+  (e.g. `USER_COMPILE_WARNINGS_ALL`, `USER_COMPILE_VERBOSE`) store the value text verbatim in
+  `UserConfig.cmake` (tested); the build failure itself was confirmed only for
+  `USER_COMPILE_WARNINGS_AS_ERRORS`. `get_config_info` reports them as `boolean`, which is
+  misleading. To turn it off, set `''` (accepted and builds; tested for this key only).
 - `USER_COMPILE_DEBUG_LEVEL` (e.g. `-g1`)
 - `USER_INCLUDE_DIRECTORIES`
-- `USER_CMAKE_CXX_STANDARD`
+- `USER_CMAKE_CXX_STANDARD` — on 2026.2 standalone apps `set_app_config` can return `True` while
+  `get_app_config` raises "not a valid key" and the key never lands in `src/UserConfig.cmake`;
+  read `UserConfig.cmake` after setting it to confirm.
 
 ## Sysroot (Linux)
 

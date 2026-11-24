@@ -9,7 +9,6 @@ SPDX-License-Identifier: MIT
 
 - **Check ID**: TIMING-4
 - **Severity**: Critical Warning
-- **Group**: TIMING
 - **Hierarchy Name**: Timing.Bad Practice
 - **First Release**: 2013.3
 
@@ -41,8 +40,9 @@ Clock definitions should typically follow this hierarchy:
 ✅ Identify both clock definitions - the upstream clock and the downstream redefinition
 ✅ Verify which clock is the intended primary clock
 ✅ Check if there are timing exceptions or other constraints that reference the downstream clock name
-✅ Use `trace_clock_tree.json` to trace the clock tree and confirm the primary clock is defined at the correct object
+✅ Use `methodology_check::trace_clock_back_to_source` (see CLOCK_TRACING.md) to trace the clock tree and confirm the primary clock is defined at the correct object
 ✅ Use `report_clocks` to understand the clock tree structure
+✅ Understand the impact of any clock modifying blocks on the clock path
 
 **DO NOT**
 ❌ Assume the first clock definition in the XDC file is the problematic one
@@ -61,24 +61,6 @@ report_property [get_clocks <upstream_clock_name>]
 ```
 
 2. Find the pins/nets where each clock is defined
-report_property Start Time : 1772102992888919 (2026 02 26 03 49 52)
-Property           Type     Read-only  Visible  Value
-CLASS              string   true       true     clock
-FILE_NAME          string   true       true     <project_dir>/sources_1/bd/<bd_name>/ip/<bd_name>_ps_block_0/bd_0/ip/ip_0/<clock_source>.xdc
-INPUT_JITTER       double   true       true     0.000
-IS_GENERATED       bool     true       true     0
-IS_PROPAGATED      bool     true       true     1
-IS_USER_GENERATED  bool     true       true     0
-IS_VIRTUAL         bool     true       true     0
-LINE_NUMBER        int      true       true     52
-MODULE             string   true       true     Static 
-NAME               string   true       true     clk_pl_0
-PERIOD             double   true       true     3.000
-SOURCE_PINS        string*  true       true     hwtest_harness_top_i/Base_layer/ps_block/inst/pspmc_0/inst/PS9_inst/PMCRCLKCLK[0]
-SYSTEM_JITTER      double   true       true     needs timing update***
-WAVEFORM           double*  true       true     0.000 1.500
-WEIGHT             double   true       true     1.000
-report_property End Time : 1772102992890408 (2026 02 26 03 49 52)
 ```tcl
 # For the downstream clock
 get_pins [get_property SOURCE_PINS [get_clocks <upstream_clock_name>]]
@@ -90,17 +72,15 @@ get_pins [get_property SOURCE_PINS [get_clocks <downstream_clock_name>]]
 ```
 
 3. Trace the connectivity between the two clock definition points
-```tcl
-# Use Clock Tracing Methodology to verify the downstream relationship
-# See ../references/CLOCK_TRACING.md
-```
+See <skill_dir>/references/CLOCK_TRACING.md
+
 
 4. Check for constraints that reference the downstream clock
-Searc `constraints.xdc` file the downstream clock name
+Search `constraints.xdc` file the downstream clock name
 
 ## Flow
 
-1. Search the `./tmp/constraints.xdc` for both `create_clock` constraints
+1. Search the `./methodology_results/constraints.xdc` for both `create_clock` constraints
    - Find the constraint creating the upstream clock
    - Find the constraint creating the downstream clock
 

@@ -4,6 +4,7 @@ description: 'Defines HLS pragma scope rules. Must be referenced when analyzing 
 license: MIT
 argument-hint: "[<TOP_FUNCTION — top-level HLS function name e.g. 'Kernel'>]"
 metadata:
+  stage: beta
   author: "Yi Gao"
   version: "1.0.0"
 ---

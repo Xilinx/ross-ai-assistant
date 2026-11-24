@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Synthetic fixture modelled on the store's design.xml layout. -->
+<ExampleDesign>
+  <Vendor>xilinx.com</Vendor>
+  <Library>design</Library>
+  <Name>alpha_preset</Name>
+  <DisplayName>Alpha Processor Presets</DisplayName>
+  <Description>
+An embedded processor subsystem with optional programmable logic,
+GPIO and block RAM.
+  </Description>
+  <Version>1.0</Version>
+  <Design>init.tcl</Design>
+</ExampleDesign>

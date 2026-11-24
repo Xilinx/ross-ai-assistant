@@ -6,7 +6,7 @@ compatibility: Requires a Vitis 2024.2+ install (Bootgen for boot images); in-ID
 allowed-tools: runVitisPython shellExecute create_file read_file vivado_doc_search
 metadata:
   stage: beta
-  version: "1.0.2"
+  version: "1.1.0"
 ---
 
 <!--
@@ -48,6 +48,12 @@ that reference.
   disk-space message and can **exit 0 without running your script**. Redirect the check with
   `XILINX_VITIS_DATA_DIR=<writable dir>`, and after each headless step confirm the expected
   artifact exists (`.xpfm` / `.elf` / image) before continuing — don't trust the exit code alone.
+- **Finding Vitis headlessly.** Use `runVitisPython` (IDE) or `vitis -s` (headless). To locate
+  `vitis`, try in order: `$XILINX_VITIS` / `which vitis`, a matching Vivado install, then the
+  standard layout (`<install>/Vitis/<ver>/bin/vitis`) — only ask the user if none resolve.
+  **Validate** the found `vitis` runs and report its version before use. Be **shell-agnostic**:
+  don't assume Bash — invoke the shell explicitly (e.g. `bash -c "…"`) rather than Bash-only
+  syntax/redirection (C shell will otherwise break discovery).
 - **Create-only by default.** Emit the component/BIF; run the build/package
   (`platform.build()`, `app.build()`, Bootgen) only when the user explicitly asks.
 - **Resolve platforms by anchored exact name.** When a step consumes a platform, match
@@ -66,6 +72,7 @@ that reference.
 
 ## Chaining
 
-The full deployment path is platform → app → boot image. Programming the board with
-JTAG, `program_flash`, or an SD card, and any on-target bring-up/debug, is optional
-and outside this skill.
+This skill's three steps chain internally: platform → app → boot image. It produces `.xpfm` /
+`.elf` / `BOOT.BIN`/`.pdi`. See [`references/chaining.md`](references/chaining.md) for the
+artifact contract (inputs/outputs). On-target download / bring-up / debug is a separate runtime
+and is out of scope here.

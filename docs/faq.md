@@ -93,6 +93,31 @@ User-facing skills (matlab-to-cpp, hls-architect, hls-optimize) are what you inv
 
 Beta indicates that the skill has undergone preliminary validation and testing but is still maturing. Functionality, APIs, and implementation details may evolve in future releases.
 
+**Will a skill modify my source files, and will it ask me first?**
+
+It depends on what the skill does. Skills have different purposes, and only some of them change files. Check the skill's description and `SKILL.md` before you run it. Skills generally fall into three groups:
+
+| Kind of skill | Does it change files? | Examples |
+|---|---|---|
+| **Analysis and reporting** | No. It reads your design or code and produces a report. It presents any suggested fix for you to review and apply yourself. | `vivado-rtl-elaboration-analysis` (does not modify your RTL) |
+| **Code generation and refactoring** | Yes. It edits or creates source files in your workspace. | `hls-pipe-decomp` (edits HLS C++ source only); `hls-matlab-to-cpp` (creates new project directories and does not overwrite existing ones) |
+| **Device, project, or environment changes** | Yes, and some changes are hard to undo. | `esw-program-flash` (erases and reprograms board flash) |
+
+**Does the skill ask before it makes changes?**
+
+Not always. Skills that make hard-to-reverse changes are written to stop and ask first. For example, `esw-program-flash` asks you to confirm the board, the image, and that the board's flash contents will be erased before it starts. Multi-step refactoring skills, such as `hls-pipe-decomp`, confirm at each phase boundary unless you reply `auto` or `proceed without asking`.
+
+Other skills make their edits as part of the workflow you asked for. Do not assume a confirmation step exists unless the skill documents one. Your AI client's own review and approval settings, such as reviewing proposed edits before they are applied, still apply.
+
+**How do I protect my work before running a skill that changes files?**
+
+- Keep your project under version control and commit or stash your work first, so every change shows up in `git diff`.
+- Ask the agent before you run the skill: "Will this skill modify any files? Which ones?"
+- Review the diff after the skill finishes. Revert with version control if the result is not what you expected.
+- For device or project-changing skills, read the confirmation prompts carefully. Do not pre-approve or skip them unless you intend to.
+
+**Whether a skill modifies files depends on its purpose, not on the skill family.** Check what a skill does before you run it, and review its changes.
+
 ## Troubleshooting
 
 **The agent isn't using the skill I expected**

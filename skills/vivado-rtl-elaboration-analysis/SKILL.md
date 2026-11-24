@@ -9,6 +9,7 @@ license: MIT
 allowed-tools: vivadoExecute vivado_doc_search read_file file_search grep_search run_in_terminal create_file replace_string_in_file runSubagent
 argument-hint: "[RTL/project path and optional runme.log or vivado.log]"
 metadata:
+  stage: beta
   version: "1.0.0"
 ---
 

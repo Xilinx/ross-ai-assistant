@@ -9,6 +9,32 @@ Use this optional mode when the user requests waveform-first debugging,
 step-by-step repair, approval before RTL changes, or a teaching workflow.
 Do not enable it merely because a simulation fails.
 
+## Fast path
+
+This path is XSim only. For Questa or another simulator, keep the steps
+below but run `simrtl.py run --backend <sim> --xpr <project.xpr> --simset
+<simset> --name <simset>_fail --out outputs/<case>` (it drives
+`launch_simulation`, keeps the logs and `<simset>_fail.wlf`), and report
+that simulator as `backend`.
+
+After opening and confirming the project in your Vivado MCP session (see
+`SKILL.md`, then `close_project`), one command produces all FAIL evidence:
+
+```bash
+python3 <skill-dir>/scripts/simrtl.py sim --out outputs/<case> --xpr <project.xpr> \
+  --simset <simset> --wcfg <simset>_fail --trace
+```
+
+It keeps `<simset>.simulate.log`, a focused `<simset>.wdb`, the
+`<simset>_fail.wcfg` wave configuration, and `<simset>.values.md`: the logged
+signal values at each clock edge up to the first failure. The printed JSON
+gives `pass_count` (tests passed before the failure) and the first failure
+verbatim with its time. Diagnose from those; read the DUT only after approval.
+After an approved one-line repair, rerun with
+`--name <simset>_pass --wcfg <simset>_pass` for comparable PASS evidence. The
+script restores every project property it touched and the active simulation
+set.
+
 ## Applicability
 
 Use guided repair when:
@@ -81,7 +107,7 @@ Record:
 Tests completed before failure:
 First causal message and time:
 Failure classification:
-Requirement implicated:
+Requirement implicated (exactly one: the property the failing check asserts; always reset if no TEST_PASS yet, whatever property the message names; after that, only when the failing message says "model", the test after the last TEST_PASS: N passed tests means requirement N+1 when tests follow the numbered requirements, whatever words the message or the fix uses; otherwise a message naming a property maps to that property's requirement; the `requirement` line from `S sim` applies these rules in this order):
 FAIL waveform or database:
 Signal manifest:
 What the evidence proves:
@@ -97,6 +123,10 @@ product's structured question mechanism when available:
   uncertainty.
 - **Stop** — preserve evidence and make no source change.
 
+In a non-interactive run, ask in the final answer and still end it with the
+requested JSON: the FAIL verdict, `dut_modified: false`, and the three
+choices in `notes`.
+
 Do not treat silence or an unrelated reply as repair approval. If the user has
 already given the decision for this target, or for every target, act on it
 without asking again; still stop at any gate they have not answered.
@@ -108,8 +138,14 @@ testbench may be inspected when the failure classification or user request
 requires it; do not adopt anti-spoiler restrictions unless the workspace
 defines them.
 
-Make the smallest requirement-driven change. Do not refactor, weaken a checker,
-change backend, lower severity, or alter expected behavior to obtain PASS.
+Make the smallest requirement-driven change: one changed line that fixes the
+wrong expression in place, with no new signals, rewired uses, added comments,
+renames or reformatting. If the same term is missing at every use of a
+signal, the defect is in the line that defines it (`wire sof = ...;`): edit
+that line, not each use. If that edit does not pass,
+restore the line before trying another so the final diff stays one line. Do
+not refactor, weaken a checker, change backend, lower severity, or alter
+expected behavior to obtain PASS.
 
 ### 5. Re-run and build PASS evidence
 
@@ -127,6 +163,7 @@ Report:
 
 ```text
 Target and requirement:
+First failing check (verbatim from the FAIL log):
 Failure classification:
 FAIL evidence:
 Approved repair:
@@ -142,5 +179,14 @@ Ask before moving to another target. Do not turn approval for one repair into
 approval for unrelated changes.
 
 Before writing a final report that covers several targets, re-read each saved
-FAIL log and quote its first failing check verbatim and its count of passed
-tests before that failure. Do not reconstruct them from memory.
+FAIL log (or the `first_failure` message `S sim` printed for it) and quote
+its first failing check verbatim in that target's own section, with its
+count of passed tests before that failure. Do not paraphrase it or
+reconstruct it from memory.
+
+The final chat message is the report: a file such as `report.md` may hold a
+copy, but the message itself has one `### sim_bugN` (target) section per
+target with the line `Requirement N: <title from requirements.md>` and the
+quoted first `CHECK_FAIL:` line. A summary table alone is not the report.
+`simrtl.py findings --out outputs/<case>` writes those sections from the
+saved FAIL logs; paste them and fill in each requirement line.

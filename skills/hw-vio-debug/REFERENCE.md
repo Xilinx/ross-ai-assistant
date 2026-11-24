@@ -19,17 +19,19 @@ SPDX-License-Identifier: MIT
 
 | Property | R/W | Description |
 |----------|-----|-------------|
-| INPUT_VALUE | R/O | Current value (after `refresh_hw_vio`) |
-| ACTIVITY_VALUE | R/O | Transition indicators (↑↓↕) |
+| INPUT_VALUE | R/O | Current value, a string in `INPUT_VALUE_RADIX` (after `refresh_hw_vio`) |
+| ACTIVITY_VALUE | R/O | One letter per bit, most significant bit first, in any radix: `N`, `R`, `F` or `B`. Idle bits read `N`. The Vivado IDE draws activity as arrows (UG908): rise 0 to 1, fall 1 to 0, both |
 | ACTIVITY_PERSISTENCE | R/W | INFINITE, LONG (80 samples), SHORT (8 samples) |
-| INPUT_VALUE_RADIX | R/W | BIN, OCT, HEX, UNSIGNED, SIGNED |
+| INPUT_VALUE_RADIX | R/W | BINARY, OCTAL, HEX, UNSIGNED, SIGNED (`BIN` and `OCT` are rejected). On the Vivado Tcl path, default `BINARY` on a 1-bit probe, `HEX` on a wider one |
+| WIDTH | R | Probe width in bits |
 
 **Output probes (TYPE == vio_output):**
 
 | Property | R/W | Description |
 |----------|-----|-------------|
-| OUTPUT_VALUE | R/W | Value to drive (commit with `commit_hw_vio`) |
-| OUTPUT_VALUE_RADIX | R/W | BIN, OCT, HEX, UNSIGNED, SIGNED |
+| OUTPUT_VALUE | R/W | Value to drive, a string in `OUTPUT_VALUE_RADIX` (commit with `commit_hw_vio`). `HEX` and `BINARY` need the full width: one `BINARY` digit per bit, one `HEX` digit per 4 bits (8 `HEX` digits for a 32-bit probe); `UNSIGNED` and `SIGNED` take decimal. Read it after `refresh_hw_vio -update_output_values` |
+| OUTPUT_VALUE_RADIX | R/W | BINARY, OCTAL, HEX, UNSIGNED, SIGNED (`BIN` and `OCT` are rejected). On the Vivado Tcl path, default `BINARY` on a 1-bit probe, `HEX` on a wider one |
+| WIDTH | R | Probe width in bits |
 
 ## Tcl Command Quick Reference — VIO
 
@@ -41,8 +43,8 @@ SPDX-License-Identifier: MIT
 | `refresh_hw_vio $vio` | Read input values from hardware |
 | `refresh_hw_vio -update_output_values $vio` | Sync output values from hardware |
 | `set_property OUTPUT_VALUE <val> $probe` | Set value on output probe |
-| `commit_hw_vio $vio` | Drive output values to hardware |
-| `reset_hw_vio_outputs $vio` | Reset outputs to design-time initial values |
+| `commit_hw_vio $vio` | Drive output values to hardware. Can send the previous values with no error (CR-1288058): read back with `refresh_hw_vio -update_output_values` and re-commit once on a mismatch. Compare ignoring letter case; in `UNSIGNED` or `SIGNED`, compare as numbers. Vivado lowercases `HEX` letters; `UNSIGNED` drops leading zeros |
+| `reset_hw_vio_outputs $vio` | Drive outputs to design-time initial values. Not a sync: leaves the core "Outputs out-of-sync"; follow with `refresh_hw_vio -update_output_values` |
 | `reset_hw_vio_activity $vio` | Clear activity detectors |
 | `set_property CORE_REFRESH_RATE_MS <ms> $vio` | Set auto-refresh interval |
 
@@ -56,7 +58,7 @@ SPDX-License-Identifier: MIT
     "device": "<part>", "vio_core": "hw_vio_1"
   },
   "input_probes": [
-    { "name": "status_led", "value": "0011", "activity": "both", "width": 4 }
+    { "name": "status_led", "value": "0011", "activity": "NNBB", "width": 4 }
   ],
   "output_probes": [
     { "name": "rst_n", "value": "0", "width": 1 }
@@ -65,6 +67,8 @@ SPDX-License-Identifier: MIT
   "observations": ["status_led toggling (activity detected)"]
 }
 ```
+
+`value` is the string Vivado returns, in the probe's radix (the sample `0011` is a 4-bit probe in `BINARY`). `activity` is the raw `ACTIVITY_VALUE` string. `width` is the `WIDTH` property.
 
 ## References
 

@@ -32,8 +32,7 @@ when the user asks to build/generate the image (or asks to create *and* build in
   package — **offer to build it (ask + approve) before running Bootgen** (see step 3 / *Resolve*).
   See the shared chaining contract
   ([`chaining.md`](chaining.md)):
-  this skill **consumes verified artifact PATHs**. Programming and on-target debug are
-  optional follow-on work outside this skill.
+  this skill **consumes verified artifact PATHs** and **forward-offers `hw-xsdb-debug`**.
 
 > **This is a shell skill (stays shell, not in-console).** Bootgen is a standalone CLI, so
 > this skill runs in a **terminal** — it is **not** ported into the Vitis Python Console and
@@ -67,8 +66,8 @@ auth/keys/cores/types per platform). Save it, then pass it to the driver with
 (`boot.pdi` + `pl.pdi`) and *DFX partial* PDIs are produced by the **Vivado / v++
 hardware flow** (`write_device_image` segmented / the DFX flow), **not** bootgen.
 This skill's job for those is to **package or extend** a *pre-built* PDI into a boot
-image; the runtime load of `pl_aie.pdi` (+ dtbo) is separate deployment work.
-Don't expect bootgen to split/create the segments — feed
+image; the *runtime* load of `pl_aie.pdi` (+ dtbo) is `hw-xsdb-debug`
+(`--flow-type segconfig`). Don't expect bootgen to split/create the segments — feed
 it the PDI the hardware flow already produced (as a partition, or via `bootgen
 -image <bif> ... ` to extend an existing PDI).
 
@@ -184,13 +183,19 @@ For each manifest entry:
    `vitis-embedded`/`-app` (or their `-console` variants), the Vitis GUI, Vivado, or
    PetaLinux (the Vitis component layout is the same):
    - bootloader → `…/<plat>/export/<plat>/sw/boot/fsbl.elf` (ZynqMP) or the PLM (Versal)
-   - PMUFW/PSM → `…/sw/qemu/pmufw.elf` / `psm_fw.elf`
+   - PMUFW (ZynqMP) → `…/<plat>/export/<plat>/sw/boot/pmufw.elf`, present only when the platform was created with
+     `is_pmufw_req=True`. If only `…/sw/qemu/pmufw.elf` exists, it is the generic prebuilt QEMU binary, not built for the
+     design: say so and recreate the platform with `is_pmufw_req=True` instead of packaging it. PSM (Versal) →
+     `psm_fw.elf` (see the Versal-family line below)
    - app ELF → `…/<app>/build/<app>.elf`
    - **Versal-family** (under `<plat>/export/<plat>/hw/extracted/<design>/pdi_files/`): PLM +
      PMC/LPD/FPD/AIE CDOs in `gen_files/`, PSM `static_files/psm_fw.elf`, PL/NoC
      `<design>.rcdo`/`<design>.rnpi`, and the design's base BIF `<board>.bif`
    - CDOs / bitstream / PDI → XSA `gen_files` / Vivado export
-2. **Fill found real paths** into the BIF (replace the `path/to/your/…` stand-ins).
+2. **Fill found real paths** into the BIF (replace the `path/to/your/…` stand-ins). A bare file name that equals a
+   BIF attribute name (for example a kernel file called `Image` or `image`) is read as the attribute, not as a file:
+   write it with a path, e.g. `file=./Image` (UG1283, BIF Attribute Reference). Bootgen reports this as
+   `ERROR:BootGen - syntax error`, not as a missing file.
 3. **Auto-fill structural defaults** (no need to ask) and report them: `id_code`
    per family, `extended_id_code = 0x01`, APU core (**a72** Versal · **a78**
    VersalNet/2VE-2VM · **a53** ZynqMP), `pmcdata load = 0xF2000000`, canonical
@@ -274,8 +279,13 @@ python3 references/boot-image/scripts/create_boot_image.py --arch zynqmp \
 python3 references/boot-image/scripts/create_boot_image.py --arch zynqmp \
   --bootloader fsbl.elf --pmufw pmufw.elf --app app.elf \
   --authenticate rsa --psk rsa4096_psk.pem --ssk rsa4096_ssk.pem \
-  --encrypt aes --aes-key fsbl_key.nky --key-src efuse_red_key --output-dir /path/to/out
+  --encrypt aes --aes-key fsbl_key.nky --key-src efuse_red_key \
+  --bootgen-args "-p xczu9eg" --output-dir /path/to/out
 ```
+
+When Bootgen generates the `.nky` key file (no existing `.nky`), it needs the part name: pass
+`--bootgen-args "-p <part>"` (for example `xczu9eg` on ZCU102). Without it Bootgen stops with
+`Partname must be specified with -p <partname> option in command line for generating a key file`.
 
 It runs `bootgen -arch <arch> -image <bif> -o <output> -w on -log error` and
 prints `BOOT_RESULT {json}` with `output`, `size`, `bootgen_rc`, `succeeded`.
@@ -316,14 +326,32 @@ skill then runs Bootgen on it:
 - **SSIT (multi-SLR)**: Ex.14 (Versal Gen1 only).
 - **imagestore / DFX runtime PDI swap**: Ex.17.
 - **Register-init / user boot-header**: Ex.18 (ZynqMP `[init]`/`[udf_bh]`).
+- **Replace the PLM / PMC CDO / PSM in an existing PDI** (Versal, no rebuild of the rest): give Bootgen the PDI
+  as `type = bootimage` and only the partitions to swap. The PLM must match the PDI's design.
+  ```
+  new_bif:
+  {
+   image
+   {
+    { type = bootimage, file = path/to/your/base.pdi }
+    { type = bootloader, file = path/to/your/plm.elf }
+    { type = pmcdata, load = 0xf2000000, file = path/to/your/pmc_data.cdo }   # optional
+   }
+  }
+  ```
+  `bootgen -arch versal -image new.bif -w -o boot.pdi`. In a Vitis platform the base PDI is
+  `<plat>/export/<plat>/hw/sdt/<board>.pdi` and the PLM/CDOs are under
+  `…/hw/sdt/extracted/<design>/pdi_files/gen_files/`. SSI (multi-SLR) devices use the `replace_image`
+  form in UG1283 ("Replace PLM and PMC CDO in SSI Technology PDIs").
 
 **Extra bootgen CLI flags (`--bootgen-args`):** some flows need a bootgen flag
 that is *not* in the BIF. Pass them verbatim via `--bootgen-args "<flags>"`:
 - **Zynq-7000 AES encryption — REQUIRED:** `--bootgen-args "-encrypt efuse"` (or
   `bbram`). The Zynq key source is a CLI arg, not a BIF attribute (Ex.23). ZynqMP
   and Versal put the key source in the BIF, so they don't need this.
-- **Advanced (any family, optional):** `-nonbooting` (HSM staging), `-p <part>`,
-  `-process_bitstream`, etc.
+- **Part name when Bootgen generates keys (ZynqMP, Versal):** `--bootgen-args "-p <part>"` (e.g. `xczu9eg`,
+  `xcvc1902`) whenever the `.nky` files do not exist yet; Bootgen writes them to the current directory.
+- **Advanced (any family, optional):** `-nonbooting` (HSM staging), `-process_bitstream`, etc.
 
 ## Common issues
 

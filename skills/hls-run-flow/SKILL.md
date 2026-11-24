@@ -2,10 +2,12 @@
 name: hls-run-flow
 description:  Run HLS Flow including C Simulation (csim), C Synthesis (csynth), C/RTL Co-Simulation (cosim), Implementation (impl).
 license: MIT
+compatibility: Requires Vitis 2026.1+
 argument-hint: < hls config path $CONFIG >
 metadata:
-  author: "Alex Li"
-  version: "1.0.0"
+  stage: beta
+  author: "Huina Li, Alex Li"
+  version: "1.0.1"
 ---
 <!--
 Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
